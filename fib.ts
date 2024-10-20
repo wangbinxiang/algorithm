@@ -18,13 +18,9 @@
 
 // 暴力递归
 const fib = (n: number): number => {
-  if (n === 0) {
-    return 0;
-  }
   if (n === 1 || n === 2) {
     return 1;
   }
-
 
   return fib(n - 1) + fib(n - 2);
 }
@@ -44,25 +40,18 @@ const fib = (n: number): number => {
 //递归 缓存
 
 const fibMemo = (n: number): number => {
-  const memo: number[] = [];
-  memo[0] = 0;
-  memo[1] = 1;
-  memo[2] = 1;
-  const helper = (n: number) => {
-    // if (n === 0) {
-    //   return 0;
-    // }
-    // if (n === 1 || n === 2) {
-    //   return 1;
-    // }
-    if (memo[n] !== undefined) {
+  const memo = Array(n);
+  const fib = (n: number): number => {
+    if (n === 1 || n === 2) {
+      return 1;
+    }
+    if (memo[n]) {
       return memo[n];
     }
-    memo[n] = helper(n - 1) + helper(n - 2);
+    memo[n] = fib(n - 1) + fib(n - 2);
     return memo[n];
   }
-  helper(n);
-  return memo[n]
+  return fib(n);
 }
 // console.log(fibMemo(1));
 // console.log(fibMemo(2));
@@ -81,20 +70,16 @@ const fibMemo = (n: number): number => {
 
 // 循环迭代
 const fibFor = (n: number): number => {
-  if (n === 0) {
-    return 0;
-  }
   if (n === 1 || n === 2) {
     return 1;
   }
-  let prev = 1; // 1
-  let current = 1; // 2
+  let prev = 1;
+  let current = 1;
   for (let i = 3; i <= n; i++) {
-    const temp = current;
-    current = prev + current;
-    prev = temp;
+    const tmp = prev + current;
+    prev = current;
+    current = tmp;
   }
-
   return current;
 }
 // console.log(fibFor(1));
@@ -119,12 +104,13 @@ const fibFor = (n: number): number => {
 
 const fibDp = (n: number): number => {
   const dp = Array(n + 1);
-  dp[0] = 0;
-  dp[1] = 1;
-  dp[2] = 1;
 
-  for (let i = 3; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
+  for (let i = 1; i <= n; i++) {
+    if (i === 1 || i === 2) {
+      dp[i] = 1;
+    } else {
+      dp[i] = dp[i - 1] + dp[i - 2];
+    }
   }
 
   return dp[n];

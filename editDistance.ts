@@ -1,6 +1,7 @@
 const s = 'mtxacnu';
 const t = 'mit3cmu';
 
+// 计算两个字符串不同字符数量
 const editDistanceDP = (s: string, t: string): number => {
   const n = s.length;
   const m = t.length;
