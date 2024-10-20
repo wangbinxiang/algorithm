@@ -1,6 +1,6 @@
-const wgt = [1, 2, 3];
-const value = [5, 11, 15];
-const cap = 4;
+const wgt = [3, 2, 1];
+const value = [17, 11, 5];
+const cap = 12;
 
 
 const knapsackDFS = (wgt: number[], val: number[], cap: number, i: number): number => {
@@ -18,7 +18,7 @@ const knapsackDFS = (wgt: number[], val: number[], cap: number, i: number): numb
 
   return Math.max(no, yes);
 }
-console.log(knapsackDFS(wgt, value, cap, wgt.length));
+// console.log(knapsackDFS(wgt, value, cap, wgt.length));
 
 const knapsackDFSMemo = (wgt: number[], val: number[], cap: number, i: number): number => {
   const memo = Array.from({ length: wgt.length + 1 }, () => Array(cap + 1).fill(-1));
@@ -44,7 +44,7 @@ const knapsackDFSMemo = (wgt: number[], val: number[], cap: number, i: number): 
   return res;
 }
 
-console.log(knapsackDFSMemo(wgt, value, cap, wgt.length));
+// console.log(knapsackDFSMemo(wgt, value, cap, wgt.length));
 
 // 背包可以放入物品的最大价值
 const knapsackDP = (wgt: number[], val: number[], cap: number): number => {
@@ -63,14 +63,14 @@ const knapsackDP = (wgt: number[], val: number[], cap: number): number => {
   return dp[n][cap];
 }
 
-console.log(knapsackDP(wgt, value, cap));
+// console.log(knapsackDP(wgt, value, cap));
 
 
 const knapsackDPComp = (wgt: number[], val: number[], cap: number): number => {
   const dp = Array(cap + 1).fill(0);
 
   for (let i = 0; i < wgt.length; i++) {
-    for (let j = 1; j <= cap; j++) {
+    for (let j = cap; j > 0; j--) {
       if (wgt[i] <= j) {
         dp[j] = Math.max(dp[j], dp[j - wgt[i]] + val[i]);
       }
@@ -84,37 +84,27 @@ const knapsackDPComp = (wgt: number[], val: number[], cap: number): number => {
 
 // 
 const unboundKnapsackDP = (wgt: number[], val: number[], cap: number): number => {
-  const n = wgt.length;
+    const n = wgt.length;
+    const dp = Array.from({length: n + 1}, () => Array.from({length: cap + 1}, () => 0));
 
-  const dp = Array.from({ length: n + 1 }, () => Array(cap + 1).fill(0));
-  for (let i = 1; i <= n; i++) {
-    for (let j = 1; j <= cap; j++) {
-
-      if (wgt[i - 1] > j) {
-        dp[i][j] = dp[i - 1][j]
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - wgt[i - 1]] + val[i - 1]);
+    for (let i = 1; i <= n; i++) {
+      const weight = wgt[i - 1];
+      for (let j = 1; j <= cap; j++) {
+        if (j >= weight) {
+          dp[i][j] = Math.max(dp[i-1][j], dp[i][j - weight] + val[i - 1]);
+        } else {
+          dp[i][j] = dp[i-1][j];
+        }
       }
     }
-  }
-  console.log(dp);
-  return dp[n][cap]
+
+    return dp[n][cap];
 }
 
-// console.log(unboundKnapsackDP(wgt, value, cap));
+console.log(unboundKnapsackDP(wgt, value, cap));
 
 
-const unboundKnapsackDPComp = (wgt: number[], val: number[], cap: number): number => {
-  const dp = Array(cap + 1).fill(0);
-
-  for (let i = 0; i < wgt.length; i++) {
-    for (let j = 1; j <= cap; j++) {
-      if (wgt[i] <= j) {
-        dp[j] = Math.max(dp[j], dp[j - wgt[i]] + val[i]);
-      }
-    }
-  }
-  console.log(dp);
-  return dp[cap];
-}
+// const unboundKnapsackDPComp = (wgt: number[], val: number[], cap: number): number => {
+  
+// }
 // console.log(unboundKnapsackDPComp(wgt, value, cap));
