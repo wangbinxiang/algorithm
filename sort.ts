@@ -15,7 +15,6 @@ const selectionSort = (num: number[]): void => {
     }
   }
 }
-
 // selectionSort(num);
 // console.log(num);
 
@@ -63,7 +62,12 @@ const insertionSort = (num: number[]): void => {
     }
     num[j] = base;
   }
+
 }
+
+// const insertionSort = (num: number[]): void => {
+
+// }
 
 // insertionSort(num);
 // console.log(num);
@@ -281,7 +285,6 @@ const mergeSort = (num: number[]): void => {
     const mid = left + Math.floor((right - left) / 2);
     helper(left, mid);
     helper(mid + 1, right);
-
     merge(left, mid, right);
   }
   helper(0, num.length - 1);

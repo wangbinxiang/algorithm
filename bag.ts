@@ -1,6 +1,7 @@
 const wgt = [3, 2, 1];
 const value = [17, 11, 5];
-const cap = 5;
+const cap = 12;
+
 
 // cap 剩余容量，i剩余物品数量
 const knapsackDFS = (wgt: number[], val: number[], cap: number, i: number): number => {
