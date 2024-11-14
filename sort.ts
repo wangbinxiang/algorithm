@@ -92,7 +92,8 @@ const insertionSort = (num: number[]): void => {
 // insertionSort1(num);
 // console.log(num);
 
-
+// 快速排序是一种基于分支策略的排序算法
+// 核心操作是哨兵分化，选择数组中某个元素基于“基准数”，将所有小于基准书的元素移动其左侧，而大于基准数的元素移到其右侧。
 const quickSort = (nums: number[]): void => {
   const partition = (nums: number[], left: number, right: number): number => {
     // 分割数组，前半段为小于left的，后半段为大于left的。
@@ -132,22 +133,23 @@ const quickSort = (nums: number[]): void => {
 // console.log(num);
 
 const enhanceQuickSort = (nums: number[]): void => {
-  const midThree = (left: number, med: number, right: number): number => {
-    const l = nums[left];
-    const m = nums[med];
-    const r = nums[right];
-    if ((l < m && m < r) || (r < m && m < l)) {
-      return med;
+
+
+  // medianThree
+  const medianThree = (left: number, mid: number, right: number): number => {
+    if ((left <= mid && mid <= right) || (right <= mid && mid <= left)) {
+      return mid;
     }
-    if ((m < r && r < l) || (l < r && r < m)) {
+    if ((left <= right && right <= mid) || (mid <= right && right <= left)) {
       return right;
     }
     return left;
   }
 
-  const partition = (nums: number[], left: number, right: number): number => {
+  // partition
+  const partition = (left: number, right: number): number => {
     const med = Math.floor((left + right) / 2);
-    const mid = midThree(left, med, right);
+    const mid = medianThree(left, med, right);
     if (mid !== left) {
       [nums[left], nums[mid]] = [nums[mid], nums[left]];
     }
@@ -156,31 +158,29 @@ const enhanceQuickSort = (nums: number[]): void => {
     let r = right;
 
     while (l < r) {
-      while (l < r && nums[r] >= nums[left]) {
+      while (l < r && nums[left] <= nums[r]) {
         r--;
       }
-      while (l < r && nums[l] <= nums[left]) {
+      while (l < r && nums[left] >= nums[l]) {
         l++;
       }
       [nums[l], nums[r]] = [nums[r], nums[l]];
     }
-    [nums[left], nums[l]] = [nums[l], nums[left]];
 
+    [nums[left], nums[l]] = [nums[l], nums[left]]
     return l;
   }
 
-  const helper = (nums: number[], left: number, right: number): void => {
+  const helper = (left: number, right: number) => {
     if (left >= right) {
       return;
     }
-
-    const pivot = partition(nums, left, right);
-
-    helper(nums, left, pivot - 1);
-    helper(nums, pivot + 1, right);
+    const pivot = partition(left, right);
+    helper(left, pivot);
+    helper(pivot + 1, right);
   }
 
-  helper(nums, 0, nums.length - 1);
+  helper(0, nums.length - 1);
 }
 
 // enhanceQuickSort(num);
@@ -189,64 +189,66 @@ const enhanceQuickSort = (nums: number[]): void => {
 
 
 const tailOptimizationQuickSort = (num: number[]): void => {
-  const medianThree = (left: number, mid: number, right: number): number => {
-    const l = num[left];
-    const m = num[mid];
-    const r = num[right];
-    if ((l <= m && m <= r) || (r <= m && m <= l)) {
-      return mid;
+
+  const medianThree = (left: number, med: number, right: number): number => {
+    if ((left < med && med < right) || (right < med && med < left)) {
+      return med;
     }
-    if ((l <= r && r <= m) || (m <= r && r <= l)) {
-      return right;
+
+    if ((left < right && right < med) || (med < right && right < left)) {
+      return right
     }
 
     return left;
   }
 
   const partition = (left: number, right: number): number => {
-    const mid = medianThree(left, Math.floor((left + right) / 2), right);
+    const med = Math.floor((left + right) / 2);
+    const mid = medianThree(left, med, right);
     if (mid !== left) {
-      [num[left], num[mid]] = [num[mid], num[left]];
+      [num[left], num[mid]] = [num[mid], num[left]]
     }
 
     let l = left;
     let r = right;
-
     while (l < r) {
-      while (l < r && num[r] >= num[left]) {
+      while (l < r && num[left] <= num[r]) {
         r--;
       }
-
-      while (l < r && num[l] <= num[left]) {
+      while (l < r && num[left] >= num[l]) {
         l++
       }
       [num[l], num[r]] = [num[r], num[l]];
     }
+
     [num[left], num[l]] = [num[l], num[left]];
+
 
     return l;
   }
 
-  const helper = (left: number, right: number): void => {
+  const helper = (left: number, right: number) => {
     while (left < right) {
+
+
       const pivot = partition(left, right);
       if (pivot - left > right - pivot) {
-        // 左边大，递归右边
         helper(pivot + 1, right);
-        right = pivot - 1;
+        right = pivot;
       } else {
-        // 右边大，递归左边
-        helper(left, pivot - 1);
+        helper(left, pivot);
         left = pivot + 1;
       }
     }
   }
+
+
   helper(0, num.length - 1);
 }
 
 
-// tailOptimizationQuickSort(num);
-// console.log(num);
+tailOptimizationQuickSort(num);
+console.log(num);
 
 const mergeSort = (num: number[]): void => {
   // 先分割到最小，然后合并
@@ -342,5 +344,5 @@ const heapSort = (nums: number[]): void => {
   }
   sort(nums);
 }
-heapSort(num)
-console.log(num);
+// heapSort(num)
+// console.log(num);
