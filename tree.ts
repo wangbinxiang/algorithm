@@ -141,6 +141,40 @@ const postOrder = (root: TreeNode | null): number[] => {
   return result;
 }
 
+const postOrderFind = (root: TreeNode | null, first: number, second: number): TreeNode | null => {
+  let parentNode: TreeNode | null = null;
+  let firstRes = false;
+  let secondRes = false;
+  const dfs = (root: TreeNode | null): void => {
+    if (!root || parentNode) {
+      return;
+    }
+
+    dfs(root.left);
+    dfs(root.right);
+    if (firstRes && secondRes && parentNode === null) {
+      parentNode = root;
+      return;
+    }
+    if (root.value === first) {
+      firstRes = true;
+      if (secondRes) {
+        parentNode = root;
+        return;
+      }
+    }
+    if (root.value === second) {
+      secondRes = true;
+      if (firstRes) {
+        parentNode = root;
+        return;
+      }
+    }
+  }
+  dfs(root);
+  return parentNode;
+}
+
 const postOrderWhile = (root: TreeNode): number[] => {
   const result: number[] = [];
   const stack: TreeNode[] = [root];
@@ -171,12 +205,10 @@ const postOrderTraversal = (root: TreeNode): number[] => {
     if (peekNode.right && peekNode.right !== lastNode) {
       node = peekNode.right;
     } else {
-      result.push(peekNode.value);
       lastNode = stack.pop()!;
+      result.push(lastNode.value);
     }
-
   }
-
   return result;
 }
 
