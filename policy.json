@@ -8,11 +8,7 @@
       "Action": "s3:GetObject",
       "Resource": [
         "arn:aws:s3:::optim5-bucket/smm/*",
-        "arn:aws:s3:::optim5-bucket/logos/*",
-        "arn:aws:s3:::optim5-bucket/public_file/",
-        "arn:aws:s3:::optim5-bucket/subscriberBulkUploadhumanReadableFileName/*",
-        "arn:aws:s3:::optim5-bucket/user/*",
-        "arn:aws:s3:::optim5-bucket/debugLogs/*"
+        "arn:aws:s3:::optim5-bucket/logos/*"
       ]
     }
   ]
