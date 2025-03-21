@@ -82,6 +82,38 @@ function rightSideView11(root: TreeNode | null): number[] {
     }
   }
 
+  map.forEach((item, index) => {
+    list[index] = item
+  })
+
+  return list;
+}
+
+
+function rightSideView12(root: TreeNode | null): number[] {
+  if (root === null) {
+    return [];
+  }
+  const list: number[] = [];
+  const map = new Map<number, number>();
+  const stack: StackNode[] = [];
+  stack.push({ node: root, depth: 0 })
+  while (stack.length > 0) {
+    let p = stack.pop()!
+    if (!map.has(p.depth)) {
+      map.set(p.depth, p.node.val);
+    }
+    if (p.node.left) {
+      stack.push({ node: p.node.left, depth: p.depth + 1 })
+    }
+    if (p.node.right) {
+      stack.push({ node: p.node.right, depth: p.depth + 1 })
+    }
+  }
+
+  map.forEach((item, index) => {
+    list[index] = item
+  })
 
   return list;
 }
