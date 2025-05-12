@@ -1,6 +1,41 @@
 // 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
 
+function rotateNext(nums: number[], k: number): void {
+  const n = nums.length;
+  if (k === n) {
+    return
+  }
+  const m = k > n ? k % n : k;
+  if (m === n || m === 0) {
+    return
+  }
+  console.log('m:', m)
+  let start = 0;
+  let t = 0;
+  let nt = t + m
+  let tmp: number = nums[nt];
+  nums[nt] = nums[t]
+  t = nt
+  console.log('nt:', nt)
+  for (let i = 0; i < n; i++) {
 
+    nt = (t + m)
+    console.log('nt:', nt)
+    if (nt >= n) {
+      nt -= n
+    }
+
+    let tmp2 = nums[nt]
+    nums[nt] = tmp;
+    t = nt
+    tmp = tmp2
+    if (t === start) {
+      console.log('t === start:', t)
+      t++
+      start = t
+    }
+  }
+}
 
 // 示例 1:
 
@@ -145,12 +180,12 @@ const rotate5 = (nums: number[], k: number): void => {
   reverse(nk, n - 1);
 }
 
-let a = [1, 2, 3, 4, 5, 6, 7];
-rotate5(a, 3)
-console.log(a);
+// let a = [1, 2, 3, 4, 5, 6, 7];
+// rotateNext(a, 3)
+// console.log(a);
 let b = [-1, -100, 3, 99];
-rotate5(b, 2);
+rotateNext(b, 2);
 console.log(b);
-let c = [1, 2];
-rotate5(c, 3);
-console.log(c);
+// let c = [1, 2];
+// rotateNext(c, 3);
+// console.log(c);
