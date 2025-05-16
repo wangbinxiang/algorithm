@@ -105,15 +105,34 @@ function groupAnagrams4(strs: string[]): string[][] {
 
   return Object.values(ans);
 }
-console.log(groupAnagrams4(["eat", "tea", "tan", "ate", "nat", "bat"])); // [["bat"],["nat","tan"],["ate","eat","tea"]]
+console.log(groupAnagrams5(["eat", "tea", "tan", "ate", "nat", "bat"])); // [["bat"],["nat","tan"],["ate","eat","tea"]]
 
-console.log(groupAnagrams4([""])); // [[""]]
+console.log(groupAnagrams5([""])); // [[""]]
 
-console.log(groupAnagrams4(["a"])); // [["a"]]
+console.log(groupAnagrams5(["a"])); // [["a"]]
 
-console.log(groupAnagrams4(["ddddddddddg", "dgggggggggg"]))
+console.log(groupAnagrams5(["ddddddddddg", "dgggggggggg"]))
 
+function groupAnagrams5(strs: string[]): string[][] {
+  const ans: Record<string, string[]> = {};
+  const aCode = 'a'.charCodeAt(0);
 
+  for (let str of strs) {
+    const len = str.length;
+    const arr = Array(26).fill(0)
+    for (let i = 0; i < len; i++) {
+      const code = str.charCodeAt(i) - aCode
+      arr[code]++
+    }
+    const key = arr.join(',')
+    if (ans[key]) {
+      ans[key].push(str)
+    } else {
+      ans[key] = [str]
+    }
+  }
+  return Object.values(ans);
+}
 
 
 // console.log(replaceStringAt('000', 0))

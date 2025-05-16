@@ -91,7 +91,29 @@ console.log(longestConsecutive1([100, 4, 200, 1, 3, 2])); // 4
 
 console.log(longestConsecutive1([0, 3, 7, 2, 5, 8, 4, 6, 0, 1])); // 9
 
+function longestConsecutive3(nums: number[]): number {
+  const set = new Set<number>(nums);
+  let ans = 0;
+  // for (let num of nums) {
+  //   set.add(num)
+  // }
 
+  for (let num of set) {
+    if (!set.has(num - 1)) {
+      let start = num;
+      let current = num + 1;
+      while (set.has(current)) {
+        set.delete(current)
+        current++
+      }
+      const len = current - start;
+      if (ans < len) {
+        ans = len;
+      }
+    }
+  }
+  return ans;
+}
 
 // 提示：
 

@@ -48,5 +48,34 @@ function maxArea1(height: number[]): number {
   return ans
 }
 
-console.log(maxArea1([1, 8, 6, 2, 5, 4, 8, 3, 7]))
-console.log(maxArea1([1, 1]))
+console.log(maxArea2([1, 8, 6, 2, 5, 4, 8, 3, 7]))
+console.log(maxArea2([1, 1]))
+
+
+function maxArea2(height: number[]): number {
+  let ans = 0;
+  let l = 0;
+  let r = height.length - 1;
+
+  while (l < r) {
+    const width = r - l;
+    const heigh = Math.min(height[r], height[l]);
+    const area = width * heigh;
+    if (area > ans) {
+      ans = area
+    }
+    if (height[r] > height[l]) {
+      let prev = height[l];
+
+      do {
+        l++
+      } while (height[l] <= prev && l < r)
+    } else {
+      let prev = height[r];
+      do {
+        r--
+      } while (height[r] <= prev && l < r)
+    }
+  }
+  return ans;
+}

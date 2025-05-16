@@ -31,8 +31,8 @@ function moveZeroes(nums: number[]): void {
     }
   }
 };
-let arr = [0, 0, 1, 0, 4, 5, 6, 0, 2, 0, 3, 12]
-// moveZeroes(arr);
+let arrDouble = [0, 0, 1, 0, 4, 5, 6, 0, 2, 0, 3, 12]
+// moveZeroes(arrDouble);
 
 
 function moveZeroes1(nums: number[]): void {
@@ -98,7 +98,7 @@ function moveZeroes3(nums: number[]): void {
     p1++;
   }
 }
-const arr1 = [0, 1, 0, 3, 12]
+const arrDoubleTest = [0, 1, 0, 3, 12]
 
 
 function moveZeroes4(nums: number[]): void {
@@ -129,7 +129,58 @@ function moveZeroes5(nums: number[]): void {
   }
 
 }
-moveZeroes5(arr)
-console.log(arr);
-moveZeroes5(arr1)
-console.log(arr1);
+
+/**
+ * 双指针，初始位置都在头部，一个指向为0的值，一个指向不为0的值
+ * 
+ * @param nums 
+ */
+
+function moveZeroes6(nums: number[]): void {
+  let zero = 0;
+  let num = 1;
+  // zero 位置值是0时, 让num查找位置值不是0的位置
+  const len = nums.length
+  while (num < len && zero < len) {
+    while (nums[zero] !== 0 && num < len) {
+      zero++
+      num++
+    }
+    if (zero === len) {
+      break;
+    }
+    while (num < len && nums[num] == 0) {
+      num++
+    }
+    if (num < len) {
+      // console.log(nums, zero, num);
+      [nums[zero], nums[num]] = [nums[num], nums[zero]]
+      // console.log(nums);
+    }
+    if (num >= len - 1) {
+      break;
+    }
+  }
+}
+
+function moveZeroes7(nums: number[]): void {
+  const n = nums.length;
+  let i0 = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (nums[i] !== 0) {
+      if (nums[i0] === 0) {
+        [nums[i], nums[i0]] = [nums[i0], nums[i]]
+      }
+      i0++
+    }
+  }
+}
+moveZeroes7(arrDouble)
+console.log(arrDouble);
+moveZeroes7(arrDoubleTest)
+console.log(arrDoubleTest);
+const arrZero = [0, 1]
+
+moveZeroes7(arrZero)
+console.log(arrZero);

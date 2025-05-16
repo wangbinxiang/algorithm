@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    // other options
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "target": "ES2015"
+  }
+}
