@@ -156,8 +156,29 @@ function subarrayNext2(nums: number[], k: number): number {
 // -1000 <= nums[i] <= 1000
 // -107 <= k <= 107
 
-console.log(subarrayNext2([1, 1, 1], 2)); // 2
-console.log(subarrayNext2([1, 2, 3], 3)); // 2
-console.log(subarrayNext2([1, -1, 0], 0)); // 3
-console.log(subarrayNext2([1], 0)); // 0
-console.log(subarrayNext2([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0)) // 55
+console.log(subarrayNext3([1, 1, 1], 2)); // 2
+console.log(subarrayNext3([1, 2, 3], 3)); // 2
+console.log(subarrayNext3([1, -1, 0], 0)); // 3
+console.log(subarrayNext3([1], 0)); // 0
+console.log(subarrayNext3([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0)) // 55
+
+
+function subarrayNext3(nums: number[], k: number): number {
+  let ans = 0
+  const map = new Map<number, number>()
+  map.set(0, 1)
+  let current = 0;
+  for (let num of nums) {
+    current += num
+    if (map.has(current - k)) {
+      ans += map.get(current - k)
+    }
+    if (!map.has(current)) {
+      map.set(current, 1)
+    } else {
+      map.set(current, map.get(current) + 1)
+    }
+  }
+
+  return ans;
+}

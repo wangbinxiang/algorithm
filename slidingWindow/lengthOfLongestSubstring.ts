@@ -90,19 +90,33 @@ function lengthOfLongestSubstring4(s: string): number {
   return max;
 }
 
-// 使用一个hash，key是字符，value是位置
+// 使用set, 记录滑动窗口内的字符，如果下一个字符跟创建内的字符有重复，则滑动到下一个窗口
 function lengthOfLongestSubstring5(s: string): number {
   let ans = 0;
-
-
+  const set = new Set<string>()
+  const len = s.length;
+  let rk = 0;
+  for (let i = 0; i < len; i++) {
+    while (rk < len && !set.has(s.charAt(rk))) {
+      set.add(s.charAt(rk))
+      rk++
+    }
+    if (set.size > ans) {
+      ans = set.size
+    }
+    if (rk === len) {
+      break;
+    }
+    set.delete(s.charAt(i))
+  }
   return ans;
 }
 
 // 0 <= s.length <= 5 * 104
 // s 由英文字母、数字、符号和空格组成
 
-console.log(lengthOfLongestSubstring4('abcabcbb'));
-console.log(lengthOfLongestSubstring4('bbbbb'));
-console.log(lengthOfLongestSubstring4('pwwkew'));
-console.log(lengthOfLongestSubstring4(' '));
-console.log(lengthOfLongestSubstring4('dvdf'));
+console.log(lengthOfLongestSubstring5('abcabcbb'));
+console.log(lengthOfLongestSubstring5('bbbbb'));
+console.log(lengthOfLongestSubstring5('pwwkew'));
+console.log(lengthOfLongestSubstring5(' '));
+console.log(lengthOfLongestSubstring5('dvdf'));

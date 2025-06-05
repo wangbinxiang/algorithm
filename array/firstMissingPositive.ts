@@ -75,8 +75,29 @@ function firstMissingPositive1(nums: number[]): number {
   return ans;
 }
 
+function firstMissingPositive2(nums: number[]): number {
+  const n = nums.length;
+  let ans = nums.length + 1;
+  for (let i = 0; i < n; i++) {
+    let val = nums[i];
+    while (val > 0 && val <= n && val !== i + 1 && val !== nums[val - 1]) {
+      [nums[i], nums[val - 1]] = [nums[val - 1], nums[i]]
+      val = nums[i];
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    const val = nums[i];
+    if (val !== i + 1) {
+      ans = i + 1;
+      break;
+    }
+  }
+  return ans;
+}
 
-console.log(firstMissingPositive1([1, 2, 0]));
-console.log(firstMissingPositive1([3, 4, -1, 1]));
-console.log(firstMissingPositive1([7, 8, 9, 11, 12]));
-console.log(firstMissingPositive1([2, 1]));
+
+// console.log(firstMissingPositive1([1, 2, 0]));
+// console.log(firstMissingPositive1([3, 4, -1, 1]));
+// console.log(firstMissingPositive1([7, 8, 9, 11, 12]));
+// console.log(firstMissingPositive1([2, 1]));
+console.log(firstMissingPositive2([1, 1]));

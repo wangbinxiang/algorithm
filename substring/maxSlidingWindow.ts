@@ -59,8 +59,43 @@ function maxSlidingWindow(nums: number[], k: number): number[] {
   return ans;
 };
 
-// console.log(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3))
+console.log(maxSlidingWindow1([1, 3, -1, -3, 5, 3, 6, 7], 3))
 
 // console.log(maxSlidingWindow([1], 1))
 
-console.log(maxSlidingWindow([1, -1], 1))
+// console.log(maxSlidingWindow([1, -1], 1))
+
+
+function maxSlidingWindow1(nums: number[], k: number): number[] {
+  const ans: number[] = [];
+  // 单调队列
+  const queue: number[] = [];
+
+  for (let i = 0; i < k; i++) {
+    const val = nums[i]
+    if (queue.length > 0) {
+      while (nums[queue[queue.length - 1]] <= val) {
+        queue.pop()
+      }
+    }
+    queue.push(i)
+  }
+  console.log(queue)
+  ans.push(nums[queue[0]])
+  const n = nums.length;
+  for (let i = k; i < n; i++) {
+    if (queue[0] <= i - k) {
+      queue.shift()
+    }
+    const val = nums[i]
+    if (queue.length > 0) {
+      while (nums[queue[queue.length - 1]] <= val) {
+        queue.pop()
+      }
+    }
+    queue.push(i)
+    ans.push(nums[queue[0]])
+  }
+
+  return ans;
+}

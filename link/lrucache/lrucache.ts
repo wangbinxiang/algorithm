@@ -97,6 +97,40 @@ class LRUCache {
 }
 
 
+class LRUCache2 {
+  capacity: number = 0;
+  map: Map<number, number> = new Map()
+  queue: number[] = []
+
+
+  constructor(capacity: number) {
+    this.capacity = capacity;
+  }
+
+
+  get(key: number): number {
+    if (this.map.has(key)) {
+      return this.map.get(key)
+    }
+    return -1
+  }
+
+  put(key: number, value: number) {
+    if (this.map.has(key)) {
+      const findIndex = this.queue.indexOf(key)
+      if (findIndex !== -1) {
+        this.queue.splice(findIndex, 1)
+      }
+    }
+    this.queue.push(key)
+    if (this.queue.length > this.capacity) {
+      const deleteKey = this.queue.shift()
+      this.map.delete(deleteKey)
+    }
+  }
+}
+
+
 
 /**
 * Your LRUCache object will be instantiated and called as such:

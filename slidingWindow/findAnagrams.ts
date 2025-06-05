@@ -182,6 +182,25 @@ console.log(findAnagrams5("cbaebabacd", "abc")); // [0,6]
 console.log(findAnagrams5("abab", "ab")); // [0,1,2]
 console.log(findAnagrams5("baa", "aa"));
 
+
+function findAnagrams6(s: string, p: string): number[] {
+  const ans: number[] = [];
+  const len = s.length;
+  const pLen = p.length;
+  const map = new Map<string, number>()
+
+  const aCode = 'a'.charCodeAt(0);
+  // differ + map
+  for (let i = 0; i < pLen; i++) {
+    const charCode = p.charAt(i)
+  }
+
+  for (let i = 0; i < len; i++) {
+
+  }
+  return ans;
+}
+
 // 提示:
 
 // 1 <= s.length, p.length <= 3 * 104

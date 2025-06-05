@@ -78,3 +78,18 @@ function getIntersectionNode1(headA: ListNode | null, headB: ListNode | null): L
 
   return aPtr;
 }
+
+
+function getIntersectionNode2(headA: ListNode | null, headB: ListNode | null): ListNode | null {
+  if (headA === null || headB === null) {
+    return null
+  }
+
+  let ptrA = headA;
+  let ptrB = headB;
+  while (ptrA !== ptrB) {
+    ptrA = ptrA === null ? headB : ptrA.next;
+    ptrB = ptrB === null ? headA : ptrB.next;
+  }
+  return ptrA;
+}

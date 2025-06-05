@@ -36,3 +36,29 @@ function inorderTraversal(root: TreeNode | null): number[] {
 
   return ans;
 };
+
+
+function inorderTraversal1(root: TreeNode | null): number[] {
+  if (root === null) {
+    return []
+  }
+  const stack: TreeNode[] = []
+  const ans: number[] = []
+
+  let node = root
+  while (true) {
+    while (node) {
+      stack.push(node)
+      node = node.left
+    }
+    if (stack.length) {
+      const popNode = stack.pop()
+      ans.push(popNode.val)
+      node = popNode.right
+    } else {
+      break;
+    }
+  }
+
+  return ans;
+}

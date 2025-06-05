@@ -113,7 +113,46 @@ function minWindow1(s: string, t: string): string {
 
   return '';
 }
+function minWindow2(s: string, t: string): string {
+  let ans: string = ''
+
+  const n = s.length
+  let l = 0;
+  let r = 0;
+
+  const map = new Map<string, number>()
+  for (let s of t) {
+    if (map.has(s)) {
+      map.set(s, map.get(s) + 1)
+    } else {
+      map.set(s, 1)
+    }
+  }
+  let diff = map.size
+  let minWindow = Number.POSITIVE_INFINITY;
+  while (r < n) {
+    const char = s.charAt(r);
+    if (map.has(char)) {
+      map.set(char, map.get(char) - 1)
+    }
+    if (map.get(char) <= 0) {
+      diff--
+    }
+    if (diff === 0) {
+      const len = r - l;
+      if (len < minWindow) {
+        minWindow = len;
+        ans = s.substring(l, r + 1)
+      }
+    }
+  }
 
 
-console.log(minWindow('ADOBECODEBANC', 'ABC')); // BANC
-console.log(minWindow('a', 'a')); // a
+  console.log(map)
+  console.log(diff)
+
+  return ans;
+}
+
+console.log(minWindow2('ADOBECODEBANC', 'ABC')); // BANC
+// console.log(minWindow('a', 'a')); // a

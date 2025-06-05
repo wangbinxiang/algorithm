@@ -312,6 +312,37 @@ function trapNext(height: number[]): number {
   return ans;
 }
 
+function trap6(height: number[]): number {
+  const n = height.length;
+  let ans = 0
+
+  let l = 0;
+  let r = n - 1;
+  while (l < r) {
+    if (height[l] > height[r]) {
+      let t = r - 1;
+      while (height[t] <= height[r]) {
+        if (height[t] < height[r]) {
+          ans += height[r] - height[t];
+        }
+        t--
+      }
+      r = t
+    } else {
+      let t = l + 1;
+      while (height[t] <= height[l]) {
+        if (height[t] < height[l]) {
+          ans += height[l] - height[t];
+        }
+        t++
+      }
+      l = t;
+    }
+  }
+
+  return ans
+}
+
 
 console.log(trapNext([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
 console.log(trapNext([4, 2, 0, 3, 2, 5]));
