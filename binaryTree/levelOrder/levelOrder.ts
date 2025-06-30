@@ -51,3 +51,44 @@ function levelOrder(root: TreeNode | null): number[][] {
 
   return ans;
 };
+
+
+
+function levelOrder1(root: TreeNode | null): number[][] {
+  const ans: number[][] = []
+
+  const dfs = (node: TreeNode | null, level) => {
+    if (node === null) {
+      return
+    }
+    if (ans[level] === void 0) {
+      ans[level] = []
+    }
+    ans[level].push(node.val)
+    dfs(node.left, level + 1)
+    dfs(node.right, level + 1)
+  }
+
+
+  dfs(root, 0)
+  return ans;
+}
+
+function levelOrder2(root: TreeNode | null): number[][] {
+  const ans: number[][] = []
+  const queue: TreeNode[] = [root]
+  let level = 0
+  while (queue.length) {
+    const len = queue.length
+    ans[level] = []
+    for (let i = 0; i < len; i++) {
+      const node = queue.shift()
+      ans[level].push(node.val)
+      queue.push(node.left)
+      queue.push(node.right)
+    }
+    level++
+  }
+
+  return ans;
+}

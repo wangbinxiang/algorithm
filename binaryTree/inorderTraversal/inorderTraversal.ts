@@ -62,3 +62,37 @@ function inorderTraversal1(root: TreeNode | null): number[] {
 
   return ans;
 }
+
+
+function inorderTraversal2(root: TreeNode | null): number[] {
+  const ans: number[] = []
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return
+    }
+    dfs(node.left)
+    ans.push(node.val)
+    dfs(node.right)
+  }
+  dfs(root)
+  return ans
+}
+
+
+function inorderTraversal3(root: TreeNode | null): number[] {
+  const ans: number[] = []
+  const stack: TreeNode[] = []
+  let current = root
+  while (stack.length || current) {
+    while (current) {
+      stack.push(current)
+      current = current.left
+    }
+    const node = stack.pop()
+    ans.push(node.val)
+    current = node.right
+  }
+
+  return ans
+}

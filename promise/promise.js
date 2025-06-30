@@ -121,40 +121,184 @@ class MyPromise {
       this.#run()
     })
   }
+
+  static all(proms) {
+    let res;
+    let rej;
+    const p = new MyPromise((resolve, reject) => {
+      res = resolve
+      rej = reject
+    })
+    const ans = []
+    let count = 0
+    let fulfilled = 0
+    for (let pro of proms) {
+      let key = count
+      count++
+      Promise.resolve(pro).then(data => {
+        fulfilled++
+        ans[key] = data
+        if (fulfilled === count) {
+          console.log('fulfilled === count:')
+          res(ans)
+        }
+        console.log('fulfilled:', fulfilled)
+      }, rej)
+    }
+
+    if (count === 0) {
+      res([])
+    }
+    console.log('res', res)
+    console.log('rej', rej)
+    console.log('count:', count)
+    return p
+  }
+
+  static allSettled(proms) {
+    return new MyPromise((resolve, reject) => {
+      let count = 0;
+      let completed = 0
+      const ans = []
+      for (let prom of proms) {
+        const key = count;
+        count++
+        Promise.resolve(prom).then(value => {
+          completed++
+          ans[key] = { status: 'fulfilled', value }
+          if (completed === count) {
+            resolve(ans)
+          }
+        }, reason => {
+          completed++
+          ans[key] = { status: 'rejected', reason }
+          if (completed === count) {
+            resolve(ans)
+          }
+        })
+      }
+    })
+  }
+
+  static any(proms) {
+    return new MyPromise((resolve, reject) => {
+      const errors = []
+      let count = 0;
+      let completed = 0;
+      for (let prom of proms) {
+        let key = count;
+        count++;
+        MyPromise.resolve(prom).then(data => {
+          resolve(data)
+        }, reason => {
+          errors[key] = reason
+          completed++
+          if (count === completed) {
+            reject(new AggregateError(errors))
+          }
+        })
+      }
+    })
+  }
+
+  static resolve(value) {
+    // 如果是promise 直接返回
+    if (value instanceof MyPromise) {
+      return value
+    }
+    if (typeof value === 'object' && typeof value.then === 'function') {
+      return new MyPromise((resolve, reject) => {
+        value.then(resolve, reject)
+      })
+    }
+    // 如果是thenable 则调用then方法
+    // 以以value为值返回一个promise
+    return new MyPromise((resolve) => {
+      resolve(value)
+    })
+  }
+
+  static reject(reason) {
+    return new MyPromise((_, reject) => {
+      reject(reason)
+    })
+  }
+
+  static withResolve() {
+    let res
+    let rej
+    const promise = new MyPromise((resolve, reject) => {
+      res = resolve
+      rej = reject
+    })
+    return { promise, resolve: res, reject: rej }
+  }
+
+  static race(proms) {
+    return new MyPromise((resolve, reject) => {
+      for (let prom of proms) {
+        MyPromise.resolve(prom).then(resolve, reject)
+      }
+    })
+  }
 }
 
-const p = new MyPromise((resolve, reject) => {
-  // setTimeout(() => {
-  //   throw 123;
-  // })
-  // reject(2)
-  // throw 123
-  resolve(1)
-
+const pt = new MyPromise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('1000')
+  }, 1000)
 })
-p.then((result) => {
-  console.log('then resolve:', result)
-  return new Promise((resolve) => resolve('promise result'))
-},
-  (result) => {
-    console.log('then reject:', result)
-    return result + 1
-  }).then((result) => {
-    console.log('then resolve2:', result)
-  },
-    (result) => {
-      console.log('then reject2:', result)
-    })
 
-p.then((result) => {
-  console.log('then resolve x:', result)
-  return result + 1
-},
-  (result) => {
-    console.log('then reject x:', result)
-    return result + 1
-  })
+// const p = MyPromise.race([1, pt, 3, Promise.reject(new Error("一个错误"))]).then(data => console.log('data:', data), reason => console.log('reason:', reason))
 // console.log(p)
 
-console.log(typeof process)
-console.log(typeof process.nextTick)
+try {
+
+  setTimeout(() => {
+    try {
+      throw 123
+    } catch (e) {
+      console.log('inner', e)
+    }
+  }, 1)
+} catch (e) {
+  console.log(e)
+}
+
+
+
+// const p = new MyPromise((resolve, reject) => {
+//   // setTimeout(() => {
+//   //   throw 123;
+//   // })
+//   // reject(2)
+//   // throw 123
+//   resolve(1)
+
+// })
+// p.then((result) => {
+//   console.log('then resolve:', result)
+//   return new Promise((resolve) => resolve('promise result'))
+// },
+//   (result) => {
+//     console.log('then reject:', result)
+//     return result + 1
+//   }).then((result) => {
+//     console.log('then resolve2:', result)
+//   },
+//     (result) => {
+//       console.log('then reject2:', result)
+//     })
+
+// p.then((result) => {
+//   console.log('then resolve x:', result)
+//   return result + 1
+// },
+//   (result) => {
+//     console.log('then reject x:', result)
+//     return result + 1
+//   })
+// // console.log(p)
+
+// console.log(typeof process)
+// console.log(typeof process.nextTick)

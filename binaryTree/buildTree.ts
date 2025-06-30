@@ -41,3 +41,58 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 
   return build(0, preorder.length - 1, 0);
 };
+
+
+
+function buildTree1(preorder: number[], inorder: number[]): TreeNode | null {
+  const root = new TreeNode(preorder[0])
+
+  const inorderMap = new Map()
+  inorder.forEach((item, index) => {
+    inorderMap.set(item, index)
+  })
+
+  const dfs = (left: number, right: number, inorderStart: number): TreeNode | null => {
+    if (left > right) {
+      return null
+    }
+
+    const node = new TreeNode(preorder[left])
+    const inorderIndex = inorderMap.get(preorder[left])
+    const leftLen = inorderIndex - inorderStart
+
+    node.left = dfs(left + 1, left + leftLen, inorderStart)
+    node.right = dfs(left + leftLen + 1, right, inorderIndex + 1)
+
+    return node
+  }
+
+  return dfs(0, preorder.length - 1, 0)
+}
+
+
+
+function buildTree2(preorder: number[], inorder: number[]): TreeNode | null {
+  const map = new Map<number, number>()
+  inorder.forEach((item, index) => {
+    map.set(item, index)
+  })
+
+  const dfs = (left: number, right: number, inorderStart: number): TreeNode | null => {
+    if (left > right) {
+      return null
+    }
+    const node = new TreeNode(preorder[left])
+    const indexOrder = map.get(node.val)
+    const leftLen = indexOrder - inorderStart
+    node.left = dfs(left + 1, left + leftLen, inorderStart)
+    node.right = dfs(left + leftLen + 1, right, indexOrder + 1)
+
+    return node
+  }
+
+
+  return dfs(0, preorder.length - 1, 0)
+}
+
+

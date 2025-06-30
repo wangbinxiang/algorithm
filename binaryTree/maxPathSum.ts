@@ -45,3 +45,98 @@ function maxPathSum(root: TreeNode | null): number {
 
   return ans;
 };
+
+
+
+function maxPathSum1(root: TreeNode | null): number {
+  let ans = -Infinity
+  const help = (node: TreeNode | null): number => {
+    if (node === null) {
+      return 0
+    }
+    let pathSum = node.val
+    if (pathSum > ans) {
+      ans = pathSum
+    }
+
+    const left = help(node.left)
+    if (left > 0) {
+      pathSum += left
+      if (pathSum > ans) {
+        ans = pathSum
+      }
+    }
+    const right = help(node.right)
+    if (right > 0) {
+      pathSum += right
+      if (pathSum > ans) {
+        ans = pathSum
+      }
+    }
+
+    if (left > 0 || right > 0) {
+      return node.val + Math.max(left, right)
+    } else {
+      return node.val
+    }
+  }
+  help(root)
+
+  return ans
+}
+
+
+
+function maxPathSum2(root: TreeNode | null): number {
+  let ans = -Infinity
+  const dfs = (node: TreeNode | null): number => {
+    if (node === null) {
+      return 0
+    }
+    if (node.val > ans) {
+      ans = node.val
+    }
+    const left = dfs(node.left)
+    const right = dfs(node.right)
+    const count = node.val + left + right;
+    if (count > ans) {
+      ans = count
+    }
+    const res = node.val + (left > right ? left : right)
+    if (res > ans) {
+      ans = res
+    }
+    return node.val + (left > 0 && right > 0 && (left > right ? left : right));
+  }
+
+  dfs(root)
+  return ans
+}
+
+
+function maxPathSum3(root: TreeNode | null): number {
+  let ans = - Infinity
+  const dfs = (node: TreeNode | null): number => {
+    if (node === null) {
+      return 0
+    }
+
+    if (node.val > ans) {
+      ans = node.val
+    }
+
+    const left = Math.max(0, dfs(node.left))
+    const right = Math.max(0, dfs(node.right))
+
+    const count = node.val + left + right
+    if (count > ans) {
+      ans = count
+    }
+
+    return node.val + (left > right ? left : right)
+  }
+
+
+  dfs(root)
+  return ans;
+}

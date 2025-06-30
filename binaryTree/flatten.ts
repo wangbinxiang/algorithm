@@ -136,3 +136,27 @@ function flatten3(root: TreeNode | null): void {
 
   preOrder(root);
 }
+
+
+function flatten4(root: TreeNode | null): void {
+  if (root === null) {
+    return
+  }
+
+  let current = root
+  while (current) {
+    if (current.left) {
+      const tmp = current.right
+      current.right = current.left
+      current.left = null
+      if (tmp) {
+        let right = current.right
+        while (right.right) {
+          right = right.right
+        }
+        right.right = tmp
+      }
+    }
+    current = current.right
+  }
+}

@@ -54,3 +54,37 @@ function invertTree(root: TreeNode | null): TreeNode | null {
   }
   return root
 }
+
+
+function invertTree1(root: TreeNode | null): TreeNode | null {
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return
+    }
+
+    const left = node.left
+    node.left = node.right
+    node.right = left
+    dfs(node.left)
+    dfs(node.right)
+  }
+  dfs(root)
+  return root
+}
+
+
+function invertTree2(root: TreeNode | null): TreeNode | null {
+  const queue: (TreeNode | null)[] = [root]
+
+  while (queue.length) {
+    const node = queue.shift()
+    if (node) {
+      const left = node.left
+      node.left = node.right
+      node.right = left
+      queue.push(node.left, node.right)
+    }
+  }
+
+  return root
+}

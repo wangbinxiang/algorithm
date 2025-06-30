@@ -71,3 +71,45 @@ function maxDepth2(root: TreeNode | null): number {
 
   return ans;
 };
+
+
+
+function maxDepth3(root: TreeNode | null): number {
+  if (root === null) {
+    return 0
+  }
+  let ans = 0
+  const dfs = (node: TreeNode | null, depth: number) => {
+    if (node === null) {
+      if (depth > ans) {
+        ans = depth
+      }
+      return
+    }
+    dfs(node.left, depth + 1)
+    dfs(node.right, depth + 1)
+  }
+  dfs(root, 1)
+  return ans
+}
+
+
+function maxDepth4(root: TreeNode | null): number {
+  if (root === null) {
+    return 0
+  }
+  let ans = 0
+  const queue: [TreeNode | null, number][] = [[root, 0]]
+  while (queue.length) {
+    const [node, depth] = queue.shift()
+    if (node) {
+      queue.push([node.left, depth + 1], [node.right, depth + 1])
+    } else {
+      if (ans < depth) {
+        ans = depth
+      }
+    }
+  }
+
+  return ans
+}

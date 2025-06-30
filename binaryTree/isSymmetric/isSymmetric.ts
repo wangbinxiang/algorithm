@@ -68,3 +68,53 @@ function isSymmetric1(root: TreeNode | null): boolean {
   }
   return true;
 }
+
+
+
+function isSymmetric2(root: TreeNode | null): boolean {
+  let ans = true
+  if (root === null) {
+    return ans
+  }
+
+  const dfs = (left: TreeNode | null, right: TreeNode | null) => {
+    if (left === null && right === null) {
+      return
+    }
+    if (left === null || right === null || left.val !== right.val) {
+      ans = false
+      return
+    }
+    dfs(left.left, right.right)
+    dfs(left.right, right.left)
+  }
+
+  dfs(root.left, root.right)
+  return ans
+}
+
+
+function isSymmetric3(root: TreeNode | null): boolean {
+  let ans = true
+  if (root === null) {
+    return ans
+  }
+
+  const queue: (TreeNode | null)[][] = [[root.left, root.right]]
+
+  while (queue.length) {
+    const [left, right] = queue.shift()
+    if (left === null && right === null) {
+      continue
+    }
+    if (left === null || right === null || left.val !== right.val) {
+      ans = false
+      break
+    }
+    queue.push([left.left, right.right], [left.right, right.left])
+  }
+
+
+
+  return ans
+}

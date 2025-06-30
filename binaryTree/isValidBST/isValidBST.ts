@@ -125,3 +125,114 @@ function isValidBST2(root: TreeNode | null): boolean {
   }
   return true;
 }
+
+
+// 中序遍历
+function isValidBST3(root: TreeNode | null): boolean {
+  let prevVal = -Infinity
+  const stack: TreeNode[] = []
+  let node = root
+  while (stack.length || node) {
+    while (node) {
+      stack.push(node)
+      node = node.left
+    }
+
+    const popNode = stack.pop()!
+    if (prevVal >= popNode.val) {
+      return false;
+    }
+    prevVal = popNode.val;
+    node = popNode.right
+  }
+
+  return true;
+}
+
+function isValidBST4(root: TreeNode | null): boolean {
+  let prevVal = -Infinity
+  let ans = true
+
+  const help = (node: TreeNode | null) => {
+    if (node.left) {
+      help(node.left)
+    }
+    if (prevVal < node.val) {
+      prevVal = node.val
+    } else {
+      ans = false
+      return
+    }
+    if (node.right) {
+      help(node.right)
+    }
+  }
+  help(root)
+  return ans
+}
+
+function isValidBST5(root: TreeNode | null): boolean {
+  const help = (node: TreeNode | null, min: number, max: number) => {
+    if (node === null) {
+      return true
+    }
+    if (min >= node.val || node.val >= max) {
+      return false
+    }
+    return help(node.left, min, node.val) && help(node.right, node.val, max)
+  }
+  return help(root, -Infinity, +Infinity)
+}
+
+
+function isValidBST6(root: TreeNode | null): boolean {
+  let ans = true;
+  let prevVal = -Infinity
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return
+    }
+    dfs(node.left)
+    if (prevVal >= node.val) {
+      ans = false
+      return
+    }
+    prevVal = node.val
+    dfs(node.right)
+  }
+
+
+
+  return ans
+}
+
+
+function isValidBST7(root: TreeNode | null): boolean {
+  let ans = true
+  const stack: TreeNode[] = []
+  let current = root
+  let prevVal = -Infinity
+  while (current || stack.length > 0) {
+    while (current) {
+      stack.push(current)
+      current = current.left
+    }
+    const node = stack.pop()
+    if (node.val <= prevVal) {
+      ans = false
+      break
+    }
+    prevVal = node.val
+    current = node.right
+  }
+
+
+  return ans
+}
+
+const root = new TreeNode(2)
+root.left = new TreeNode(1)
+root.right = new TreeNode(3)
+
+console.log(isValidBST4(root))

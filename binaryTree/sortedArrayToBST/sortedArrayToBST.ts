@@ -21,13 +21,14 @@ export class TreeNode {
 // 输出：[3,1]
 // 解释：[1,null,3] 和 [3,1] 都是高度平衡二叉搜索树。
 
+// 递归解决
+
+// 参数是root
+
+// 左节点是 左边数的中位数
+// 右节点数 右边数的中位数
 function sortedArrayToBST(nums: number[]): TreeNode | null {
-  // 递归解决
 
-  // 参数是root
-
-  // 左节点是 左边数的中位数
-  // 右节点数 右边数的中位数
 
   const right = nums.length - 1;
   const mid = Math.floor(right / 2);
@@ -58,7 +59,7 @@ function sortedArrayToBST(nums: number[]): TreeNode | null {
 };
 
 
-console.log(sortedArrayToBST([-10, -3, 0, 5, 9]))
+// console.log(sortedArrayToBST([-10, -3, 0, 5, 9]))
 
 
 function sortedArrayToBST1(nums: number[]): TreeNode | null {
@@ -77,3 +78,49 @@ function sortedArrayToBST1(nums: number[]): TreeNode | null {
 
   return bst(0, nums.length - 1);
 }
+
+
+// 参数是root
+// 左节点是 左边数的中位数
+// 右节点是 右边数的中位数
+function sortedArrayToBST2(nums: number[]): TreeNode | null {
+
+  const bst = (l: number, r: number): TreeNode | null => {
+    if (l > r) {
+      return null
+    }
+    const mid = Math.floor((l + r) / 2)
+    const node = new TreeNode(nums[mid])
+
+    node.left = bst(l, mid - 1)
+    node.right = bst(mid + 1, r)
+
+    return node
+  }
+
+  return bst(0, nums.length - 1);
+}
+
+
+function sortedArrayToBST3(nums: number[]): TreeNode | null {
+  const len = nums.length
+  if (len === 0) {
+    return null
+  }
+  const dfs = (left: number, right: number): TreeNode => {
+    if (left > right) {
+      return null
+    }
+    const mid = Math.floor((right - left) / 2)
+    const node = new TreeNode(nums[mid])
+    node.left = dfs(left, mid - 1)
+    node.right = dfs(mid + 1, right)
+
+    return node
+  }
+
+  return dfs(0, len - 1)
+}
+
+
+console.log(sortedArrayToBST2([-10, -3, 0, 5, 9]))

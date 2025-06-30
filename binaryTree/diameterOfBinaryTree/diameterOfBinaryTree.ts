@@ -93,9 +93,48 @@ function diameterOfBinaryTree3(root: TreeNode | null): number {
 
 
 function diameterOfBinaryTree4(root: TreeNode | null): number {
-  let maxAns = 0;
+  let maxAns = 0
+  const help = (root: TreeNode | null): number => {
+    if (root === null) {
+      return 0
+    }
+
+    const maxLeft = help(root.left);
+    const maxRight = help(root.right);
+
+    const total = maxLeft + maxRight;
+    if (total > maxAns) {
+      maxAns = total;
+    }
+    return Math.max(maxLeft, maxRight) + 1
+  }
 
 
 
-  return maxAns;
+  help(root);
+
+  return maxAns
+}
+
+
+function diameterOfBinaryTree5(root: TreeNode | null): number {
+  let ans = 0
+
+  const dfs = (node: TreeNode | null): number => {
+    if (node === null) {
+      return 0
+    }
+
+    const left = dfs(node.left)
+    const right = dfs(node.right)
+
+    if (left + right > ans) {
+      ans = left + right
+    }
+
+    return Math.max(left, right) + 1
+  }
+
+  dfs(root)
+  return ans;
 }

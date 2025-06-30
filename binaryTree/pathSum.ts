@@ -68,3 +68,60 @@ const deep = (root: TreeNode | null, targetSum: number) => {
 
   return targetN;
 }
+
+
+
+// 类似数组的路径和问题
+function pathSum1(root: TreeNode | null, targetSum: number): number {
+  let ans = 0
+  const map = new Map()
+  map.set(0, 1)
+
+  const dep = (node: TreeNode | null, count: number) => {
+    if (node === null) {
+      return
+    }
+    count += node.val
+    const target = map.get(count - targetSum)
+    if (target) {
+      ans += target
+    }
+    const c = map.get(count) || 0
+    map.set(count, c + 1)
+    dep(node.left, count)
+    dep(node.right, count)
+    map.set(count, c)
+  }
+  dep(root, 0)
+  return ans;
+}
+
+
+function pathSum2(root: TreeNode | null, targetSum: number): number {
+  let ans = 0
+  const map = new Map<number, number>()
+  map.set(0, 1)
+
+  const dfs = (node: TreeNode | null, preSum: number) => {
+    if (node === null) {
+      return
+    }
+
+    const sum = preSum + node.val
+    const res = sum - targetSum
+    const count = map.get(res) ?? 0
+    if (count > 0) {
+      ans += count
+    }
+
+    const sumCount = map.get(sum) ?? 0
+    map.set(sum, sumCount + 1)
+    dfs(node.left, sum)
+    dfs(node.right, sum)
+    map.set(sum, sumCount)
+
+  }
+  dfs(root, 0)
+
+  return ans
+}

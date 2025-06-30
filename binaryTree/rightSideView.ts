@@ -117,3 +117,39 @@ function rightSideView12(root: TreeNode | null): number[] {
 
   return list;
 }
+
+
+function rightSideView13(root: TreeNode | null): number[] {
+  const ans: number[] = []
+  const help = (node: TreeNode | null, level) => {
+    if (node === null) {
+      return
+    }
+    if (level > ans.length) {
+      ans.push(node.val)
+    }
+    help(node.right, level + 1)
+    help(node.left, level + 1)
+  }
+
+  help(root, 1)
+  return ans;
+}
+
+
+function rightSideView14(root: TreeNode | null): number[] {
+  const ans: number[] = []
+  const dfs = (node: TreeNode | null, level: number) => {
+    if (node === null) {
+      return
+    }
+    if (ans[level] === undefined) {
+      ans[level] = node.val
+    }
+    dfs(node.right, level + 1)
+    dfs(node.left, level + 1)
+  }
+
+  dfs(root, 0)
+  return ans
+}
