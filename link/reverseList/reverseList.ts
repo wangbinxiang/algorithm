@@ -49,3 +49,19 @@ function reverseList1(head: ListNode | null): ListNode | null {
 
   return ptr;
 }
+
+
+function reverseList2(head: ListNode | null): ListNode | null {
+  let current = head
+  let prev: ListNode | null = null;
+  while (current) {
+    let tmp = current.next
+    current.next = prev
+    prev = current
+    current = tmp
+  }
+
+
+
+  return prev
+}

@@ -111,7 +111,7 @@ function sortedArrayToBST3(nums: number[]): TreeNode | null {
     if (left > right) {
       return null
     }
-    const mid = Math.floor((right - left) / 2)
+    const mid = Math.floor(left + (right - left) / 2)
     const node = new TreeNode(nums[mid])
     node.left = dfs(left, mid - 1)
     node.right = dfs(mid + 1, right)

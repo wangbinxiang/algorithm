@@ -80,8 +80,8 @@ function lowestCommonAncestor1(root: TreeNode | null, p: TreeNode | null, q: Tre
 function lowestCommonAncestor2(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
 
   const dfs = (node: TreeNode | null): TreeNode | null => {
-    if (root === null || root === p || root === q) {
-      return root
+    if (node === null || node === p || node === q) {
+      return node
     }
 
     const left = dfs(node.left)
