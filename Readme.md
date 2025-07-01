@@ -325,3 +325,38 @@ function moveZeroes(nums: number[]): void {
 如果下一个值比小指针的值小，则该位置可接雨水为小指针和该位置的差值
 如果下一个位置等于或大于小指针，则将小指针位置置于该位置，并重新开始比较两边的指针
 ```
+
+### 链表
+
+#### 相交链表
+
+```plaintext
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+```
+
+```plaintext
+创建两个变量a,b各赋值为headA和headB
+开始while循环判断两个变量a !== b时进入循环体
+循环体内判断
+  a!==nul则a = a.next 否则 a = headB
+  b!==null则b = b.next 否则 b = headA
+循环结束时
+a和b就同时为相交点或者为null 
+```
+
+#### 反转链表
+
+```plaintext
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+```
+
+``` plaintext
+创建一个current变量赋值为head
+创建一个prev变量赋值为null
+while循环判断current不为null时进入循环体
+创建tmp变量赋值为current的next
+current的next赋值为prev
+prev的值赋值为current
+current的值赋值为tmp
+循环结束时，prev就是反转后的链表头部
+```

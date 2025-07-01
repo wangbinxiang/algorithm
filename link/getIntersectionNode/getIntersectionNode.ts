@@ -93,3 +93,17 @@ function getIntersectionNode2(headA: ListNode | null, headB: ListNode | null): L
   }
   return ptrA;
 }
+
+
+function getIntersectionNode3(headA: ListNode | null, headB: ListNode | null): ListNode | null {
+  let a = headA
+  let b = headB
+
+  while (a !== b) {
+    a = a !== null ? a.next : headB
+    b = b !== null ? b.next : headA
+  }
+
+
+  return a
+}

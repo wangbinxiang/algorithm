@@ -90,5 +90,14 @@ function findMedianSortedArrays1(nums1: number[], nums2: number[]): number {
 }
 
 
+function findMedianSortedArrays2(nums1: number[], nums2: number[]): number {
+  let ans = 0
+
+
+
+  return ans
+}
+
+
 console.log(findMedianSortedArrays1([1, 3], [2])) // 2
 // console.log(findMedianSortedArrays([1, 2], [3, 4])) // 2.5
