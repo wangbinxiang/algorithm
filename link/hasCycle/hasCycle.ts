@@ -33,3 +33,21 @@ function hasCycle(head: ListNode | null): boolean {
   }
   return false;
 };
+
+
+//快慢指针，如果两个指针相等则存在环，如果快指针变为null则没有环
+function hasCycle1(head: ListNode | null): boolean {
+  let ans = false
+  let fast = head
+  let slow = head
+  while (fast && fast.next) {
+    fast = fast.next.next
+    slow = slow.next
+    if (fast === slow) {
+      return true
+    }
+  }
+
+
+  return ans
+}

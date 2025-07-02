@@ -1,4 +1,4 @@
-class ListNode {
+export class ListNode {
   val: number
   next: ListNode | null
   constructor(val?: number, next?: ListNode | null) {
@@ -60,4 +60,41 @@ function isPalindrome(head: ListNode | null): boolean {
 
 
   return result;
+}
+
+
+
+function isPalindrome1(head: ListNode | null): boolean {
+  if (head.next === null) {
+    return true
+  }
+  // 快慢指针
+  // 快指针一次走两步
+  // 慢指针一次走一步，并且反转链表
+  // 快指针走到头后 开始对比
+  let prev: ListNode | null = null
+  let slow: ListNode | null = head
+  let fast: ListNode | null = head
+  while (fast && fast.next) {
+    fast = fast.next.next
+    let tmp = slow.next
+    slow.next = prev
+    prev = slow
+    slow = tmp
+  }
+
+  if (fast !== null) {
+    slow = slow.next
+  }
+
+  while (slow !== null) {
+    if (slow.val !== prev.val) {
+      return false
+    }
+    slow = slow.next
+    prev = prev.next
+  }
+
+
+  return true
 }

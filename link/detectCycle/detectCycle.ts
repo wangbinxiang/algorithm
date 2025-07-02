@@ -73,3 +73,30 @@ function detectCycle1(head: ListNode | null): ListNode | null {
   }
   return p;
 }
+
+
+
+function detectCycle2(head: ListNode | null): ListNode | null {
+  let fast: ListNode | null = head
+  let slow: ListNode | null = head
+
+  while (fast && fast.next) {
+    fast = fast.next.next
+    slow = slow.next
+    if (fast === slow) {
+      break
+    }
+  }
+
+  if (fast === null || fast.next === null) {
+    return null
+  }
+
+  let current: ListNode | null = head
+  while (current !== slow) {
+    current = current.next
+    slow = slow.next
+  }
+
+  return current
+} 
