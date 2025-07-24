@@ -12,12 +12,12 @@
 // val：一个表示 Node.val 的整数。
 // random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
 // 你的代码 只 接受原链表的头节点 head 作为传入参数。
-class _Node {
+export class Node {
   val: number
-  next: _Node | null
-  random: _Node | null
+  next: Node | null
+  random: Node | null
 
-  constructor(val?: number, next?: _Node, random?: _Node) {
+  constructor(val?: number, next?: Node, random?: Node) {
     this.val = (val === undefined ? 0 : val)
     this.next = (next === undefined ? null : next)
     this.random = (random === undefined ? null : random)
@@ -26,16 +26,16 @@ class _Node {
 
 
 
-function copyRandomList(head: _Node | null): _Node | null {
+function copyRandomList(head: Node | null): Node | null {
   if (head === null) {
     return head;
   }
-  const hair = new _Node()
+  const hair = new Node()
   hair.next = head;
-  let p: _Node | null = head;
+  let p: Node | null = head;
 
   while (p) {
-    const newNode = new _Node(p.val);
+    const newNode = new Node(p.val);
     const next = p.next;
     p.next = newNode;
     newNode.next = next;
@@ -52,7 +52,7 @@ function copyRandomList(head: _Node | null): _Node | null {
     p = next?.next;
   }
 
-  let prev: _Node | null = hair;
+  let prev: Node | null = hair;
   p = head;
   while (p) {
     const next = p.next;
@@ -65,14 +65,14 @@ function copyRandomList(head: _Node | null): _Node | null {
 };
 
 
-function copyRandomList1(head: _Node | null): _Node | null {
-  const hair: _Node | null = new _Node();
+function copyRandomList1(head: Node | null): Node | null {
+  const hair: Node | null = new Node();
   let newPtr = hair;
   let ptr = head;
 
   while (ptr) {
     const next = ptr.next;
-    const node = new _Node(ptr.val, null, ptr.random);
+    const node = new Node(ptr.val, null, ptr.random);
     newPtr.next = node;
     newPtr = node;
     ptr.next = node;
@@ -91,3 +91,46 @@ function copyRandomList1(head: _Node | null): _Node | null {
   return hair.next;
 }
 
+
+function copyRandomList2(head: Node | null): Node | null {
+  if (head === null) {
+    return null
+  }
+
+
+  let current = head
+
+  while (current) {
+    const node = new Node(current.val)
+    const next = current.next
+    current.next = node
+    node.next = next
+    current = next
+  }
+
+
+  current = head
+
+  while (current) {
+    const next = current.next
+    if (current.random) {
+      next.random = current.random.next
+    }
+    current = current.next.next
+  }
+  current = head
+  const hair = new Node()
+  let copyCurrent = hair
+  while (current) {
+    const next = current.next
+    copyCurrent.next = next
+    current.next = next.next
+    copyCurrent = next
+    current = current.next
+  }
+  copyCurrent.next = null
+
+
+
+  return hair.next
+}

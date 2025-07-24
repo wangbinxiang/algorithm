@@ -32,3 +32,24 @@ function swapPairs(head: ListNode | null): ListNode | null {
 
   return hair.next;
 };
+
+
+function swapPairs1(head: ListNode | null): ListNode | null {
+  const hair = new ListNode()
+  hair.next = head
+  let prev = hair
+  let current = head
+  while (current && current.next) {
+    const next = current.next.next
+    const tmp = current.next
+    current.next = next
+    tmp.next = current
+    prev.next = tmp
+    prev = current
+    current = next
+  }
+
+
+
+  return hair.next
+}

@@ -130,7 +130,191 @@ class LRUCache2 {
   }
 }
 
+// 链表模式
+// map模式
+// 记录key 对应的value
+// 
 
+
+
+interface LRUObj {
+  key: number
+  val: number
+}
+class LRUCache3 {
+  capacity: number
+  keyMap: Map<number, LRUObj>
+  constructor(capacity: number) {
+    this.capacity = capacity
+    this.keyMap = new Map<number, LRUObj>
+  }
+
+  put(key: number, val: number) {
+    if (this.keyMap.has(key)) {
+      this.keyMap.delete(key)
+    }
+    if (this.keyMap.size >= this.capacity) {
+      const delKey = this.keyMap.keys().next().value
+      this.keyMap.delete(delKey)
+    }
+    this.keyMap.set(key, { key, val })
+  }
+
+  get(key: number): number {
+    const node = this.keyMap.get(key)
+    if (node === void 0) {
+      return -1
+    }
+    this.keyMap.delete(key)
+    this.keyMap.set(key, node)
+    return node.val
+  }
+
+}
+
+
+class LRUNode4 {
+  key: number
+  val: number
+  prev: LRUNode4 | null
+  next: LRUNode4 | null
+  constructor(key: number, val: number) {
+    this.key = key
+    this.val = val
+    this.prev = null
+    this.next = null
+  }
+}
+
+class LRUCache4 {
+  capacity: number
+  keyMap: Map<number, LRUNode4>
+  headLink: LRUNode4
+  tailLink: LRUNode4
+
+  constructor(capacity: number) {
+    this.capacity = capacity
+    this.keyMap = new Map<number, LRUNode4>()
+    this.headLink = new LRUNode4(0, 0)
+    this.tailLink = new LRUNode4(0, 0)
+    this.headLink.next = this.tailLink
+    this.tailLink.prev = this.headLink
+  }
+
+  // 更新或添加 删除多余的
+  put(key: number, val: number) {
+    let node = this.keyMap.get(key)
+    if (node) {
+      node.val = val
+      if (node.prev !== this.headLink) {
+        this.moveToHead(node)
+      }
+    } else {
+      node = new LRUNode4(key, val)
+      this.addToHead(node)
+    }
+    // 节点位置调整
+
+    this.keyMap.set(key, node)
+    if (this.keyMap.size > this.capacity) {
+      // remove tail
+      const node = this.tailLink.prev
+      if (node !== this.headLink) {
+        this.removeNode(node)
+        this.keyMap.delete(node.key)
+      }
+    }
+  }
+
+  get(key: number): number {
+    const node = this.keyMap.get(key)
+    if (node === void 0) {
+      return -1
+    }
+
+    this.moveToHead(node)
+    return node.val
+  }
+
+  private moveToHead(node: LRUNode4) {
+    this.removeNode(node)
+    this.addToHead(node)
+  }
+
+  private removeNode(node: LRUNode4) {
+    node.prev.next = node.next
+    node.next.prev = node.prev
+  }
+
+  private addToHead(node: LRUNode4) {
+    node.next = this.headLink.next
+    node.next.prev = node
+
+    this.headLink.next = node
+    node.prev = this.headLink
+  }
+}
+
+interface LRUExpireObj {
+  key: number
+  val: number
+  expireTime: number
+}
+
+// 增加过期时间，如果存储空间不够则先处理过期数据，如果没有过期数据，则处理最长未使用数据
+class LRUCacheExpire {
+  capacity: number
+  expireTime: number
+  keyMap: Map<number, LRUExpireObj>
+
+  constructor(capacity: number, expireTime: number) {
+    this.capacity = capacity
+    this.expireTime = expireTime
+    this.keyMap = new Map<number, LRUExpireObj>()
+  }
+
+
+  put(key: number, val: number) {
+    let node = this.keyMap.get(key)
+    const expireTime = Date.now() + this.expireTime
+    if (node === void 0) {
+      node = {
+        key,
+        val,
+        expireTime
+      }
+    } else {
+      node.val = val
+      node.expireTime = expireTime
+    }
+    this.keyMap.delete(key)
+    this.keyMap.set(key, node)
+    if (this.keyMap.size > this.capacity) {
+      const latestKey = this.keyMap.keys().next().value
+      this.keyMap.delete(latestKey)
+    }
+  }
+
+  get(key: number): number {
+    const node = this.keyMap.get(key)
+    if (node === void 0) {
+      return -1
+    }
+    const now = Date.now()
+
+    if (Date.now() > node.expireTime) {
+      this.keyMap.delete(key)
+      return -1
+    }
+    const expireTime = now + this.expireTime
+    node.expireTime = expireTime
+
+    this.keyMap.delete(key)
+    this.keyMap.set(key, node)
+
+    return node.val
+  }
+}
 
 /**
 * Your LRUCache object will be instantiated and called as such:
@@ -140,7 +324,7 @@ class LRUCache2 {
 */
 
 
-var obj = new LRUCache(2)
+var obj = new LRUCache4(2)
 console.log(obj.put(1, 1));
 console.log(obj.put(2, 2));
 console.log(obj.get(1));

@@ -35,3 +35,23 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 
   return hair.next;
 };
+
+
+function removeNthFromEnd1(head: ListNode | null, n: number): ListNode | null {
+  let k = n
+  let hair = new ListNode()
+  hair.next = head
+  let fast = hair
+  let slow = hair
+  while (k > 0) {
+    fast = fast.next
+    k--
+  }
+  while (fast.next) {
+    fast = fast.next
+    slow = slow.next
+  }
+  slow.next = slow.next.next
+
+  return hair.next
+}

@@ -70,3 +70,76 @@ function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
 
   return hair.next;
 };
+
+
+function reverseKGroup1(head: ListNode | null, k: number): ListNode | null {
+  const hair = new ListNode()
+  hair.next = head
+  let current = head
+  let prev = hair
+
+  while (current && current.next) {
+    let tmpPrev = current
+    let i = k
+    while (i > 1 && current.next) {
+      const tmp = current.next
+      const next = tmp.next
+      tmp.next = prev.next
+      current.next = next
+      prev.next = tmp
+      i--
+    }
+    if (i > 1) {
+      console.log(i)
+      // 恢复
+      console.log('prev:', prev)
+      console.log(readLink(prev))
+      const tmpHead = new ListNode()
+      let tmpCurrent: ListNode | null = tmpHead
+      while (i <= k) {
+        let current: ListNode | null = prev.next
+        const currentNext = current.next
+        prev.next = currentNext
+        const tmpNext = tmpCurrent.next
+        tmpCurrent.next = current
+        current.next = tmpNext
+        i++
+      }
+      prev.next = tmpHead.next
+      console.log(readLink(prev))
+      break;
+    }
+    prev = tmpPrev
+    current = current.next
+  }
+
+
+
+
+  return hair.next
+}
+
+
+function buildLink(nums: number[]) {
+  const head = new ListNode();
+  let current = head
+  for (let num of nums) {
+    current.next = new ListNode(num)
+    current = current.next
+  }
+  return head.next
+}
+
+const head = buildLink([3, 9, 6, 1, 1, 4, 7])
+
+function readLink(head: ListNode) {
+  let current = head;
+  const nums: number[] = [];
+  while (current) {
+    nums.push(current.val)
+    current = current.next
+  }
+  return nums;
+}
+
+console.log(readLink(reverseKGroup1(head, 4)))

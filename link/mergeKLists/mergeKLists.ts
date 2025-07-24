@@ -416,8 +416,173 @@ function mergeKLists3(lists: Array<ListNode | null>): ListNode | null {
 
   return head.next;
 }
-let res = mergeKLists3(nodeList);
-while (res) {
-  console.log(res.val);
-  res = res.next;
+
+// while (res) {
+//   console.log(res.val);
+//   res = res.next;
+// }
+
+
+// 小顶堆 
+class MinHeap2<T> {
+  public list: T[]
+  private compare: (a: T, b: T) => boolean
+  constructor(list: T[], compare: (a: T, b: T) => boolean) {
+    this.list = list
+    this.compare = compare
+    this.heapify()
+  }
+
+  get size() {
+    return this.list.length
+  }
+
+  heapify() {
+    const len = this.size
+    if (len > 1) {
+      // 从最后一位数的父元素开始堆化  b
+      const p = this.parent(len - 1)
+      for (let i = p; i >= 0; i--) {
+        this.slideDown(i)
+      }
+    }
+  }
+
+  parent(i: number) {
+    return Math.floor((i - 1) / 2)
+  }
+
+  slideDown(start: number) {
+    const len = this.size
+    let j = start
+    while (j < len) {
+      let minPos = j
+      const left = 2 * j + 1
+      const right = 2 * j + 2
+      if (this.list[left] && this.compare(this.list[left], this.list[minPos])) {
+        minPos = left
+      }
+      if (this.list[right] && this.compare(this.list[right], this.list[minPos])) {
+        minPos = right
+      }
+
+      if (minPos === j) {
+        break
+      } else {
+        [this.list[j], this.list[minPos]] = [this.list[minPos], this.list[j]]
+        j = minPos
+      }
+    }
+  }
+
+  slideUp(start: number) {
+    let i = start
+    while (i > 0) {
+      // console.log('i:', i, this.list[i])
+      const p = this.parent(i)
+      // console.log('p:', p, this.list[p])
+      if (this.compare(this.list[p], this.list[i])) {
+        break
+      }
+      [this.list[p], this.list[i]] = [this.list[i], this.list[p]]
+      i = p
+    }
+    // process.exit()
+  }
+
+  pop(): T | undefined {
+    // 头节点和尾节点互换位置
+    const min = this.list[0]
+    console.log('min:', min)
+    console.log('this.list:', this.list)
+    const last = this.list.pop()
+
+    console.log('last:', last)
+    console.log('this.list.length && last', this.list.length && last)
+    if (this.list.length && last) {
+      this.list[0] = last
+      console.log('this.list:', this.list)
+      this.slideDown(0)
+      console.log('this.list[0]:', this.list[0])
+    }
+
+    // 弹出尾节点
+    // 头节点向下堆化
+    return min
+  }
+
+  insert(node: T) {
+    this.list.push(node)
+    this.slideUp(this.size - 1)
+  }
+
+
 }
+
+
+function mergeKList4(lists: Array<ListNode | null>): ListNode | null {
+  console.log(lists)
+  const heap = new MinHeap2<ListNode>(lists.filter(item => item !== null), (a: ListNode, b: ListNode): boolean => {
+    return a.val < b.val
+  })
+  const hair = new ListNode()
+  let prev = hair
+
+  while (heap.size > 0) {
+    const node = heap.pop()
+    // console.log('prev', prev)
+    // console.log('pop node', node.val)
+    console.log('-------------')
+    console.log('node.val:', node.val)
+    if (node.val === -4) {
+      for (let i = 0; i < heap.size; i++) {
+        console.log(heap.list[i] ? heap.list[i].val : 'null')
+      }
+    }
+    prev.next = node
+    prev = prev.next
+
+
+
+    if (node.next) {
+      console.log('node.next:', node.next.val)
+      if (node === node.next) {
+        return
+      }
+      heap.insert(node.next)
+      console.log(heap.list[0].val)
+    }
+
+    for (let i = 0; i < heap.size; i++) {
+      console.log(heap.list[i] ? heap.list[i].val : 'null')
+    }
+    console.log('-------------')
+  }
+
+
+  // 弹出堆顶链表
+
+  // 获取该链表当值节点
+
+  // 该链表值改成当前节点的下一个节点
+
+  // 如果下一节点不为null，重新插入小顶堆
+
+  console.log(heap)
+  return hair.next
+}
+// const link = nodeList[5]
+// let prev = link
+// while (prev) {
+//   console.log(prev.val)
+//   prev = prev.next
+// }
+
+
+let res = mergeKList4(nodeList);
+console.log(res)
+// 优先级队列
+// 堆化
+
+
+// 分治，两两合并o.momm

@@ -30,3 +30,26 @@ function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode
 
   return head.next;
 };
+
+
+
+function mergeTwoLists1(list1: ListNode | null, list2: ListNode | null): ListNode | null {
+  let head = new ListNode()
+  let current = head
+  let l1 = list1
+  let l2 = list2
+  while (l1 && l2) {
+    if (l1.val < l2.val) {
+      current.next = l1
+      l1 = l1.next
+    } else {
+      current.next = l2
+      l2 = l2.next
+    }
+    current = current.next
+  }
+
+  current.next = l1 ? l1 : l2
+
+  return head.next
+}

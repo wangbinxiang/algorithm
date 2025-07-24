@@ -65,6 +65,29 @@ function largestRectangleArea1(heights: number[]): number {
   return ans;
 }
 
+// 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+// 求在该柱状图中，能够勾勒出来的矩形的最大面积。
+function largestRectangleArea2(heights: number[]): number {
+  let ans = 0
+  let minHeight = heights[0]
+  const stack: number[] = [0]
+  const len = heights.length
+  let left = 0
+  let right = 0
+  let maxArea = heights[0]
+
+  for (let i = 1; i < len; i++) {
+
+
+
+
+
+
+  }
+
+  return ans
+}
 
 console.log(largestRectangleArea1([2, 1, 5, 6, 2, 3]))
 console.log(largestRectangleArea1([2, 4]))
