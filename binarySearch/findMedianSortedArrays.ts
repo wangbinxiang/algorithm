@@ -409,4 +409,114 @@ function findMedianSortedArrays7(nums1: number[], nums2: number[]): number {
   }
 }
 
-console.log(findMedianSortedArrays7([1], [1, 2, 3, 4, 5, 6, 7, 8, 9])) // 
+// 二分
+function findMedianSortedArrays8(nums1: number[], nums2: number[]): number {
+  // 找第K个位置
+  const m = nums1.length
+  const n = nums2.length
+  const total = m + n
+  const half = Math.floor((total + 1) / 2)
+
+  const findK = (k: number) => {
+
+    let i = 0
+    let j = 0
+
+    while (true) {
+      console.log('i:', i)
+      console.log('j:', j)
+      console.log('k:', k)
+      if (i === m) {
+        return nums2[j + k - 1]
+      }
+      if (j === n) {
+        return nums1[i + k - 1]
+      }
+      if (k === 1) {
+        return Math.min(nums1[i], nums2[j])
+      }
+      const half = Math.floor(k / 2)
+
+      const newI = Math.min(i + half, m) - 1
+      const newJ = Math.min(j + (k - half), n) - 1
+
+      const valI = nums1[newI];
+      const valJ = nums2[newJ];
+      if (valI < valJ) {
+        k -= newI - i + 1
+        i = newI + 1
+      } else {
+        k -= newJ - j + 1
+        j = newJ + 1
+      }
+    }
+  }
+  if (total % 2 === 0) {
+    return (findK(half) + findK(half + 1)) / 2
+  } else {
+    return findK(half)
+  }
+}
+// 分成两部分
+function findMedianSortedArrays9(nums1: number[], nums2: number[]): number {
+  const m = nums1.length;
+  const n = nums2.length;
+  if (m > n) {
+    return findMedianSortedArrays9(nums2, nums1)
+  }
+  const total = m + n;
+  const half = Math.floor((total + 1) / 2)
+
+  let left = 0
+  let right = m
+  while (true) {
+    let i = Math.floor((left + right + 1) / 2)
+    const j = half - i
+    const leftI = i > 0 ? nums1[i - 1] : -Infinity
+    const rightI = i < m ? nums1[i] : +Infinity
+
+
+    const leftJ = j > 0 ? nums2[j - 1] : -Infinity
+    const rightJ = j < n ? nums2[j] : + Infinity
+
+    const maxLeft = Math.max(leftI, leftJ)
+    const minRight = Math.min(rightI, rightJ)
+
+    if (maxLeft > minRight) {
+      if (leftI < rightJ) {
+        left = i + 1
+      } else {
+        right = i - 1
+      }
+    } else {
+      if (total % 2 === 1) {
+        return maxLeft
+      } else {
+        return (maxLeft + minRight) / 2
+      }
+    }
+  }
+}
+
+
+// 二分法
+// 找到第k个位置的值
+// 初始化两个为0， i和j ，代表两个数组当前选择的位置
+// 将k分割成两半
+// 将 i和 j 分别增加k分割出的一半（奇数情况两个一半长度会差1）
+// 比较新的位置的值，值小的数组 位置改成当前判断的位置+1，将k监狱新位置减老位置的值
+// 如此循环，直到 i的位置等于i的长度，或者j的位置等于j长度，或者k=1
+
+
+// 分割数组法
+// 获取当前两数组总长度，获取中间位置k
+// 选择较小的数组进行二分分割，设置left=0, right = 数组长度m, 通过这两个值获取中间位置, i
+// 使用k减去i获得j
+// 获取i-1和j-1的最大值 maxI，对比i和j的最小值 minJ
+// 如果maxI < minJ 说明找到数组分割点
+// 如果 i - 1 < j说明 i  < j -1, 说明i位置值过小 则 left = i 
+// 如果 j - 1 < i说明 i  < j -1, 说明i位置值过大 则 right = i - 1
+
+// 如此循环
+
+console.log(findMedianSortedArrays9([1, 2], [3, 4, 5, 6, 7, 8])) // 

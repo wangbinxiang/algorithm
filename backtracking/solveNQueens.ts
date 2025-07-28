@@ -60,13 +60,65 @@ function solveNQueens(n: number): string[][] {
 };
 
 
-// function solveNQueens1(n: number): string[][] {
+function solveNQueens1(n: number): string[][] {
+  // 初始化n x n的数组个
+  const points: number[] = []
+  const row = new Set<number>()
+  const leftSlash = new Set<number>()
+  const rightSlash = new Set<number>()
+  const ans: number[][] = []
 
 
+  const dfs = (line: number) => {
+    // console.log(points)
+    if (line === n) {
+      ans.push([...points])
+      return
+    }
+    for (let i = 0; i < n; i++) {
+      if (row.has(i) || leftSlash.has(i - line) || rightSlash.has(1 - n + i + line)) {
+        continue
+      } else {
+        points.push(i)
+        row.add(i)
+        leftSlash.add(i - line)
+        rightSlash.add(1 - n + i + line)
+        dfs(line + 1)
+        points.pop()
+        row.delete(i)
+        leftSlash.delete(i - line)
+        rightSlash.delete(1 - n + i + line)
+      }
+    }
+  }
+  dfs(0)
+  // console.log(ans)
+  const buildGraph = (ans: number[][]): string[][] => {
+    const graphList: string[][] = []
+    for (let i = 0; i < ans.length; i++) {
+      const arr = ans[i];
+      let graph: string[] = []
+      for (let j = 0; j < arr.length; j++) {
+        const p = arr[j]
+        let line = ''
+        for (let q = 0; q < n; q++) {
+          if (q === p) {
+            line += 'Q'
+          } else {
+            line += '.'
+          }
+        }
+        graph.push(line)
+      }
+      graphList.push(graph)
+    }
 
-//   return [];
-// }
+    return graphList
+  }
+
+  return buildGraph(ans);
+}
 
 
-console.log(solveNQueens(4))
-console.log(solveNQueens(1))
+console.log(solveNQueens1(4))
+// console.log(solveNQueens(1))
