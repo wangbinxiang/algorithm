@@ -120,5 +120,67 @@ function solveNQueens1(n: number): string[][] {
 }
 
 
-console.log(solveNQueens1(4))
+function solveNQueensBit(n: number): string[][] {
+
+  const dfs = (row: number, cols: number, left: number, right: number, board: number[]) => {
+    if (row === n) {
+      console.log(board)
+      return
+    }
+
+    // 初始化当前行位图，与已有位图进行并操作生成生成剩下的有效位图
+    let available = ((1 << n) - 1) & ~(cols | left | right)
+
+    // 判断是否还有位置
+    while (available) {
+
+      // 获取最后一个有效位，有效位与负有效位进行并操作（负有效位等于有效位的补码）
+      const position = available & -available
+      // 去掉最后一个有效位
+      available &= available - 1
+
+      // 开方获取位置
+      const col = Math.log2(position)
+
+
+      dfs(row + 1, cols | position, (left | position) << 1, (right | position) >> 1, [...board, col])
+    }
+  }
+  dfs(0, 0, 0, 0, [])
+  return []
+}
+
+
+function solveNQueensBit1(n: number): string[][] {
+  const graph: string[][] = []
+
+
+  const dfs = (row: number, clos: number, left: number, right: number, board: number[]) => {
+    if (row === n) {
+      console.log(board)
+      return
+    }
+    // 初始化位图
+    // 1 << n  -1 获取n位二进制全为1的数， 
+    // ~(col | left | right) ，从列，左对角线，右对角线，合并求出当前行的可以位置位图，然后求反，然后与左边的值进行 并集操作 二进制为1的位就是可用位置
+    let available = ((1 << n) - 1) & ~(clos | left | right)
+
+    while (available) {
+      // 获取最后一位1的值
+      const position = available & -available
+      // 移除最后一位1
+      available &= available - 1
+
+      const col = Math.log2(position)
+
+      dfs(row + 1, clos | position, (left | position) >> 1, (right | position) << 1, [...board, col])
+    }
+  }
+  dfs(0, 0, 0, 0, [])
+
+  return graph
+}
+
+
+console.log(solveNQueensBit1(4))
 // console.log(solveNQueens(1))
