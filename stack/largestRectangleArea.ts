@@ -52,6 +52,7 @@ function largestRectangleArea1(heights: number[]): number {
       }
       let currentWidth = i;
       if (stack.length > 0) {
+
         currentWidth = i - stack[stack.length - 1] - 1
       }
       // console.log(stack)
@@ -69,27 +70,81 @@ function largestRectangleArea1(heights: number[]): number {
 
 // 求在该柱状图中，能够勾勒出来的矩形的最大面积。
 function largestRectangleArea2(heights: number[]): number {
-  let ans = 0
-  let minHeight = heights[0]
   const stack: number[] = [0]
+  // heights.push(0)
+  heights.unshift(0)
   const len = heights.length
-  let left = 0
-  let right = 0
+
   let maxArea = heights[0]
-
+  // 使用一个栈结构
+  // 栈底放一个哨兵
+  // 0 如果，正常数据都是大于0的
+  // 
   for (let i = 1; i < len; i++) {
-
-
-
-
-
-
+    // 获取当前数字， heights[i], 
+    // 比较栈顶，
+    // 如果大于栈顶则将该值压入栈
+    // 如果等于栈顶 则不处理进入下次循环
+    // 如果小于栈顶 则开始获取栈顶到当前值位置的宽度，然后乘以栈顶数据的高度，获取面积
+    // 如此循环
+    // 如果循环完成栈内还有数字，则进行下一步处理
+    // 最小的数字会在最后进入栈
+    let topVal: number = 0
+    // console.log('i:', i)
+    const currentVal = heights[i]
+    // console.log('currentVal:', currentVal)
+    while (stack.length > 1) {
+      let top = stack[stack.length - 1]
+      // console.log('top:', top)
+      if (top >= 0) {
+        topVal = heights[top]
+        // console.log('topVal:', topVal)
+        if (topVal === currentVal) {
+          break
+        }
+        if (topVal > currentVal) {
+          let width = i - 1
+          // console.log('stack.length:', stack.length, stack)
+          if (stack.length > 1) {
+            width = i - stack[stack.length - 2] - 1
+          }
+          // console.log('width:', width)
+          const area = topVal * width
+          if (area > maxArea) {
+            maxArea = area
+          }
+          stack.pop()
+        } else {
+          break;
+        }
+      }
+    }
+    stack.push(i)
+  }
+  // console.log(stack)
+  if (stack.length > 0) {
+    const head = stack[stack.length - 1]
+    while (stack.length > 0) {
+      const top = stack.pop()!
+      const height = heights[top]
+      let width = heights.length - 1
+      if (stack.length > 0) {
+        width = head - stack[stack.length - 1]
+      }
+      // console.log('top:', top)
+      // console.log('width:', width)
+      // console.log('height:', height)
+      // console.log('height * width:', height * width)
+      maxArea = Math.max(maxArea, height * width)
+    }
   }
 
-  return ans
+  return maxArea
 }
 
-console.log(largestRectangleArea1([2, 1, 5, 6, 2, 3]))
-console.log(largestRectangleArea1([2, 4]))
-console.log(largestRectangleArea1([2, 0, 2]))
-
+console.log(largestRectangleArea2([2, 1, 5, 6, 2, 3]))
+console.log(largestRectangleArea2([2, 4]))
+console.log(largestRectangleArea2([2, 0, 2]))
+console.log(largestRectangleArea2([2, 1, 2]))
+console.log(largestRectangleArea2([4, 2, 0, 3, 2, 5]))
+console.log(largestRectangleArea2([0, 9]))
