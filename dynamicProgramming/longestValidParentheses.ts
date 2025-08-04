@@ -142,6 +142,15 @@ function longestValidParentheses4(s: string): number {
   return max;
 }
 
+// 动态规划处理该问题
+function longestValidParentheses5(s: string): number {
+  let ans = 0
+
+
+
+  return ans
+};
+
 console.log(longestValidParentheses4('(()(((()')) // 2
 
 console.log(longestValidParentheses4('(()')) // "()"

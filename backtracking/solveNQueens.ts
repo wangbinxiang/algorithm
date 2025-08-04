@@ -182,5 +182,112 @@ function solveNQueensBit1(n: number): string[][] {
 }
 
 
-console.log(solveNQueensBit1(4))
-// console.log(solveNQueens(1))
+
+// 使用位图解决该问题
+// 使用递归，递归从0开始，
+// 参数是col 当前行， cols 纵向已经被占据的列，left(从左上到右下当前行被占据的列) right(从右上到左下当前行被占据的列) boards 之前行所占据的列数组
+// 初始化该行位图 使用 (1 << n) - 1获取全为1的位图
+// 使用上一行的 cols列位图，left左上到右下位图，right右上到坐下位图的交集求反获取当前行有位置的位图（为1的位是有位置的，该值的问题是n位之前的位也是1）
+// 使用全为1的位图并集操作当前行有位置的位图（移除n位之前的1值）可以获取当前行可以设置的位图（为1的就是可以设置的位）available
+// 使用while判断 available 不为0是就进行循环
+// 使用 available & -available 获取最后一位可以设置的位（-available是available的补吗，就是反码+1，与原值进行并集操作后刚好获取最后一位1的值）position
+// 使用 available &= available - 1 来移除最后一位1
+// 使用Math.log2(position)获取position的对数 （对数就是指数的逆运算）col, col就是当前行的位置
+// 使用cols | col 获取 新的cols, 
+// 使用(left | col) >> 1 获取新的 left
+// 使用(right | col) << 1 获取新的 right
+// 使用 [...boards, position] 获取新的boards
+// 然后递归调用
+function solveNQueensBit2(n: number): string[][] {
+  const ans: string[][] = []
+  // 递归解决该问题，每次递归到下一行
+
+  const dfs = (col: number, cols: number, left: number, right: number, boards: number[]) => {
+    if
+      (col === n) {
+      // 已经满足了n行的位置，将位置存入结果
+      ans.push(build(boards))
+    }
+    // 生成当前可选择位置的位图
+    let available = ((1 << n) - 1) & ~(cols | left | right)
+    while (available) {
+      // 获取最后一位可用的位置
+      const position = available & -available
+      // 移除最后一位可用的位置
+      available &= available - 1
+      dfs(col + 1, cols | position, (left | position) >> 1, (right | position) << 1, [...boards, Math.log2(position)])
+    }
+  }
+
+
+  const build = (boards: number[]): string[] => {
+    let ans: string[] = []
+    console.log(boards)
+    boards.forEach(item => {
+      let res = ''
+      for (let i = 0; i < n; i++) {
+        if (i === item) {
+          res += 'Q'
+        } else {
+          res += '.'
+        }
+      }
+      ans.push(res)
+    })
+    return ans
+  }
+  dfs(0, 0, 0, 0, [])
+
+  return ans
+}
+
+// 使用3个set分别存储纵向占据的列，左上到右下占据的列，右上到左下占据的列
+// 左上到右下位置是 i - j, 右上到左下位置是 i+ + j + 1 - n
+function solveNQueens2(n: number): string[][] {
+
+  const cols = new Set<number>()
+  const left = new Set<number>()
+  const right = new Set<number>()
+  const boards: number[] = []
+  const ans: string[][] = []
+  const dfs = (col: number) => {
+    // console.log('col:', col)
+    if (col === n) {
+      console.log('boards:', boards)
+      ans.push(boards.map(item => {
+        let str = ''
+        for (let i = 0; i < n; i++) {
+          if (item === i) {
+            str += 'Q'
+          } else {
+            str += '.'
+          }
+        }
+        return str
+      }))
+
+
+      return
+    }
+    for (let j = 0; j < n; j++) {
+      if (cols.has(j) || left.has(col - j) || right.has(col + j + 1 - n)) {
+        continue
+      }
+      cols.add(j)
+      left.add(col - j)
+      right.add(col + j + 1 - n)
+      boards.push(j)
+      dfs(col + 1)
+      boards.pop()
+      cols.delete(j)
+      left.delete(col - j)
+      right.delete(col + j + 1 - n)
+    }
+  }
+  dfs(0)
+  return ans
+}
+
+
+// console.log(solveNQueensBit2(4))
+console.log(solveNQueens2(4))

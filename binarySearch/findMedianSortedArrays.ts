@@ -423,9 +423,9 @@ function findMedianSortedArrays8(nums1: number[], nums2: number[]): number {
     let j = 0
 
     while (true) {
-      console.log('i:', i)
-      console.log('j:', j)
-      console.log('k:', k)
+      // console.log('i:', i)
+      // console.log('j:', j)
+      // console.log('k:', k)
       if (i === m) {
         return nums2[j + k - 1]
       }
@@ -519,10 +519,111 @@ function findMedianSortedArrays9(nums1: number[], nums2: number[]): number {
 
 // 如此循环
 
-console.log(findMedianSortedArrays9([1, 2], [3, 4, 5, 6, 7, 8])) // 
+console.log(findMedianSortedArraysGroup([4, 5, 6, 8, 9], [])) // 
 
 
+// 二分法
+// 注意k的位置，不是按照数组下标，是第几个数
+function findMedianSortedArrays10(nums1: number[], nums2: number[]): number {
+  const m = nums1.length
+  const n = nums2.length
+  const total = m + n
+  const half = Math.floor((total + 1) / 2)
+  const findK = (k: number) => {
+    let i = 0
+    let j = 0
+    while (true) {
+      if (i === m) {
+        return nums2[j + k - 1]
+      }
+      if (j === n) {
+        return nums1[i + k - 1]
+      }
+      if (k === 1) {
+        return Math.min(nums1[i], nums2[j])
+      }
 
+      const half = Math.floor(k / 2)
+      const newI = Math.min(i + half, m) - 1
+      const newJ = Math.min(j + k - half, n) - 1
+
+      const valI = nums1[newI]
+      const valJ = nums2[newJ]
+      if (valI < valJ) {
+        k -= newI - i + 1
+        i = newI + 1
+      } else {
+        k -= newJ - j + 1
+        j = newJ + 1
+      }
+    }
+  }
+
+  if (total % 2 === 1) {
+    return findK(half);
+  } else {
+    return (findK(half) + findK(half + 1)) / 2
+  }
+}
+
+// 分组法
+function findMedianSortedArraysGroup(nums1: number[], nums2: number[]): number {
+  const m = nums1.length
+  const n = nums2.length
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArraysGroup(nums2, nums1)
+  }
+  const total = m + n
+  // 找到中间值k（注意是个数，不是下标）
+  const k = Math.round(total / 2)
+  // 用nums1做二分查找, 左0，右边是nums1的长度
+  let l = 0;
+  let r = m
+  console.log('k: ', k)
+  while (true) {
+    const half = Math.floor((l + r) / 2)
+    const i = half // 找到nums1当前的中间位
+    const j = k - i // 用k - i找到nums2的位置
+    console.log('i:', i)
+    console.log('j:', j)
+
+    const leftI = i > 0 ? nums1[i - 1] : -Infinity // 获取nums1左分组的最大值
+    const rightI = i < m ? nums1[i] : +Infinity // 获取nums1右分组的最小值
+    console.log('leftI:', leftI)
+    console.log('rightI:', rightI)
+
+    const leftJ = j > 0 ? nums2[j - 1] : -Infinity // 获取nums2左分组的最大值
+    const rightJ = j < n ? nums2[j] : +Infinity // 获取nums2右分组的最小值
+    console.log('leftJ:', leftJ)
+    console.log('rightJ:', rightJ)
+
+    const maxLeft = Math.max(leftI, leftJ) // 获取整体左分组的最大值
+    const minRight = Math.min(rightI, rightJ) // 获取整体右分组的最小值
+    console.log('maxLeft:', maxLeft)
+    console.log('minRight:', minRight)
+    console.log('maxLeft <= minRight:', maxLeft <= minRight)
+    if (maxLeft <= minRight) { // 当整体左分组的最大值小于等于整体右分组的最小值时，说明分组正确
+      if (total % 2 === 1) {
+        console.log('return maxLeft')
+        return maxLeft
+      } else {
+        console.log('(maxLeft + minRight) / 2')
+        return (maxLeft + minRight) / 2
+      }
+    } else {
+      if (leftI > rightJ) {
+        // 如果nums1的左分组最大值>nums2右分组的最小值
+        // 说明当前的i位置太大，需要减小i的位置，将r设置为i - 1(二分搜索方法)
+        r = i - 1
+      } else {
+        // nums2的左分组最大值大于nums1右分组的最小值
+        // 说明当前i的位置太小，需要增大i的位置，将l设置为i + 1(二分搜索法)
+        l = i + 1
+      }
+    }
+    return
+  }
+}
 
 // 二分法
 // 获取两数组的总长度的一半k,总数是偶数是k和k+1

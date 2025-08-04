@@ -142,9 +142,79 @@ function largestRectangleArea2(heights: number[]): number {
   return maxArea
 }
 
-console.log(largestRectangleArea2([2, 1, 5, 6, 2, 3]))
-console.log(largestRectangleArea2([2, 4]))
-console.log(largestRectangleArea2([2, 0, 2]))
-console.log(largestRectangleArea2([2, 1, 2]))
-console.log(largestRectangleArea2([4, 2, 0, 3, 2, 5]))
-console.log(largestRectangleArea2([0, 9]))
+
+function largestRectangleArea3(heights: number[]): number {
+  const stack: number[] = [0]
+  let ans = 0
+  const n = heights.length
+  for (let i = 1; i < n; i++) {
+    while (stack.length > 0) {
+      const top = stack[stack.length - 1]
+      const topVal = heights[top]
+      const currentHeight = heights[i]
+      if (topVal > currentHeight) {
+        let width = i
+        if (stack.length > 1) {
+          width = i - stack[stack.length - 2] - 1
+        }
+        // console.log('width:', width)
+        // console.log('height:', topVal)
+        const area = width * topVal
+        ans = Math.max(area, ans)
+        stack.pop()
+      } else {
+        break
+      }
+    }
+    stack.push(i)
+  }
+
+  // console.log(stack)
+
+  const top = stack[stack.length - 1]
+  while (stack.length > 1) {
+    const current = stack.pop()
+    const width = top - stack[stack.length - 1]
+    const area = width * heights[current]
+    // console.log(area, width, heights[current])
+    ans = Math.max(area, ans)
+  }
+
+  // console.log(stack)
+  const area = heights.length * heights[stack[0]]
+  ans = Math.max(area, ans)
+
+  // console.log(stack)
+  return ans
+}
+
+
+function largestRectangleArea4(heights: number[]): number {
+  let ans = 0
+  // 增加前后哨兵
+  const copyHeight = [0, ...heights, 0]
+  const stack: number[] = [0]
+  const n = copyHeight.length
+  for (let i = 0; i < n; i++) {
+    if (stack.length > 0) {
+      const currentHeight = copyHeight[i]
+      while (currentHeight < copyHeight[stack[stack.length - 1]]) {
+        const topHeight = copyHeight[stack.pop()!]
+        let width = i
+        if (stack.length > 0) {
+          width = i - stack[stack.length - 1] - 1
+        }
+        ans = Math.max(ans, width * topHeight)
+      }
+    }
+    stack.push(i)
+  }
+  return ans
+}
+
+console.log(largestRectangleArea4([2, 1, 5, 6, 2, 3]))
+console.log(largestRectangleArea4([2, 4]))
+console.log(largestRectangleArea4([2, 0, 2]))
+console.log(largestRectangleArea4([2, 1, 2]))
+console.log(largestRectangleArea4([4, 2, 0, 3, 2, 5]))
+console.log(largestRectangleArea4([0, 9]))
