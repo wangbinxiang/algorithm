@@ -24,6 +24,13 @@
 // 解释: t 中两个字符 'a' 均应包含在 s 的子串中，
 // 因此没有符合条件的子字符串，返回空字符串。
 
+// 提示：
+
+// m == s.length
+// n == t.length
+// 1 <= m, n <= 105
+// s 和 t 由英文字母组成
+
 function minWindow(s: string, t: string): string {
   const n = s.length;
   const nt = t.length;
@@ -154,5 +161,76 @@ function minWindow2(s: string, t: string): string {
   return ans;
 }
 
-console.log(minWindow2('ADOBECODEBANC', 'ABC')); // BANC
-// console.log(minWindow('a', 'a')); // a
+
+function minWindow3(s: string, t: string): string {
+  let minStr = ''
+  let minLen = +Infinity
+  const map = new Map<string, number>()
+  let diff = 0
+  for (let i = 0; i < t.length; i++) {
+    const char = t.charAt(i)
+    if (!map.has(char)) {
+      diff++
+      map.set(char, 1)
+    } else {
+      map.set(char, map.get(char) + 1)
+    }
+  }
+
+  for (let i = 0; i < t.length; i++) {
+    const char = s.charAt(i)
+    if (map.has(char)) {
+      const val = map.get(char) - 1
+      if (val === 0) {
+        diff--
+      }
+      map.set(char, val)
+    }
+  }
+  if (diff === 0) {
+    return s.slice(0, t.length)
+  }
+  let l = 0
+  for (let i = t.length; i < s.length; i++) {
+    const char = s.charAt(i)
+    if (map.has(char)) {
+      const val = map.get(char) - 1
+      map.set(char, val)
+      if (val === 0) {
+        diff--
+      }
+    }
+
+    while (diff === 0) {
+      const char = s.charAt(l)
+      if (map.has(char)) {
+        const val = map.get(char) + 1
+        map.set(char, val)
+        if (val === 1) {
+          const len = i - l + 1
+          if (len < minLen) {
+            minLen = len
+            minStr = s.slice(l, i + 1)
+          }
+          diff++
+        }
+      }
+      l++
+    }
+  }
+
+  console.log(map)
+  console.log('l', l)
+  console.log(diff)
+  console.log(minLen)
+
+
+
+
+
+  return minStr
+}
+
+// console.log(minWindow3('ADOBECODEBANC', 'ABC')); // BANC
+// console.log(minWindow3('a', 'aa')); // a
+console.log(minWindow3('ab', 'b')); // a

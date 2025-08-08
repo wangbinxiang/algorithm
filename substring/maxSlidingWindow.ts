@@ -59,7 +59,7 @@ function maxSlidingWindow(nums: number[], k: number): number[] {
   return ans;
 };
 
-console.log(maxSlidingWindow1([1, 3, -1, -3, 5, 3, 6, 7], 3))
+console.log(maxSlidingWindow2([1, 3, -1, -3, 5, 3, 6, 7], 3))
 
 // console.log(maxSlidingWindow([1], 1))
 
@@ -98,4 +98,34 @@ function maxSlidingWindow1(nums: number[], k: number): number[] {
   }
 
   return ans;
+}
+
+
+// 单独队列
+// 新的数字如果是最大的，则删除队列中比该数字小的项目
+// 如果
+function maxSlidingWindow2(nums: number[], k: number): number[] {
+  const ans: number[] = []
+  const queue: number[] = [0]
+  for (let i = 1; i < k; i++) {
+    while (queue.length > 0 && nums[i] > nums[queue[queue.length - 1]]) {
+      queue.pop()
+    }
+    queue.push(i)
+  }
+  ans.push(nums[queue[0]])
+  for (let i = k; i < nums.length; i++) {
+    if (i - queue[0] > k - 1) {
+      queue.shift()
+    }
+    while (queue.length > 0 && nums[i] > nums[queue[queue.length - 1]]) {
+      queue.pop()
+    }
+    queue.push(i)
+    ans.push(nums[queue[0]])
+  }
+
+
+
+  return ans
 }

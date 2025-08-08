@@ -304,3 +304,32 @@ console.log(longestValidParentheses6(')()())')) // "()()" 4
 console.log(longestValidParentheses6('')) // 0
 console.log(longestValidParentheses6('()(()')) // 2
 console.log(longestValidParentheses6('()(())')) // 6
+
+
+// 动态规划
+// 如果是 )
+// 判断前一个
+// 如果是( 长度+2 再判断 (之前的位置，如何dp[之前的位置] > 0，则加上该值为当前括号长度
+// 如果是), 并且dp[)位置]的值 > 0,则判断减去该值的位置是不是')' 在判断dp[)位置]的值 之前的位置 如果dp也大于0，则也加上
+
+// 栈
+// 栈底先压入-1，适配前两个就是合格括号，
+// 当前是 ( 压入位置到栈
+// 当前是 )， 先弹出栈顶，
+// 如果栈为空，则压入当前位置进栈
+// 如果不为空，则用当前位置减去栈顶位置就是合法括号长度
+
+
+// 双指针 双向遍历
+// 初始化left = right = 0
+// 从左先右遍历
+// 当前是（ left++
+// 当前是 ) right++
+// 如果left === right 则合法括号长度是left + right
+// 如果right > left,则左边已经无法形成合法括号，设置left = right = 0
+
+// 从右先左遍历
+// 当前是（ left++
+// 当前是 ) right++
+// 如果left === right 则合法括号长度是left + right
+// 如果left > right,则左边已经无法形成合法括号，设置left = right = 0
