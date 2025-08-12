@@ -193,36 +193,159 @@ class MedianFinder {
 */
 
 
-const medianFinder = new MedianFinder();
-medianFinder.addNum(0);    // arr = [1]
-medianFinder.addNum(1);    // arr = [1]
-console.log(medianFinder.findMedian()); // 
-medianFinder.addNum(2);    // arr = [1, 2]
-console.log(medianFinder.findMedian()); //
-medianFinder.addNum(3);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(4);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(5);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(6);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(7);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(8);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(9);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(10);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
+class MedianFinder2 {
+  nums1: number[]
+  nums2: number[]
 
-medianFinder.addNum(-49990);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(-49995);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(-49996);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(-49999);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
-medianFinder.addNum(-50000);    // arr[1, 2, 3]
-console.log(medianFinder.findMedian()); // return 2.0
+
+  constructor() {
+    this.nums1 = []
+    this.nums2 = []
+  }
+
+  addNum(num: number): void {
+    // nums1 作为主存储, 小顶堆
+    // 因为从空数组开始添加，所以不用初始化
+    // 写入nums1
+
+    // 如果num > this.nums1
+    // 写入this.nums1，如果 this.nums1.length - this.nums2.length > 1
+    // 弹出 this.nums1 顶。写入this.nums2
+
+    // 否则写入this.nums2，
+    // 如果this.nums2.length > this.nums1.length
+    // 弹出this.nums2 写入this.nums1
+    if (this.nums1.length === 0) {
+      this.nums1[0] = num
+      return
+    }
+    if (num >= this.nums1[0]) {
+      this.add(num, this.nums1, (a, b) => a > b)
+      if (this.nums1.length - this.nums2.length > 1) {
+        const pop = this.pop(this.nums1, (a, b) => a > b)
+        this.add(pop, this.nums2, (a, b) => a < b)
+      }
+    } else {
+      this.add(num, this.nums2, (a, b) => a < b)
+      if (this.nums2.length > this.nums1.length) {
+        const pop = this.pop(this.nums2, (a, b) => a < b)
+        this.add(pop, this.nums1, (a, b) => a > b)
+      }
+    }
+  }
+
+  findMedian(): number {
+    // console.log(this.nums1)
+    // console.log(this.nums2)
+    if (this.nums1.length !== this.nums2.length) {
+      return this.nums1[0]
+    } else {
+      return (this.nums1[0] + this.nums2[0]) / 2
+    }
+  }
+
+  add(num: number, nums: number[], compare: (a: number, b: number) => boolean) {
+    // 添加到数组队尾，然后从队尾开始向上比较
+    nums.push(num)
+    let i = nums.length - 1
+    while (i > 0) {
+      // 找找到父节点开始比较
+      const parent = Math.floor((i - 1) / 2)
+      // console.log(nums[parent], nums[i], compare(nums[parent], nums[i]))
+      if (parent >= 0 && compare(nums[parent], nums[i])) {
+        [nums[i], nums[parent]] = [nums[parent], nums[i]]
+        i = parent
+      } else {
+        break
+      }
+    }
+  }
+
+  pop(nums: number[], compare: (a: number, b: number) => boolean): number {
+
+    // 队头和队尾互换位置，弹出队尾，然后从队头开始向下比较
+    [nums[0], nums[nums.length - 1]] = [nums[nums.length - 1], nums[0]]
+    // console.log('nums', nums)
+
+    const num = nums.pop()
+    let i = 0
+    const n = nums.length
+    while (i < n - 1) {
+      let pos = i
+      // 找到左节点和右节点
+      const left = i * 2 + 1
+      const right = i * 2 + 2
+      if (left < n && compare(nums[pos], nums[left])) {
+        pos = left
+      }
+
+      if (right < n && compare(nums[pos], nums[right])) {
+        pos = right
+      }
+      if (pos !== i) {
+        [nums[i], nums[pos]] = [nums[pos], nums[i]]
+        i = pos
+      } else {
+        break;
+      }
+    }
+    return num
+  }
+}
+
+// 维护一个小顶堆，一个大顶堆
+// 当小顶堆长度为0时，num直接写入小顶堆
+// 当num >= 小顶堆顶时，写入小顶堆
+//    当小顶堆长度超过大顶堆长度1个时
+//    小顶堆顶弹出，写入大顶堆
+// 当num < 小顶堆顶时，写入大顶堆
+//    当大顶堆长度超过小顶堆长度时
+//    大顶堆顶弹出，写入小顶堆
+
+// 当小顶堆长度等于大顶堆时，中间值是 小顶堆顶+大顶堆顶 除以2
+// 否则是小顶堆顶
+
+const medianFinder = new MedianFinder2();
+// medianFinder.addNum(0);    // arr = [0]
+// medianFinder.addNum(1);    // arr = [1]
+// console.log(medianFinder.findMedian()); // return 0.5
+// medianFinder.addNum(2);    // arr = [0, 1, 2]
+// console.log(medianFinder.findMedian()); // return 1 
+// medianFinder.addNum(3);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(4);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(5);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(6);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(7);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(8);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(9);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(10);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+
+// medianFinder.addNum(-49990);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(-49995);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(-49996);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(-49999);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+// medianFinder.addNum(-50000);    // arr[1, 2, 3]
+// console.log(medianFinder.findMedian()); // return 2.0
+
+medianFinder.addNum(-1);    // arr = [0]
+console.log(medianFinder.findMedian()); // -1
+medianFinder.addNum(-2);    // arr = [0]
+console.log(medianFinder.findMedian()); // -1.5
+medianFinder.addNum(-3);    // arr = [0]
+console.log(medianFinder.findMedian()); // -2
+medianFinder.addNum(-4);    // arr = [0]
+console.log(medianFinder.findMedian()); // -2.5
+medianFinder.addNum(-5);    // arr = [0]
+console.log(medianFinder.findMedian()); // -3
