@@ -519,7 +519,7 @@ function findMedianSortedArrays9(nums1: number[], nums2: number[]): number {
 
 // 如此循环
 
-console.log(findMedianSortedArraysGroup([4, 5, 6, 8, 9], [])) // 
+console.log(findMedianSortedArrays10([1], [1, 2])) // 
 
 
 // 二分法
@@ -544,6 +544,7 @@ function findMedianSortedArrays10(nums1: number[], nums2: number[]): number {
       }
 
       const half = Math.floor(k / 2)
+      // half是第几个不是加几，i就是第一个，所以i+half后需要减1
       const newI = Math.min(i + half, m) - 1
       const newJ = Math.min(j + k - half, n) - 1
 
@@ -630,7 +631,175 @@ function findMedianSortedArraysGroup(nums1: number[], nums2: number[]): number {
 // 找到第k个大方法是，获取k的一半值half和k-half，分别对比两个数组上half和k-half的值，值小的数组的位置之前的数据可以抛弃，则该数组的起始位置改为该位置+1，k减去该数组抛弃的数组长度，循环比较，直到某数组的位置超出某数组的长度，或者k==1，然后获取两个数组当前位置最小的值就是k
 
 
+function findMedianSortedArrays11(nums1: number[], nums2: number[]): number {
+  let ans = 0
+  const m = nums1.length
+  const n = nums2.length
+  const total = m + n
 
+
+  const findK = (k: number) => {
+    console.log('k:', k)
+    let i = 0
+    let j = 0
+    while (true) {
+      console.log('i:', i)
+      console.log('j:', j)
+      if (i === m) {
+        console.log('i === m', nums2[j + k - 1], j, k)
+        return nums2[j + k - 1]
+      }
+
+      if (j === n) {
+        console.log('j === n', nums1[i + k - 1], i, k)
+        return nums1[i + k - 1]
+      }
+
+      if (k === 1) {
+        console.log('k === 1', i, j, Math.min(nums1[i], nums2[j]))
+        return Math.min(nums1[i], nums2[j])
+      }
+
+
+      const half = Math.floor(k / 2)
+      console.log('k', k)
+      console.log('half', half)
+      const newI = (i + half < m ? i + half : m) - 1
+      const newJ = (j + k - half < n ? j + k - half : n) - 1
+      console.log('newI:', newI)
+      console.log('newJ:', newJ)
+      if (nums1[newI] < nums2[newJ]) {
+        k -= newI - i + 1
+        i = newI + 1
+      } else {
+        k -= newJ - j + 1
+        j = newJ + 1
+      }
+      // if (k <= 0) {
+      //   return
+      // }
+    }
+  }
+
+  const half = Math.round(total / 2)
+  if (total % 2 === 0) {
+    return (findK(half) + findK(half + 1)) / 2
+  } else {
+    return findK(half)
+  }
+
+
+
+
+
+}
+
+// 问题可以改变为找到第K个值，如果数组总数是偶数，则需要找到一半位置和一半加1的位置，
+// 如果是奇数则需要找到一半的位置
+// 定义nums1的初始位置i = 0，nums2的初始位置j = 0
+// findK 函数 首先将K除以2的到k的一半half
+// 循环判断
+// 当i === nums1.length时，返回 nums2[j + k - 1]
+// 当j === nums2.length时，返回 nums1[i + k - 1]
+// 当k === 1 时，返回 Math.min(nums1[i], nums2[j])
+// 在nums1上获取i+ half - 1位置的值
+// 在nums2上获取j + k - half - 1位置的值
+// 判断数字小的值
+// k 减去 (小的值的位置减去开始的位置 + 1)
+// 小的值的初始位置等于 小的值的位置 + 1
+
+function findMedianSortedArrays12(nums1: number[], nums2: number[]): number {
+  const m = nums1.length
+  const n = nums2.length
+  const total = m + n
+  const half = Math.round(total / 2)
+
+  const findK = (k: number): number => {
+    let i = 0
+    let j = 0
+    let copyK = k
+    while (true) {
+      if (i === m) {
+        return nums2[j + copyK - 1]
+      }
+
+      if (j === n) {
+        return nums1[i + copyK - 1]
+      }
+
+      if (copyK === 1) {
+        return Math.min(nums1[i], nums2[j])
+      }
+
+      const half = Math.floor(copyK / 2)
+      // i + half是加第几个，所以需要减1
+      const newI = Math.min(i + half, m) - 1
+      const newJ = Math.min(j + (copyK - half), n) - 1
+      // console.log(i, j, k, half, newI, newJ)
+      if (nums1[newI] < nums2[newJ]) {
+        copyK -= newI - i + 1
+        i = newI + 1
+      } else {
+        copyK -= newJ - j + 1
+        j = newJ + 1
+      }
+    }
+  }
+
+  if (total % 2 === 0) {
+    return (findK(half) + findK(half + 1)) / 2
+  } else {
+    return findK(half)
+  }
+}
+
+// 将两个数组分成前半部分和后半部分
+// 在较小的数据上进行二分搜索
+// 找到nums1的中间位置i
+// 使用两个数组总数的一半位置减去i等于j
+// 获取i左边位置的值和i的值
+// 获取j左边位置的值和j的值
+// 对比左边值的最大值和右边值的最小值
+// 如果左边值的最大值小于等于右边值的最小值
+// 说明找到中间位置
+// 如果两个数组总数是偶数，中间值是 左边最大值加上右边最小值除以2
+// 如果两个数组总数是奇数，中间值是 左边最大值
+function findMedianSortedArraysGroup1(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    [nums1, nums2] = [nums2, nums1]
+  }
+  let l = 0
+  let r = nums1.length
+  const m = nums1.length
+  const n = nums2.length
+  const half = Math.round((m + n) / 2)
+  while (true) {
+    let i = Math.floor((l + r) / 2)
+    let j = half - i
+
+    const iLeft = i > 0 ? nums1[i - 1] : -Infinity
+    const iRight = i < m ? nums1[i] : +Infinity
+
+    const jLeft = j > 0 ? nums2[j - 1] : -Infinity
+    const jRight = j < n ? nums2[j] : +Infinity
+    const maxLeft = Math.max(iLeft, jLeft)
+    const minRight = Math.min(iRight, jRight)
+
+    if (maxLeft <= minRight) {
+      if ((m + n) % 2 === 0) {
+        return (maxLeft + minRight) / 2
+      } else {
+        return maxLeft
+      }
+    } else {
+      if (iLeft > jRight) {
+        r = i - 1
+      } else {
+        l = i + 1
+      }
+    }
+  }
+}
 // 分组法
 // 两个数组可以分为大于中位数的前一半和小于中位数的后一半
 // 获取两个数组长度的一半值k

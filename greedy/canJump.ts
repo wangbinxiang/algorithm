@@ -38,6 +38,39 @@ function canJump1(nums: number[]): boolean {
 };
 
 
-console.log(canJump1([2, 3, 1, 1, 4]))
-console.log(canJump1([3, 2, 1, 0, 4]))
-console.log(canJump1([0]))
+function canJump2(nums: number[]): boolean {
+  let maxPos = 0
+  const n = nums.length
+
+  for (let i = 0; i < n; i++) {
+    if (i <= maxPos) {
+      if (i + nums[i] > maxPos) {
+        maxPos = i + nums[i]
+      }
+    } else {
+      break
+    }
+  }
+
+
+  return maxPos >= n - 1
+}
+
+
+function canJump3(nums: number[]): boolean {
+  let maxPos = 0
+  const n = nums.length
+  for (let i = 0; i < n; i++) {
+    if (maxPos >= i) {
+      maxPos = Math.max(maxPos, i + nums[i])
+    } else {
+      break
+    }
+  }
+  return maxPos >= n - 1
+}
+
+
+console.log(canJump3([2, 3, 1, 1, 4]))
+console.log(canJump3([3, 2, 1, 0, 4]))
+console.log(canJump3([0]))

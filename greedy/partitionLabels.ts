@@ -55,7 +55,79 @@ function partitionLabels1(s: string): number[] {
 }
 
 
-console.log(partitionLabels1('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
-console.log(partitionLabels1('eccbbbbdec'))// [10]
-console.log(partitionLabels1('caedbdedda'))// [1, 9]
+function partitionLabels2(s: string): number[] {
+  const ans: number[] = []
+  const map = new Map<string, number>;
+  const n = s.length
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    map.set(char, i)
+  }
+  // console.log(map)
+  let start = 0
+  let end = 0
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    const charEnd = map.get(char)
+
+    if (charEnd > end) {
+      end = charEnd
+    }
+
+    if (i === end) {
+      ans.push(end - start + 1)
+      start = i + 1
+      end = i + 1
+    }
+
+
+
+
+    // if (i > end) {
+    //   ans.push(i - start)
+    //   start = i
+    //   end = charEnd
+    // } else if (i === end && charEnd === end) {
+    //   ans.push(i - start + 1)
+    //   start = i + 1
+    //   end = i + 1
+    // } else if (charEnd > end) {
+    //   end = charEnd
+    // }
+  }
+
+
+  return ans;
+};
+
+
+function partitionLabels3(s: string): number[] {
+  const ans: number[] = []
+
+  const map: Record<string, number> = {}
+  const n = s.length
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    map[char] = i
+  }
+  let start = 0
+  let end = map[s.charAt(0)]
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    if (map[char] > end) {
+      end = map[char]
+    }
+    if (i === end) {
+      ans.push(end - start + 1)
+      start = end = i + 1
+    }
+  }
+
+  return ans
+}
+
+console.log(partitionLabels3('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
+console.log(partitionLabels2('eccbbbbdec'))// [10]
+console.log(partitionLabels2('caedbdedda'))// [1, 9]
+console.log(partitionLabels2('jybmxfgseq'))// [1,1,1,1,1,1,1,1,1,1]
 

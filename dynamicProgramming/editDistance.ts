@@ -57,10 +57,10 @@ const editDistanceDPComp = (s: string, t: string): number => {
   return dp[m];
 }
 
-console.log(editDistanceDPComp('bag', 'pack'));
-console.log(editDistanceDPComp('bag11', 'pack'));
-console.log(editDistanceDPComp('bag', 'pack2334'));
-console.log(editDistanceDPComp(s, t));
+// console.log(editDistanceDPComp('bag', 'pack'));
+// console.log(editDistanceDPComp('bag11', 'pack'));
+// console.log(editDistanceDPComp('bag', 'pack2334'));
+// console.log(editDistanceDPComp(s, t));
 
 // 两个字符串最短编辑次数
 const editDistanceBT = (s: string, t: string): number => {
@@ -126,8 +126,38 @@ const editDistanceBTMemo = (s: string, t: string): number => {
   return helper(0, 0);
 }
 
+
+const editDistanceDP1 = (s: string, t: string): number => {
+  const m = s.length
+  const n = t.length
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
+  for (let i = 1; i <= m; i++) {
+    dp[i][0] = i
+  }
+
+  for (let i = 1; i <= n; i++) {
+    dp[0][i] = i
+  }
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const c = s.charAt(i - 1)
+      if (c === t.charAt(j - 1)) {
+        dp[i][j] = dp[i - 1][j - 1]
+      } else {
+        dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
+      }
+    }
+  }
+
+
+  console.table(dp)
+  return dp[m][n]
+}
+
 // console.log(editDistanceBTMemo('pack', 'pack'));
 // console.log(editDistanceBTMemo('bag11', 'pack'));
 // console.log(editDistanceBTMemo('bag', 'pack'));
 // console.log(editDistanceBTMemo('pac', 'pack'));
-// console.log(editDistanceBTMemo(s, t));
+// console.dir(editDistanceDP1(s, t));
+console.dir(editDistanceDP1("a", "ab"));

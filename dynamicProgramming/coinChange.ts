@@ -4,7 +4,7 @@
 
 // 你可以认为每种硬币的数量是无限的。
 
-function coinChange(coins: number[], amount: number): number {
+export function coinChange(coins: number[], amount: number): number {
   // if (amount === 0) {
   //   return 0
   // }
@@ -53,6 +53,41 @@ function coinChange1(coins: number[], amount: number): number {
   return arr[n - 1] === amount + 1 ? -1 : arr[n - 1];
 };
 
-console.log(coinChange1([5, 1, 2,], 11))
-console.log(coinChange1([2], 3))
-console.log(coinChange1([1], 0))
+function coinChange2(coins: number[], amount: number): number {
+  const n = coins.length
+  const dp: number[] = Array(amount + 1)
+  dp[0] = 0
+  for (let i = 1; i <= amount; i++) {
+    let min = +Infinity
+    for (let coin of coins) {
+      if (i - coin >= 0) {
+        min = Math.min(min, dp[i - coin] + 1)
+      }
+    }
+    dp[i] = min
+  }
+  // console.log(dp)
+  return dp[amount] === +Infinity ? -1 : dp[amount]
+}
+
+
+
+function coinChange3(coins: number[], amount: number): number {
+  // const n = coins.length
+  const dp = Array(amount + 1).fill(+Infinity)
+  dp[0] = 0
+  for (let i = 1; i <= amount; i++) {
+    for (let coin of coins) {
+      const j = i - coin
+      if (j === 0 || dp[j] > 0) {
+        dp[i] = Math.min(dp[i], dp[j] + 1)
+      }
+    }
+  }
+  console.log(dp)
+  return dp[amount] !== Infinity ? dp[amount] : -1
+}
+
+console.log(coinChange3([5, 1, 2,], 11))
+console.log(coinChange3([2], 3))
+console.log(coinChange3([1], 0))

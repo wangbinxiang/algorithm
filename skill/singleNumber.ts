@@ -1,3 +1,5 @@
+// 异或
+
 function singleNumber(nums: number[]): number {
   const n = nums.length;
   if (n === 1) {
@@ -10,6 +12,15 @@ function singleNumber(nums: number[]): number {
   }
   return ans;
 };
+
+
+function singleNumber1(nums: number[]): number {
+  let ans = 0
+  for (let num of nums) {
+    ans ^= num
+  }
+  return ans
+}
 
 console.log(singleNumber([2, 2, 1]));
 console.log(singleNumber([4, 1, 2, 1, 2]));

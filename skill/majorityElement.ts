@@ -2,6 +2,8 @@
 
 // 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
 
+// 投票抵消
+
 function majorityElement(nums: number[]): number {
 
   const n = nums.length;
@@ -76,11 +78,55 @@ function majorityElement1(nums: number[]): number {
   return nums[mid];
 }
 
-console.log(majorityElement1([3, 2, 3]))
-console.log(majorityElement1([2, 2, 1, 1, 1, 2, 2]))
+
+// 摩尔投票法
+function majorityElement2(nums: number[]): number {
+  let ans = nums[0]
+  let count = 1
+  const n = nums.length
+  for (let i = 1; i < n; i++) {
+    const num = nums[i]
+    if (num === ans) {
+      count++
+    } else {
+      if (count === 0) {
+        ans = num
+        count = 1
+      } else {
+        count--
+      }
+    }
+  }
+
+
+  return ans
+}
+
+function majorityElement3(nums: number[]): number {
+  let ans = nums[0]
+  let count = 1
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === ans) {
+      count++
+    } else {
+      if (count === 0) {
+        ans = nums[i]
+        count++
+      } else {
+        count--
+      }
+    }
+  }
+  return ans
+}
 
 
 
+console.log(majorityElement3([3, 2, 3, 4, 4, 4, 4]))
+console.log(majorityElement3([2, 2, 1, 1, 1, 2, 2, 1, 1]))
+
+
+// 投票抵消
 
 // 提示：
 // n == nums.length

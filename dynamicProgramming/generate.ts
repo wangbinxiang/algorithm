@@ -21,6 +21,23 @@ function generate(numRows: number): number[][] {
 };
 
 
-console.log(generate(5))
 
-console.log(generate(1))
+function generate1(numRows: number): number[][] {
+  const ans: number[][] = [[1]];
+
+  for (let i = 1; i < numRows; i++) {
+    const row: number[] = Array(i + 1).fill(1)
+    for (let j = 1; j < i; j++) {
+      row[j] = ans[i - 1][j - 1] + ans[i - 1][j]
+    }
+    ans.push(row)
+  }
+
+
+  return ans
+}
+
+
+console.table(generate(5))
+
+console.table(generate(1))

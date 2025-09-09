@@ -297,14 +297,6 @@ function longestValidParenthesesPointer(s: string): number {
 
   return ans
 }
-console.log(longestValidParentheses6('(()(((()')) // 2
-
-console.log(longestValidParentheses6('(()')) // "()" 2
-console.log(longestValidParentheses6(')()())')) // "()()" 4
-console.log(longestValidParentheses6('')) // 0
-console.log(longestValidParentheses6('()(()')) // 2
-console.log(longestValidParentheses6('()(())')) // 6
-
 
 // 动态规划
 // 如果是 )
@@ -333,3 +325,110 @@ console.log(longestValidParentheses6('()(())')) // 6
 // 当前是 ) right++
 // 如果left === right 则合法括号长度是left + right
 // 如果left > right,则左边已经无法形成合法括号，设置left = right = 0
+
+
+
+
+// 动态规划
+// 遇到 '(' 位置计0
+// 遇到 ')'
+// 如果前面位置是'(', 则位置值+2，再加上前面的前面的值
+
+// 栈
+// 栈底初始化-1，防止前两个就是有效括号的问题
+// 遇到 '(' 压入
+// 遇到 ')' 弹出
+// 当前位置减去 栈顶就是有效长度
+// 如果栈为空则压入当前位置
+
+function longestValidParenthesesDp1(s: string): number {
+  let ans = 0
+
+  const n = s.length;
+  const dp: number[] = Array(n).fill(0);
+
+  for (let i = 1; i < n; i++) {
+    const char = s.charAt(i)
+    if (char === ')') {
+      if (s.charAt(i - 1) === '(') {
+        dp[i] = 2 + (i - 2 >= 0 ? dp[i - 2] : 0)
+        ans = Math.max(ans, dp[i])
+      } else if (dp[i - 1] > 0) {
+        const c = s.charAt(i - dp[i - 1] - 1)
+        if (c === '(') {
+          dp[i] = 2 + dp[i - 1] + (i - dp[i - 1] - 2 >= 0 ? dp[i - dp[i - 1] - 2] : 0)
+          ans = Math.max(ans, dp[i])
+        }
+      }
+    }
+  }
+  console.log(dp)
+  return ans
+}
+
+
+function longestValidParenthesesStack2(s: string): number {
+  let ans = 0
+  const stack: number[] = [-1]
+  const n = s.length
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    if (char === ')') {
+      const pop = stack.pop()
+      const popChar = s.charAt(pop)
+      if (popChar === '(') {
+        ans = Math.max(ans, i - stack[stack.length - 1])
+        continue
+      }
+    }
+    stack.push(i)
+  }
+  return ans
+}
+
+function longestValidParenthesesPointer1(s: string): number {
+  let ans = 0
+  let left = 0
+  let right = 0
+  const n = s.length;
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+    if (char === '(') {
+      left++
+    } else {
+      right++
+      if (left === right) {
+        ans = Math.max(ans, left + right)
+      } else if (right > left) {
+        left = right = 0
+      }
+    }
+  }
+  left = right = 0
+
+  for (let i = n - 1; i >= 0; i--) {
+    const char = s.charAt(i)
+    if (char === ')') {
+      right++
+    } else {
+      left++
+      if (left === right) {
+        ans = Math.max(ans, left + right)
+      } else if (left > right) {
+        left = right = 0
+      }
+    }
+  }
+
+
+  return ans
+}
+
+console.log(longestValidParenthesesPointer1('(()(((()')) // 2
+
+console.log(longestValidParenthesesPointer1('(()')) // "()" 2
+console.log(longestValidParenthesesPointer1(')()())')) // "()()" 4
+console.log(longestValidParenthesesPointer1('')) // 0
+console.log(longestValidParenthesesPointer1('()(()')) // 2
+console.log(longestValidParenthesesPointer1('()(())')) // 6
+console.log(longestValidParenthesesPointer1('(()())')) // 6

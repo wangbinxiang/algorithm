@@ -14,7 +14,22 @@ function climbStairs(n: number): number {
   return ans;
 };
 
-console.log(climbStairs(2))
-console.log(climbStairs(3))
-console.log(climbStairs(4))
-console.log(climbStairs(5))
+
+function climbStairs1(n: number): number {
+  if (n <= 1) {
+    return n
+  }
+  let prev = 1
+  let current = 2
+  for (let i = 2; i < n; i++) {
+    const tmp = current
+    current += prev
+    prev = tmp
+  }
+  return current
+}
+
+console.log(climbStairs1(2))
+console.log(climbStairs1(3))
+console.log(climbStairs1(4))
+console.log(climbStairs1(5))

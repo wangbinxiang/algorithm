@@ -288,6 +288,91 @@ function solveNQueens2(n: number): string[][] {
   return ans
 }
 
+function solveNQueens3(n: number): string[][] {
+  const ans: string[][] = [];
+  const leftSet: Set<number> = new Set()
+  const rightSet: Set<number> = new Set()
+  const colsSet: Set<number> = new Set()
+  const queens: number[] = []
+
+  const build = (queens: number[]) => {
+    const graph = Array.from({ length: n }, () => Array.from({ length: n }, () => '.'));
+    for (let i = 0; i < n; i++) {
+      graph[i][queens[i]] = 'Q'
+    }
+    return graph.map(item => item.join(''))
+  }
+
+  const help = (row: number) => {
+    if (row === n) {
+      ans.push(build(queens))
+      return
+    }
+    for (let i = 0; i < n; i++) {
+      const left = i - row
+      const right = row - (n - 1) + i
+      if (!leftSet.has(left) && !rightSet.has(right) && !colsSet.has(i)) {
+        leftSet.add(left)
+        rightSet.add(right)
+        colsSet.add(i)
+        queens.push(i)
+        help(row + 1)
+        leftSet.delete(left)
+        rightSet.delete(right)
+        colsSet.delete(i)
+        queens.pop()
+      }
+    }
+  }
+  help(0)
+
+
+  return ans;
+}
+
+
+function solveNBit2(n: number): string[][] {
+  const ans: string[][] = [];
+
+
+  const build = (board: number[]) => {
+    const graph: string[] = []
+    for (let i = 0; i < n; i++) {
+      const arr = Array(n).fill('.')
+      arr[board[i]] = 'Q'
+      graph.push(arr.join(''))
+    }
+    return graph
+  }
+
+
+  const help = (row: number, cols: number, left: number, right: number, board: number[]) => {
+    if (row === n) {
+      ans.push(build(board))
+      return
+    }
+
+    // 先找到当前可用位置
+    // (1 << n) - 1 初始化所有位置
+    // ~(cols | left | right) 已占位置合并后取反
+    // （(1 << n) - 1) & ~(cols | left | right) 当前行所有可用位置
+
+    // available & -available 当前行最后一个可用位置(负数是正数求反+1)
+
+    // available &= available - 1 移除最后一个可用位置
+
+    let available = ((1 << n) - 1) & ~(cols | left | right)
+    while (available) {
+      const position = available & -available
+      available &= available - 1
+      help(row + 1, cols | position, (left | position) >> 1, (right | position) << 1, [...board, Math.log2(position)])
+    }
+  }
+
+  help(0, 0, 0, 0, [])
+
+  return ans
+}
 
 // console.log(solveNQueensBit2(4))
-console.log(solveNQueens2(4))
+console.log(solveNBit2(4))

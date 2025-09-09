@@ -44,18 +44,25 @@ function nextPermutation(nums: number[]): void {
   }
 };
 
+// 
+
+function nextPermutation1(nums: number[]): void {
+
+
+
+}
 // 123 -> 132 -> 213 -> 231 -> 312 -> 321 -> 123
 
 // 1234 -> 1243 -> 1324 -> 1342 -> 1423 -> 1432 -> 2134 -> 2314 -> 2413 -> 2431 -> 3124 -> 3214 -> 3241 -> 3412 -> 3421 -> 4123 -> 4213 -> 4231 -> 4312 -> 4321 -> 1234
 
-const arr1 = [1, 2, 3]
-nextPermutation(arr1)
-console.log(arr1) //[1,3,2]
+// const arr1 = [1, 2, 3]
+// nextPermutation(arr1)
+// console.log(arr1) //[1,3,2]
 
-const arr2 = [3, 2, 1]
-nextPermutation(arr2)
-console.log(arr2) // [1, 2, 3]
+// const arr2 = [3, 2, 1]
+// nextPermutation(arr2)
+// console.log(arr2) // [1, 2, 3]
 
-const arr3 = [1, 1, 5]
-nextPermutation(arr3)
-console.log(arr3) // [1, 5, 1]
+// const arr3 = [1, 1, 5]
+// nextPermutation(arr3)
+// console.log(arr3) // [1, 5, 1]

@@ -57,6 +57,13 @@ function minDistance1(word1: string, word2: string): number {
 }
 
 
+function minDistance2(word1: string, word2: string): number {
+
+
+
+  return 0
+}
+
 console.log(minDistance1('horse', 'ros'))
 console.log(minDistance1('intention', 'execution'))
 
