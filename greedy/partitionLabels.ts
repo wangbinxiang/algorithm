@@ -126,8 +126,38 @@ function partitionLabels3(s: string): number[] {
   return ans
 }
 
-console.log(partitionLabels3('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
-console.log(partitionLabels2('eccbbbbdec'))// [10]
-console.log(partitionLabels2('caedbdedda'))// [1, 9]
-console.log(partitionLabels2('jybmxfgseq'))// [1,1,1,1,1,1,1,1,1,1]
+
+function partitionLabels4(s: string): number[] {
+  const ans: number[] = []
+  const hash = new Map<string, number>;
+  const n = s.length
+  for (let i = 0; i < n; i++) {
+    const a = s.charAt(i)
+    hash.set(a, i)
+  }
+
+  let end = 0
+  let start = 0
+  for (let i = 0; i < n; i++) {
+    const char = s.charAt(i)
+
+    const charEnd = hash.get(char)
+    if (charEnd > end) {
+      end = charEnd
+    }
+
+    // end = Math.max(end, hash.get(char))
+    if (i === end) {
+      ans.push(end - start + 1)
+      start = end = i + 1
+    }
+  }
+
+  return ans
+}
+
+console.log(partitionLabels4('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
+console.log(partitionLabels4('eccbbbbdec'))// [10]
+console.log(partitionLabels4('caedbdedda'))// [1, 9]
+console.log(partitionLabels4('jybmxfgseq'))// [1,1,1,1,1,1,1,1,1,1]
 

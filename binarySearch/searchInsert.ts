@@ -111,8 +111,26 @@ function searchInsert2(nums: number[], target: number): number {
   return start
 }
 
-console.log(searchInsert2([1, 3, 5, 6], 5))
-console.log(searchInsert2([1, 3, 5, 6], 2))
-console.log(searchInsert2([1, 3, 5, 6], 7))
-console.log(searchInsert2([1, 3], 1))
-console.log(searchInsert2([1, 3], 0))
+
+function searchInsert3(nums: number[], target: number): number {
+  let l = 0
+  let r = nums.length - 1
+  while (l <= r) {
+    const m = Math.floor((l + r) / 2)
+    const num = nums[m]
+    if (num === target) {
+      return m
+    } else if (num < target) {
+      l = m + 1
+    } else {
+      r = m - 1
+    }
+  }
+  return l
+}
+
+console.log(searchInsert3([1, 3, 5, 6], 5))
+console.log(searchInsert3([1, 3, 5, 6], 2))
+console.log(searchInsert3([1, 3, 5, 6], 7))
+console.log(searchInsert3([1, 3], 1))
+console.log(searchInsert3([1, 3], 0))

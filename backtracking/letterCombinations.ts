@@ -59,8 +59,43 @@ function letterCombinations(digits: string): string[] {
 };
 
 
+const map: Record<string, string[]> = {
+  "2": ['a', 'b', 'c'],
+  "3": ['d', 'e', 'f'],
+  "4": ['g', 'h', 'i'],
+  "5": ['j', 'k', 'l'],
+  "6": ['m', 'n', 'o'],
+  "7": ['p', 'q', 'r', 's'],
+  "8": ['t', 'u', 'v'],
+  "9": ['w', 'x', 'y', 'z'],
+}
+
+function letterCombinations1(digits: string): string[] {
+  if (digits === '') {
+    return []
+  }
+  const ans: string[] = [];
+  const n = digits.length
+
+  const h = (i: number, s: string) => {
+    if (i === n) {
+      ans.push(s)
+      return
+    }
+    // console.log(digits[i], i)
+    for (let m of map[digits[i]]) {
+      // console.log(m)
+      h(i + 1, s + m)
+    }
+  }
+
+  h(0, '')
+
+  return ans
+}
+
 // 输入：digits = "23"
 // 输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
 
 // console.log(letterCombinations('23'))
-console.log(letterCombinations(''))
+console.log(letterCombinations1(''))

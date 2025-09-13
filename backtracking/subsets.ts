@@ -21,6 +21,22 @@ function subsets(nums: number[]): number[][] {
   return ans;
 };
 
+
+function subsets1(nums: number[]): number[][] {
+  const ans: number[][] = []
+  const n = nums.length;
+  const help = (first: number, result: number[]) => {
+    ans.push(result)
+
+    for (let i = first; i < n; i++) {
+      help(i + 1, [...result, nums[i]])
+    }
+  }
+
+  help(0, [])
+
+  return ans;
+}
 // 输入：nums = [1,2,3]
 // 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 

@@ -519,7 +519,7 @@ function findMedianSortedArrays9(nums1: number[], nums2: number[]): number {
 
 // 如此循环
 
-console.log(findMedianSortedArrays10([1], [1, 2])) // 
+// console.log(findMedianSortedArrays10([1], [1, 2])) // 
 
 
 // 二分法
@@ -812,3 +812,114 @@ function findMedianSortedArraysGroup1(nums1: number[], nums2: number[]): number 
 // 如果数组nums1[i-1] > nums2[j] 说明i位置较大，则r = i - 1
 //  如果maxL 小于等于 minR，则说明找到中间值位置，数组总长度是奇数的中间值就是 minR，如果是偶数则是 (maxL + minR) / 2,
 // 如此循环判断 
+
+
+
+// 分组法
+
+// findK 法
+function findMedianSortedArraysFink(nums1: number[], nums2: number[]): number {
+  const m = nums1.length
+  const n = nums2.length
+  const total = m + n
+  const mid = Math.round(total / 2)
+
+  const findK = (k: number): number => {
+    // 获取k的一半
+    let l1 = 0
+    let l2 = 0
+    while (true) {
+      if (l1 === m) {
+        // 等num2位置 + k
+        return nums2[l2 + k - 1]
+      }
+
+
+      if (l2 === n) {
+        return nums1[l1 + k - 1]
+      }
+
+
+      if (k === 1) {
+        return Math.min(nums1[l1], nums2[l2])
+      }
+
+
+
+      const mid = Math.round(k / 2)
+
+      const newL1 = Math.min(l1 + mid, m) - 1
+      const newL2 = Math.min(l2 + (k - mid), n) - 1
+
+      const val1 = nums1[newL1]
+      const val2 = nums2[newL2]
+
+      if (val1 < val2) {
+        // 舍去 l1 新增的数量
+        k -= newL1 - l1 + 1
+        l1 = newL1 + 1
+      } else {
+        // 舍去 l2 新增的数量
+        k -= newL2 - l2 + 1
+        l2 = newL2 + 1
+      }
+    }
+  }
+
+  if (total % 2 === 0) {
+    // find mid + find mid + 1
+    return (findK(mid) + findK(mid + 1)) / 2
+  } else {
+    // find mid
+    return findK(mid)
+  }
+};
+
+// 分组法
+// 两个组分成两半，
+function findMedianSortedArraysGroup2(nums1: number[], nums2: number[]): number {
+
+  if (nums1.length > nums2.length) {
+    [nums1, nums2] = [nums2, nums1]
+  }
+
+  const m = nums1.length
+  const n = nums2.length
+  const half = Math.round((m + n) / 2)
+
+  let l = 0
+  let r = m
+  while (true) {
+    const mid = Math.floor((l + r) / 2)
+    const mid2 = half - mid
+    // console.log('l:', l, 'r:', r)
+    const l1 = mid > 0 ? nums1[mid - 1] : -Infinity
+    const r1 = mid < m ? nums1[mid] : +Infinity
+
+    // console.log('mid2:', mid2)
+    const l2 = mid2 > 0 ? nums2[mid2 - 1] : -Infinity
+    const r2 = mid2 < n ? nums2[mid2] : +Infinity
+
+    const maxL = Math.max(l1, l2)
+    const minR = Math.min(r1, r2)
+    // console.log('maxL:', maxL)
+    // console.log('minR:', minR)
+    if (maxL <= minR) {
+      if ((m + n) % 2 === 0) {
+        return (maxL + minR) / 2
+      } else {
+        return maxL
+      }
+    } else if (l1 > r2) {
+      // l1 太大 
+      r = mid - 1
+    } else {
+      l = mid + 1
+    }
+  }
+}
+
+console.log(findMedianSortedArraysGroup2([0, 1], [4, 5, 6, 7]))
+console.log(findMedianSortedArraysGroup2([0], [6, 7, 8, 9]))
+
+console.log(findMedianSortedArraysGroup2([4, 5, 6, 8, 9], []))

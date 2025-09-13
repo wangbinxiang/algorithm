@@ -48,9 +48,39 @@ function search1(nums: number[], target: number): number {
   }
   return ans;
 };
+function search2(nums: number[], target: number): number {
+  let l = 0
+  let r = nums.length - 1
+  // const endVal = nums[r]
+  while (l <= r) {
+    const m = Math.floor((l + r) / 2)
+    const num = nums[m]
+    if (num === target) {
+      return m
+    } else if (num < target) {
+      if (num > nums[r] || target <= nums[r]) {
+        l = m + 1
+      } else {
+        r = m - 1
+      }
+    } else {
+      if (num > nums[r] && target <= nums[r]) {
+        l = m + 1
+      } else {
+        r = m - 1
+      }
+    }
+  }
+
+  return -1
+}
 
 
+console.log(search2([4, 5, 6, 7, 0, 1, 2], 0))
+console.log(search2([4, 5, 6, 7, 0, 1, 2], 3))
+console.log(search2([1], 0))
+console.log(search2([1, 3], 3))
+console.log(search2([3, 1], 1))
 
-console.log(search1([4, 5, 6, 7, 0, 1, 2], 0))
-console.log(search1([4, 5, 6, 7, 0, 1, 2], 3))
-console.log(search1([1], 0))
+console.log(search2([4, 5, 6, 7, 0, 1, 2], 6))
+console.log(search2([4, 5, 6, 7, 8, 1, 2, 3], 8))

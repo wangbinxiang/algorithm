@@ -111,7 +111,7 @@ function wordBreak3(s: string, wordDict: string[]): boolean {
       }
     }
   }
-  console.log(dp)
+  // console.log(dp)
   return dp[n];
 }
 

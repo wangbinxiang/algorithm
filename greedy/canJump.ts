@@ -71,6 +71,21 @@ function canJump3(nums: number[]): boolean {
 }
 
 
-console.log(canJump3([2, 3, 1, 1, 4]))
-console.log(canJump3([3, 2, 1, 0, 4]))
-console.log(canJump3([0]))
+function canJump4(nums: number[]): boolean {
+  let maxPosition = 0
+  const n = nums.length
+  for (let i = 0; i < n; i++) {
+    if (i <= maxPosition) {
+      maxPosition = Math.max(i + nums[i], maxPosition)
+    } else {
+      break
+    }
+  }
+
+  return maxPosition >= n - 1
+}
+
+
+console.log(canJump4([2, 3, 1, 1, 4]))
+console.log(canJump4([3, 2, 1, 0, 4]))
+console.log(canJump4([0]))
