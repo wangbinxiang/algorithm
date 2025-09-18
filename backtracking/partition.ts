@@ -109,7 +109,46 @@ function partition2(s: string): string[][] {
   return ret;
 }
 
-console.log(partition2("aabcb")); // [["a","a","b"],["aa","b"]] 
+function partition3(s: string): string[][] {
+  const ans: string[][] = []
+  const n = s.length
+
+  const dp = Array.from({ length: n }, () => Array(n).fill(false))
+  for (let i = 0; i < n; i++) {
+    dp[i][i] = true
+  }
+  // console.table(dp)
+  for (let l = 2; l <= n; l++) {
+    for (let i = 0; i <= n - l; i++) {
+      if (s[i] === s[i + l - 1] && (l == 2 || dp[i + 1][i + l - 2])) {
+        dp[i][i + l - 1] = true
+      }
+    }
+  }
+
+  console.table(dp)
+
+  const curr: string[] = []
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push([...curr])
+      return
+    }
+    for (let i = k; i < n; i++) {
+      if (dp[k][i]) {
+        const end = i + 1
+        curr.push(s.substring(k, end))
+        dfs(end)
+        curr.pop()
+      }
+    }
+  }
+
+  dfs(0)
+  return ans;
+}
+
+console.log(partition3("aabaa")); // [["a","a","b"],["aa","b"]] 
 // console.log(partition("a")) // [["a"]]
 
 // const dp: string[][][] = Array(4).fill(0).map((_, index) => [[index.toString()]])

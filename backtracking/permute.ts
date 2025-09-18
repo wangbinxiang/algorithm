@@ -114,7 +114,26 @@ function permute4(nums: number[]): number[][] {
 
   return ans
 }
+
+function permute5(nums: number[]): number[][] {
+  const ans: number[][] = []
+  const n = nums.length;
+  const res: number[] = []
+  const help = (numberArr: number[]) => {
+    if (res.length === n) {
+      ans.push([...res])
+    }
+    for (let i = 0; i < numberArr.length; i++) {
+      res.push(numberArr[i])
+      help(numberArr.toSpliced(i, 1))
+      res.pop()
+    }
+  }
+  help(nums)
+
+  return ans;
+}
 // const arr111 = [0, 1, 2];
 // [arr111[0], arr111[1]] = [arr111[1], arr111[0]]
 
-console.log(permute4([1, 2, 3])); 
+console.log(permute5([1, 2, 3])); 

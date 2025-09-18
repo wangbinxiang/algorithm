@@ -81,10 +81,10 @@ function findMin2(nums: number[]): number {
     const m = Math.floor((l + r) / 2)
     const num = nums[m]
     // console.log('l:', l, 'r:', r)
-    if (num > nums[r]) {
+    if (nums[m] > nums[r]) {
       // 说明最小值在右边
       l = m + 1
-    } else if (num < nums[l]) {
+    } else if (nums[m] < nums[l]) {
       // 说明最小值在左边
       r = m
     } else {

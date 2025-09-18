@@ -152,3 +152,58 @@ class Trie {
     return true;
   }
 }
+
+
+
+class Trie1 {
+
+  map: TrieNode
+
+  constructor() {
+    this.map = {
+      key: {},
+      end: false
+    }
+  }
+
+  insert(word: string): void {
+    let map = this.map
+    for (let char of word) {
+      if (!map[char]) {
+        map[char] = {
+          key: {},
+          end: false
+        }
+      }
+      map = map[char]
+    }
+    map.end = true
+  }
+
+  search(word: string): boolean {
+    let map = this.map;
+    for (let char of word) {
+      if (map[char]) {
+        map = map[char]
+      } else {
+        return false
+      }
+    }
+    if (map.end) {
+      return true
+    }
+    return false
+  }
+
+  startsWith(prefix: string): boolean {
+    let map = this.map;
+    for (let char of prefix) {
+      if (map[char]) {
+        map = map[char]
+      } else {
+        return false
+      }
+    }
+    return true
+  }
+}

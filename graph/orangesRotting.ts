@@ -71,4 +71,58 @@ function orangesRotting(grid: number[][]): number {
 };
 
 
-console.log(orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
+function orangesRotting1(grid: number[][]): number {
+  let ans = 0
+  const m = grid.length
+  const n = grid[0].length
+
+  const bads: string[] = []
+  let goodNumber = 0
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === 1) {
+        goodNumber++
+      } else if (grid[i][j] === 2) {
+        bads.push(`${i},${j}`)
+      }
+    }
+  }
+
+  const help = (currBads: Set<string>, x: number, y: number) => {
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] !== 1) {
+      return
+    }
+    currBads.add(`${x},${y}`)
+    grid[x][y] = 2
+    goodNumber--
+    // console.log('goodNumber--:', x, y, ans)
+  }
+
+  // console.log('goodNumber:', goodNumber)
+  let currBads = new Set(bads)
+  while (goodNumber && currBads.size > 0) {
+    ans++
+    // console.log('currBads', currBads)
+    const tmpBads: Set<string> = new Set();
+    for (const bad of currBads) {
+      const position = bad.split(',')
+      const x = +position[0]
+      const y = +position[1]
+      help(tmpBads, x - 1, y)
+      help(tmpBads, x + 1, y)
+      help(tmpBads, x, y - 1)
+      help(tmpBads, x, y + 1)
+    }
+    currBads = tmpBads
+  }
+
+
+
+  return goodNumber === 0 ? ans : -1;
+}
+
+
+console.log(orangesRotting1([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
+console.log(orangesRotting1([[2, 1, 1], [1, 1, 1], [0, 1, 2]]))
+

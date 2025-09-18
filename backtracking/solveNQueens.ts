@@ -183,6 +183,9 @@ function solveNQueensBit1(n: number): string[][] {
 
 
 
+
+
+
 // 使用位图解决该问题
 // 使用递归，递归从0开始，
 // 参数是col 当前行， cols 纵向已经被占据的列，left(从左上到右下当前行被占据的列) right(从右上到左下当前行被占据的列) boards 之前行所占据的列数组
@@ -374,5 +377,40 @@ function solveNBit2(n: number): string[][] {
   return ans
 }
 
+
+function solveNQueensBit3(n: number): string[][] {
+  const ans: string[][] = [];
+  const s = Array(n).fill('.')
+  const buildSolve = (boards: number[]) => {
+    const ans: string[] = Array(n)
+
+    for (let i = 0; i < n; i++) {
+      s[boards[i]] = 'Q'
+      ans[i] = s.join("")
+      s[boards[i]] = '.'
+    }
+    return ans
+  }
+
+  const dfs = (row: number, cols: number, left: number, right: number, boards: number[]) => {
+    if (row === n) {
+      ans.push(buildSolve(boards))
+      return;
+    }
+    // 初始化当前行可使用的位置
+    let available = ((1 << n) - 1) & ~(cols | left | right)
+    while (available) {
+      // 获取最后一个可用位置
+      const position = available & -available
+      available &= available - 1
+      dfs(row + 1, cols | position, (left | position) << 1, (right | position) >> 1, [...boards, Math.log2(position)])
+      // 移除最后一个可用位置
+    }
+  }
+  dfs(0, 0, 0, 0, [])
+
+  return ans
+}
+
 // console.log(solveNQueensBit2(4))
-console.log(solveNBit2(4))
+console.log(solveNQueensBit3(4))

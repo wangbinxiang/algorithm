@@ -60,7 +60,7 @@ function numIslands(grid: string[][]): number {
 
 // console.log(numIslands1([["1", "1", "1"], ["0", "1", "0"], ["1", "1", "1"]]))
 console.dir([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]])
-console.log(numIslands1([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]]))
+console.log(numIslands2([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]]))
 
 
 
@@ -131,8 +131,56 @@ function numIslands1(grid: string[][]): number {
 
 function numIslands2(grid: string[][]): number {
   let ans = 0;
+  const m = grid.length
+  const n = grid[0].length
+
+
+  const dfs = (x: number, y: number) => {
+    if (x - 1 >= 0 && grid[x - 1][y] === "1") {
+      grid[x - 1][y] = "0"
+      dfs(x - 1, y)
+    }
+    if (x + 1 < m && grid[x + 1][y] === "1") {
+      grid[x + 1][y] = "0"
+      dfs(x + 1, y)
+    }
+    if (y - 1 >= 0 && grid[x][y - 1] === "1") {
+      grid[x][y - 1] = "0"
+      dfs(x, y - 1)
+    }
+    if (y + 1 < n && grid[x][y + 1] === "1") {
+      grid[x][y + 1] = "0"
+      dfs(x, y + 1)
+    }
+  }
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === "1") {
+        grid[i][j] = '0'
+        ans++
+        dfs(i, j)
+      }
+    }
+  }
 
 
 
   return ans;
 }
+
+
+console.log(numIslands2([
+  ['1', '1', '1', '1', '0'],
+  ['1', '1', '0', '1', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '0', '0', '0']
+]))
+
+
+console.log(numIslands2([
+  ['1', '1', '0', '0', '0'],
+  ['1', '1', '0', '0', '0'],
+  ['0', '0', '1', '0', '0'],
+  ['0', '0', '0', '1', '1']
+]))

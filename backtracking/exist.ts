@@ -108,4 +108,44 @@ function exist(board: string[][], word: string): boolean {
 // console.log(exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCB"
 // ))
 
-console.log(exist([["a", "a"]], "aaa"))
+function exist1(board: string[][], word: string): boolean {
+  const m = board.length
+  const n = board[0].length
+  const l = word.length
+
+  const dfs = (k: number, x: number, y: number) => {
+    if (k === l) {
+      return true
+    }
+    if (x < 0 || x >= m || y < 0 || y >= n) {
+      return false
+    }
+
+    if (board[x][y] !== word[k]) {
+      return false
+    }
+
+    const temp = board[x][y]
+    board[x][y] = '#'
+    const found = dfs(k + 1, x - 1, y) || dfs(k + 1, x, y - 1) || dfs(k + 1, x + 1, y) || dfs(k + 1, x, y + 1)
+    board[x][y] = temp
+    return found
+  }
+
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (dfs(0, i, j)) {
+        return true
+      }
+    }
+  }
+
+
+  return false
+}
+
+
+console.log(exist1([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"))
+
+console.log(exist1([["a", "a"]], "aaa"))

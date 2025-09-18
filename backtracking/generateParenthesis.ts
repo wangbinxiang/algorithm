@@ -149,4 +149,38 @@ function generateParenthesis3(n: number): string[] {
 }
 
 
-console.log(generateParenthesis3(3))
+function generateParenthesis4(n: number): string[] {
+  const ans: string[] = []
+  // let res: string[] = []
+  const dfs = (curr: string, left: number, right: number) => {
+    if (right === n && left === n) {
+      ans.push(curr)
+      return
+    }
+    if (left < n) {
+      // console.log('add (')
+      // res.push('(')
+      // console.log(res)
+      dfs(curr + '(', left + 1, right)
+      // res.pop()
+      // console.log('remove (')
+      // console.log(res)
+    }
+    if (right < n && left > right) {
+      // console.log('add )')
+
+      // res.push(')')
+      // console.log(res)
+      dfs(curr + ')', left, right + 1)
+      // res.pop()
+      // console.log('remove )')
+      // console.log(res)
+    }
+
+  }
+  dfs("", 0, 0)
+
+  return ans
+}
+
+console.log(generateParenthesis4(3))
