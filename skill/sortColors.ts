@@ -165,16 +165,61 @@ function sortColors5(nums: number[]): void {
   }
 }
 
+
+function sortColors6(nums: number[]): void {
+  const n = nums.length;
+  let l = 0;
+  let r = n - 1;
+  let i = 0
+  while (i <= r) {
+    const num = nums[i];
+    
+    if (num === 0) {
+      if (l !== i) {
+        [nums[l], nums[i]] = [nums[i], nums[l]]
+      }
+      l++
+      i++
+    } else if (num === 2) {
+      [nums[r], nums[i]] = [nums[i], nums[r]]
+      r--
+    } else {
+      i++
+    }
+  }
+};
+
+function sortColors7(nums: number[]): void {
+    let l = 0;
+    let r = nums.length - 1;
+    let i = 0;
+    while (i <= r) {
+      const num = nums[i];
+      if (num === 0) {
+        if (i !== l) {
+          [nums[i], nums[l]] = [nums[l], nums[i]];
+        }
+        l++;
+        i++;
+      } else if (num === 2) {
+        [nums[i], nums[r]] = [nums[r], nums[i]];
+        r--;
+      } else {
+        i++;
+      }
+    }
+};
+
 export const arr1 = [2, 0, 2, 1, 1, 0]
-sortColors5(arr1) // [0, 0, 1, 1, 2, 2]
+sortColors7(arr1) // [0, 0, 1, 1, 2, 2]
 console.log(arr1)
 const arr2 = [2, 0, 1]
-sortColors5(arr2) // [0, 1, 2]
+sortColors7(arr2) // [0, 1, 2]
 console.log(arr2)
 
-const arr3 = [1,2,2,2,2,0,0,0,1,1];
-sortColors5(arr3)
-console.log(arr3)
+// const arr3 = [1,2,2,2,2,0,0,0,1,1];
+// sortColors7(arr3)
+// console.log(arr3)
 
 
 // 提示：

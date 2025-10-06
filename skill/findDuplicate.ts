@@ -100,6 +100,52 @@ function findDuplicate3(nums: number[]): number {
 }
 
 
-console.log(findDuplicate2([1, 3, 4, 2, 2]))
-console.log(findDuplicate2([3, 1, 3, 4, 2]))
-console.log(findDuplicate2([3, 3, 3, 3, 3]))
+function findDuplicate4(nums: number[]): number {
+  let slow = 0;
+  let fast = 0;
+  do {
+    fast = nums[nums[fast]]
+    slow = nums[slow]
+  } while (slow !== fast)
+
+  slow = 0
+
+  while (slow !== fast) {
+    slow = nums[slow];
+    fast = nums[fast]
+  }
+
+
+  return slow;
+};
+
+// 循环链表
+function findDuplicate5(nums: number[]): number {
+
+  let slow = 0;
+  let fast = 0;
+  do {
+    fast = nums[nums[fast]];
+    slow = nums[slow];
+
+  } while (slow !== fast)
+  // console.log('fast:', fast);
+  // console.log('slow:', slow);
+
+  slow = 0;
+  do {
+    fast = nums[fast];
+    slow = nums[slow];
+    // console.log('fast:', fast);
+    // console.log('slow:', slow);
+  } while (slow !== fast);
+  // console.log('fast:', fast);
+  // console.log('slow:', slow);
+
+  return slow;
+};
+
+
+console.log(findDuplicate5([1, 3, 4, 2, 2]))
+console.log(findDuplicate5([3, 1, 3, 4, 2]))
+console.log(findDuplicate5([3, 3, 3, 3, 3]))  

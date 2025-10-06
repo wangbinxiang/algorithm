@@ -99,20 +99,24 @@ const quickSort = (nums: number[]): void => {
     // 分割数组，前半段为小于left的，后半段为大于left的。
     let l = left;
     let r = right;
-    while (l < r) {
-      while (l < r && nums[r] >= nums[left]) {
+    while (l <= r) {
+      while (l <= r && nums[r] > nums[left]) {
         r--;
       }
-      while (l < r && nums[l] <= nums[left]) {
+      while (l <= r && nums[l] < nums[left]) {
         l++;
       }
 
+      if (l >= r) {
+        break;
+      }
       [nums[l], nums[r]] = [nums[r], nums[l]];
+      l++;
+      r--;
     }
 
-    [nums[l], nums[left]] = [nums[left], nums[l]];
-
-    return l;
+    [nums[r], nums[left]] = [nums[left], nums[r]];
+    return r;
   }
 
   const helper = (nums: number[], left: number, right: number): void => {
@@ -247,7 +251,7 @@ const tailOptimizationQuickSort = (num: number[]): void => {
 }
 
 
-tailOptimizationQuickSort(num);
+quickSort(num);
 console.log(num);
 
 const mergeSort = (num: number[]): void => {

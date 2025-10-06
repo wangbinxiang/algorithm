@@ -56,31 +56,103 @@ function canFinish1(numCourses: number, prerequisites: number[][]): boolean {
     }
 
   }
-  console.log('queue:', queue)
-  console.log(graph)
-  console.log('inDegree:', inDegree)
+  // console.log('queue:', queue)
+  // console.log(graph)
+  // console.log('inDegree:', inDegree)
   let count = 0
   while (queue.length) {
     count++
     const course = queue.shift()
-    console.log(course, count, course)
+    // console.log(course, count, course)
     for (let next of graph[course]) {
-      console.log('next: ', next)
+      // console.log('next: ', next)
       inDegree[next]--
       if (inDegree[next] === 0) {
         queue.push(next)
       }
     }
   }
-  console.log(count)
+  // console.log(count)
   return count === numCourses;
 };
 
-console.log(canFinish1(2, [[0, 1]])) // true
-console.log(canFinish1(2, [[1, 0]])) // true
-console.log(canFinish1(2, [[1, 0], [0, 1]])) // false
 
-console.log(canFinish1(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
+function canFinish2(numCourses: number, prerequisites: number[][]): boolean {
+  const graph = Array.from({ length: numCourses }, () => [])
+  const inDegree = Array(numCourses).fill(0)
+
+  for (const [course, pre] of prerequisites) {
+    graph[pre].push(course)
+    inDegree[course]++
+  }
+
+  const queue: number[] = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (inDegree[i] === 0) {
+      queue.push(i)
+    }
+  }
+
+  let count = 0
+  while (queue.length) {
+    count++
+    const course = queue.shift()
+    for (let next of graph[course]) {
+      inDegree[next]--
+      if (inDegree[next] === 0) {
+        queue.push(next)
+      }
+    }
+  }
+
+
+
+  return count === numCourses
+};
+
+function canFinish3(numCourses: number, prerequisites: number[][]): boolean {
+  const inDegree = Array(numCourses).fill(0);
+  const courses = Array.from({ length: numCourses }, () => []);
+
+  for (const [course, pre] of prerequisites) {
+    inDegree[course]++;
+    courses[pre].push(course);
+  }
+
+  let finish = 0;
+  const queue: number[] = [];
+  for (let i = 0; i < inDegree.length; i++) {
+    if (inDegree[i] === 0) {
+      queue.push(i);
+      finish++;
+    }
+  }
+  // console.log(queue)
+  // console.log(inDegree)
+  // console.log(courses)
+
+  while (queue.length) {
+    const course = queue.shift();
+
+    for (let next of courses[course]) {
+      inDegree[next]--;
+      if (inDegree[next] === 0) {
+        finish++;
+        queue.push(next);
+      }
+    }
+  }
+  // console.log(finish);
+  return finish === numCourses;
+};
+
+console.log(canFinish3(5, [[1, 4], [2, 4], [3, 1], [3, 2]]))  // true
+
+console.log(canFinish3(2, [[0, 1]])) // true
+console.log(canFinish3(2, [[1, 0]])) // true
+console.log(canFinish3(2, [[1, 0], [0, 1]])) // false
+
+console.log(canFinish3(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
 
 
 

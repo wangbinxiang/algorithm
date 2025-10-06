@@ -482,7 +482,109 @@ class MedianFinder4 {
   }
 }
 
-const medianFinder = new MedianFinder3();
+
+// 维护一个大顶堆，一个小顶堆
+// 当两个堆数据量一样时，如果新数据小于大顶堆顶数据， 将新数据写入大顶堆，然后将堆顶弹出，将弹出数据写入小顶堆，否则直接将新数据写入小顶堆
+// 当小顶堆数据量大于大顶堆时，将新数据写入小顶堆，然后将堆顶弹出，将弹出的数据写入大顶堆
+// 当两个堆数据量一样时，中位数就是两个堆堆堆顶相加除以2，否则就是小顶堆
+class MedianFinder5 {
+  heapMax: number[];
+  heapMin: number[];
+  constructor() {
+    this.heapMax = [];
+    this.heapMin = [];
+  }
+
+  down(heap: number[], compare: (a: number, b: number) => boolean) {
+    // console.log('down');
+    let i = 0;
+    const n = heap.length;
+    while (true) {
+      const left = i * 2 + 1;
+      const right = i * 2 + 2;
+      let pos = i;
+      if (left < n && compare(heap[left], heap[pos])) {
+        pos = left;
+      }
+      if (right < n && compare(heap[right], heap[pos])) {
+        pos = right;
+      }
+      if (i !== pos) {
+        [heap[i], heap[pos]] = [heap[pos], heap[i]];
+        i = pos
+      } else {
+        break;
+      }
+    }
+  }
+
+  up(heap: number[], compare: (a: number, b: number) => boolean) {
+    // console.log('up');
+    let i = heap.length - 1;
+    while (i > 0) {
+      const p = Math.round(i / 2) - 1;
+      if (compare(heap[i], heap[p])) {
+        [heap[i], heap[p]] = [heap[p], heap[i]];
+        i = p;
+      } else {
+        break;
+      }
+    }
+  }
+  addNum(num: number): void {
+    if (this.heapMax.length === this.heapMin.length) {
+      if (this.heapMax.length > 0 && this.heapMax[0] > num) {
+        [this.heapMax[0], num] = [num, this.heapMax[0]];
+        this.down(this.heapMax, (a, b) => a > b)
+      }
+      this.heapMin.push(num);
+      this.up(this.heapMin, (a, b) => a < b);
+    } else {
+      if (num < this.heapMin[0]) {
+        this.heapMax.push(num)
+        this.up(this.heapMax, (a, b) => a > b)
+      } else {
+        this.heapMin.push(num);
+        this.up(this.heapMin, (a, b) => a < b);
+        const pop = this.heapMin.pop();
+        const top = this.heapMin[0];
+        this.heapMax.push(top);
+        this.up(this.heapMax, (a, b) => a > b);
+        this.heapMin[0] = pop;
+        this.down(this.heapMin, (a, b) => a < b)
+      }
+    }
+
+  }
+
+  addNum2(num: number): void {
+    if (this.heapMax.length > 0 && this.heapMax[0] > num) {
+      [this.heapMax[0], num] = [num, this.heapMax[0]];
+      this.down(this.heapMax, (a, b) => a > b)
+    }
+    this.heapMin.push(num);
+    this.up(this.heapMin, (a, b) => a < b);
+    if (this.heapMin.length - this.heapMax.length === 1) {
+      const pop = this.heapMin.pop();
+      const top = this.heapMin[0];
+      this.heapMax.push(top);
+      this.up(this.heapMax, (a, b) => a > b);
+      this.heapMin[0] = pop;
+      this.down(this.heapMin, (a, b) => a < b)
+    }
+    // num 小于max[0]时，替换max[0]
+  }
+
+  findMedian(): number {
+    // console.log(this.heapMax)
+    // console.log(this.heapMin)
+    if (this.heapMax.length === this.heapMin.length) {
+      return (this.heapMax[0] + this.heapMin[0]) / 2;
+    }
+    return this.heapMin[0];
+  }
+}
+const medianFinder = new MedianFinder5();
 // medianFinder.addNum(0);    // arr = [0]
 // medianFinder.addNum(1);    // arr = [1]
 // console.log(medianFinder.findMedian()); // return 0.5

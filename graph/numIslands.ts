@@ -59,8 +59,8 @@ function numIslands(grid: string[][]): number {
 };
 
 // console.log(numIslands1([["1", "1", "1"], ["0", "1", "0"], ["1", "1", "1"]]))
-console.dir([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]])
-console.log(numIslands2([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]]))
+// console.dir([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]])
+
 
 
 
@@ -169,8 +169,132 @@ function numIslands2(grid: string[][]): number {
   return ans;
 }
 
+function numIslands3(grid: string[][]): number {
+  let ans = 0
+  const m = grid.length
+  const n = grid[0].length
+  const dfs = (x: number, y: number) => {
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === "0") {
+      return
+    }
+    grid[x][y] = "0"
+    dfs(x - 1, y);
+    dfs(x + 1, y);
+    dfs(x, y - 1);
+    dfs(x, y + 1)
+  }
 
-console.log(numIslands2([
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === "1") {
+        dfs(i, j)
+        ans++
+      }
+    }
+  }
+
+  return ans
+};
+
+
+function numIslands4(grid: string[][]): number {
+  const m = grid.length;
+  const n = grid[0].length;
+
+  const dfs = (x: number, y: number): boolean => {
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === "0") {
+      return;
+    }
+    grid[x][y] = "0"
+    dfs(x - 1, y);
+    dfs(x + 1, y);
+    dfs(x, y - 1);
+    dfs(x, y + 1);
+    return true
+  }
+  let ans = 0
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (dfs(i, j)) {
+        ans++
+      }
+    }
+  }
+
+
+  return ans;
+};
+
+// 递归每个方向，如果是1，则设置为0
+function numIslands5(grid: string[][]): number {
+  const m = grid.length;
+  const n = grid[0].length;
+  // console.table(grid);
+
+  const queue: number[][] = [];
+
+  const help = (x: number, y: number) => {
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === "0") {
+      return;
+    }
+    // console.log(x, y);
+    grid[x][y] = "0";
+    queue.push([x - 1, y]);
+    queue.push([x + 1, y]);
+    queue.push([x, y - 1]);
+    queue.push([x, y + 1]);
+  }
+  let count = 0;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === "1") {
+        // console.log('count++')
+        count++;
+        help(i, j)
+        while (queue.length) {
+          const [x, y] = queue.shift();
+          help(x, y);
+        }
+      }
+    }
+  }
+
+  return count;
+};
+
+function numIslands6(grid: string[][]): number {
+  let count = 0;
+  const m = grid.length;
+  const n = grid[0].length;
+
+
+  const dfs = (x: number, y: number) => {
+    if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] === "0") {
+      return;
+    }
+    grid[x][y] = "0";
+    dfs(x - 1, y);
+    dfs(x + 1, y);
+    dfs(x, y - 1);
+    dfs(x, y + 1);
+  }
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === "1") {
+        count++;
+        dfs(i, j)
+      }
+    }
+  }
+
+
+  return count;
+}
+
+console.log(numIslands6([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]]))
+
+console.log(numIslands6([
   ['1', '1', '1', '1', '0'],
   ['1', '1', '0', '1', '0'],
   ['1', '1', '0', '0', '0'],
@@ -178,7 +302,7 @@ console.log(numIslands2([
 ]))
 
 
-console.log(numIslands2([
+console.log(numIslands6([
   ['1', '1', '0', '0', '0'],
   ['1', '1', '0', '0', '0'],
   ['0', '0', '1', '0', '0'],

@@ -207,3 +207,111 @@ class Trie1 {
     return true
   }
 }
+
+interface TrieNode1 {
+  key: Record<string, TrieNode1>
+  end: boolean
+}
+
+class Trie2 {
+
+  key: TrieNode1
+
+  constructor() {
+    this.key = {
+      key: {},
+      end: false
+    }
+  }
+
+  insert(word: string): void {
+    let key = this.key
+    for (let char of word) {
+      if (!key.key[char]) {
+        key.key[char] = {
+          key: {},
+          end: false
+        }
+      }
+      key = key.key[char]
+    }
+    key.end = true
+  }
+
+  search(word: string): boolean {
+    let key = this.key
+    for (let char of word) {
+      if (!key.key[char]) {
+        return false
+      }
+      key = key.key[char]
+    }
+    return key.end
+  }
+
+  startsWith(prefix: string): boolean {
+    let key = this.key
+    for (let char of prefix) {
+      if (!key.key[char]) {
+        return false
+      }
+      key = key.key[char]
+    }
+    return true
+  }
+}
+
+interface TrieNode {
+  end: boolean;
+  key: Record<string, TrieNode>;
+}
+
+class Trie3 {
+  trie: TrieNode;
+  constructor() {
+    this.trie = {
+      end: false,
+      key: {}
+    };
+  }
+
+  insert(word: string): void {
+    let trie = this.trie;
+    for (const char of word) {
+      if (!trie.key[char]) {
+        trie.key[char] = {
+          end: false,
+          key: {}
+        }
+      }
+      trie = trie.key[char]
+    }
+    if (!trie.end) {
+      trie.end = true
+    }
+  }
+
+  search(word: string): boolean {
+    let trie = this.trie;
+    for (const char of word) {
+      if (trie.key[char]) {
+        trie = trie.key[char];
+      } else {
+        return false;
+      }
+    }
+    return trie.end;
+  }
+
+  startsWith(prefix: string): boolean {
+    let trie = this.trie;
+    for (const char of prefix) {
+      if (trie.key[char]) {
+        trie = trie.key[char];
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+}
