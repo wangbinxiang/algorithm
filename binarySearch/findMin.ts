@@ -96,8 +96,90 @@ function findMin2(nums: number[]): number {
   return nums[l]
 }
 
+function findMin3(nums: number[]): number {
+  const n = nums.length;
+  let l = 0;
+  let r = n - 1;
+  let min = +Infinity;
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num > min) {
+      if (num < num[r]) {
+        r = m - 1;
+      } else {
+        l = m + 1;
+      }
 
-console.log(findMin2([3, 4, 5, 1, 2])) // 1
-console.log(findMin2([4, 5, 6, 7, 0, 1, 2])) // 0
-console.log(findMin2([11, 13, 15, 17])) // 11
-console.log(findMin2([5, 1, 2, 3, 4])) // 1
+    } else {
+      min = num;
+      if (num < nums[r]) {
+        r = m - 1;
+      } else {
+        l = m + 1;
+      }
+    }
+  }
+
+
+  return min;
+};
+
+function findMin4(nums: number[]): number {
+  let l = 0;
+  let r = nums.length - 1;
+  while (l < r) {
+    const mid = Math.floor((r - l) / 2) + l;
+    const num = nums[mid];
+    if (num <= nums[r]) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  console.log('l:', l, '; r:', r)
+  return nums[l]
+}
+
+
+function findMin5(nums: number[]): number {
+  let l = 0;
+  let r = nums.length - 1;
+  while (l < r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num < nums[r]) { // num比右边界小，自己可能是最小值 所以是 r = m
+      r = m;
+    } else { // num > nums[r], num 比右边界大，自己不可能是最小值所以是 l = m + 1;
+      l = m + 1;
+    }
+    // console.log('l:', l);
+    // console.log('r:', r);
+  }
+  return nums[l];
+};
+
+
+function findMin6(nums: number[]): number {
+  let l = 0;
+  let r = nums.length - 1;
+  while (l < r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const num = nums[m];
+    // console.log(m, nums[m], nums[r]);
+    if (num > nums[r]) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  return nums[l];
+};
+
+
+console.log(findMin6([3, 4, 5, 1, 2])) // 1
+console.log(findMin6([4, 5, 6, 7, 0, 1, 2])) // 0
+console.log(findMin6([11, 13, 15, 17])) // 11
+console.log(findMin6([5, 1, 2, 3, 4])) // 1
+
+console.log(findMin6([3, 1, 2])) // 1

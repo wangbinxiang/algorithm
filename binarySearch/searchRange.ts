@@ -131,6 +131,134 @@ function searchRange1(nums: number[], target: number): number[] {
   return [minL, maxR]
 };
 
-console.log(searchRange1([5, 7, 7, 8, 8, 10], 8)) // [3, 4]
-console.log(searchRange1([5, 7, 7, 8, 8, 10], 5)) // [-1, -1]
-console.log(searchRange1([], 0))
+function searchRange2(nums: number[], target: number): number[] {
+  const n = nums.length;
+  let left = 0;
+  let right = n - 1;
+  let minL = +Infinity;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const num = nums[mid];
+    if (num === target) {
+      if (mid < minL) {
+        minL = mid;
+      }
+      right = mid - 1;
+    } else if (num > target) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+  if (minL === +Infinity) {
+    return [-1, -1];
+  }
+
+  right = n - 1;
+  let maxR = -Infinity;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const num = nums[mid];
+    if (num === target) {
+      if (mid > maxR) {
+        maxR = mid;
+      }
+      left = mid + 1;
+    } else if (num > target) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+
+  return [minL, maxR];
+};
+
+function searchRange3(nums: number[], target: number): number[] {
+  let l = 0;
+  let r = nums.length - 1;
+
+  let minL = +Infinity;
+
+  while (l <= r) {
+    const mid = Math.floor((r - l) >> 1) + l;
+    const num = nums[mid];
+    if (num === target) {
+      minL = mid;
+      r = mid - 1;
+    } else if (num < target) {
+      l = mid + 1;
+    } else {
+      r = mid - 1;
+    }
+  }
+  if (minL === +Infinity) {
+    return [-1, -1];
+  }
+
+  r = nums.length - 1;
+
+  let maxR = minL;
+  while (l <= r) {
+    const mid = Math.floor((r - l) >> 1) + l;
+    const num = nums[mid];
+    if (num === target) {
+      maxR = mid;
+      l = mid + 1;
+    } else if (num < target) {
+      l = mid + 1;
+    } else {
+      r = mid - 1;
+    }
+  }
+  return [minL, maxR];
+};
+
+
+function searchRange4(nums: number[], target: number): number[] {
+  let l = 0;
+  let r = nums.length - 1;
+  let min = -1;
+  while (l <= r) {
+    // console.log(l, r);
+    const m = Math.floor((r - l) >> 1) + l;
+    const num = nums[m];
+    if (num === target) {
+      min = m;
+      r = m - 1;
+    } else if (num > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+  if (min === -1) {
+    return [-1, -1];
+  }
+  // console.log(min);
+
+  r = nums.length - 1;
+  let max = -1
+  while (l <= r) {
+    // console.log(l, r);
+    const m = Math.floor((r - l) >> 1) + l;
+    const num = nums[m];
+    // console.log(num)
+    if (num === target) {
+      max = m;
+      l = m + 1;
+    } else if (num > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+
+
+  return [min, max];
+};
+
+console.log(searchRange3([5, 7, 7, 8, 8, 10], 8)) // [3, 4]
+console.log(searchRange3([5, 7, 7, 8, 8, 10], 5)) // [-1, -1]
+console.log(searchRange3([], 0))

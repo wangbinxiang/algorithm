@@ -449,9 +449,97 @@ function findKthLargest9(nums: number[], k: number): number {
   }
   return nums[target];
 }
+
+
+function findKthLargest10(nums: number[], k: number): number {
+  const target = nums.length - k;
+  let left = 0
+  let right = nums.length - 1;
+  console.log('target:', target);
+  while (left < right) {
+    const pivot = nums[left];
+    let l = left + 1;
+    let r = right;
+    while (l <= r) {
+      while (l <= r && nums[l] < pivot) {
+        l++;
+      }
+      while (l <= r && nums[r] > pivot) {
+        r--;
+      }
+      if (l < r) {
+        [nums[l], nums[r]] = [nums[r], nums[l]];
+        l++;
+        r--;
+      } else {
+        break;
+      }
+    }
+    [nums[left], nums[r]] = [nums[r], nums[left]];
+    if (r === target) {
+      break;
+    } else if (r > target) {
+      right = r - 1;
+    } else {
+      left = r + 1;
+    }
+  }
+  return nums[target];
+};
+
+function findKthLargest11(nums: number[], k: number): number {
+  const n = nums.length;
+  const target = n - k;
+  let left = 0;
+  let right = n - 1;
+
+
+  while (true) {
+    let pivotIndex = Math.floor(Math.random() * (right - left)) + left;
+    if (pivotIndex !== left) {
+      [nums[pivotIndex], nums[left]] = [nums[left], nums[pivotIndex]];
+    }
+    console.log('left:', left);
+    console.log('right:', right);
+    const pivot = nums[left];
+    console.log('pivotIndex:', pivotIndex, pivot);
+    let l = left + 1;
+    let r = right;
+    while (l <= r) {
+      while (l <= r && nums[l] < pivot) {
+        l++;
+      }
+      while (l <= r && nums[r] > pivot) {
+        r--;
+      }
+      if (l <= r) {
+        console.log('nums[l]', l, nums[l]);
+        console.log('nums[r]', r, nums[r]);
+        [nums[l], nums[r]] = [nums[r], nums[l]];
+        l++;
+        r--;
+      } else {
+        break;
+      }
+    }
+
+    [nums[r], nums[left]] = [nums[left], nums[r]];
+    if (r === target) {
+      break;
+    } else if (r > target) {
+      right = r - 1;
+    } else {
+      left = r + 1;
+    }
+    console.log(nums);
+  }
+  return nums[target];
+};
+
+
 // console.log(findKthLargest5([3, 3, 3, 3, 4, 3, 3, 3, 3], 1)) // 4
 
-console.log(findKthLargest9([7, 6, 5, 4, 3, 2, 1], 5)) // 6
+console.log(findKthLargest11([7, 6, 5, 4, 3, 2, 1], 5)) // 6
 // console.log(findKthLargest4([7, 6, 5, 4, 3, 2, 1], 2)) // 6
 
 // console.log(findKthLargest4([3, 2, 1, 5, 6, 4], 2)) // 5

@@ -129,8 +129,71 @@ function searchInsert3(nums: number[], target: number): number {
   return l
 }
 
-console.log(searchInsert3([1, 3, 5, 6], 5))
-console.log(searchInsert3([1, 3, 5, 6], 2))
-console.log(searchInsert3([1, 3, 5, 6], 7))
-console.log(searchInsert3([1, 3], 1))
-console.log(searchInsert3([1, 3], 0))
+
+function searchInsert4(nums: number[], target: number): number {
+  let l = 0;
+  let r = nums.length - 1;
+  while (l <= r) {
+    // console.log('l:', l, '; r:', r);
+    const mid = Math.floor((r - l) / 2) + l;
+    const num = nums[mid];
+    if (target === num) {
+      return mid;
+    } else if (num > target) {
+      r = mid - 1;
+    } else {
+      l = mid + 1;
+    }
+  }
+  // console.log('l:', l, '; r:', r);
+  return l;
+};
+
+function searchInsert5(nums: number[], target: number): number {
+  let l = 0;
+  let r = nums.length - 1;
+  let ans = nums.length;
+  while (l <= r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const num = nums[m];
+    if (num === target) {
+      return m;
+    } else if (num > target) {
+      r = m - 1;
+      ans = m;
+    } else {
+      l = m + 1;
+    }
+  }
+
+
+  return ans;
+};
+
+
+function searchInsert6(nums: number[], target: number): number {
+  let l = 0;
+  let r = nums.length - 1;
+  let ans = 0;
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num === target) {
+      return m;
+    } else if (num > target) {
+      r = m - 1;
+    } else {
+      ans = m + 1;
+      l = m + 1;
+    }
+  }
+
+
+  return ans;
+};
+
+console.log(searchInsert6([1, 3, 5, 6], 5)) // 2
+console.log(searchInsert6([1, 3, 5, 6], 2)) // 1
+console.log(searchInsert6([1, 3, 5, 6], 7)) // 4
+console.log(searchInsert6([1, 3], 1)) // 0
+console.log(searchInsert6([1, 3], 0)) // 0

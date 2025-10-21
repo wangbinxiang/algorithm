@@ -919,7 +919,119 @@ function findMedianSortedArraysGroup2(nums1: number[], nums2: number[]): number 
   }
 }
 
-console.log(findMedianSortedArraysGroup2([0, 1], [4, 5, 6, 7]))
-console.log(findMedianSortedArraysGroup2([0], [6, 7, 8, 9]))
 
-console.log(findMedianSortedArraysGroup2([4, 5, 6, 8, 9], []))
+function findMedianSortedArraysGroup3(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    [nums1, nums2] = [nums2, nums1];
+  }
+  const total = nums1.length + nums2.length;
+
+  const k = Math.floor(total / 2);
+
+  let l = 0;
+  let r = nums1.length;
+
+  while (true) {
+    console.log('l:', l);
+    console.log('r:', r);
+    const m1 = Math.floor((r - l) >> 1) + l;
+    console.log('m1:', m1);
+
+    const l1 = m1 > 0 ? nums1[m1 - 1] : -Infinity;
+    const r1 = m1 < nums1.length ? nums1[m1] : +Infinity;
+
+    console.log('l1:', l1);
+    console.log('r1:', r1);
+
+    const m2 = k - m1;
+    const l2 = m2 > 0 ? nums2[m2 - 1] : -Infinity;
+    const r2 = m2 < nums2.length ? nums2[m2] : +Infinity;
+
+    console.log('m2:', m2);
+    console.log('l2:', l2);
+    console.log('r2:', r2);
+
+
+    const maxL = Math.max(l1, l2);
+    const minR = Math.min(r1, r2);
+    console.log('maxL:', maxL);
+    console.log('minR:', minR);
+
+    if (maxL <= minR) {
+      if (total % 2 === 0) {
+        return (maxL + minR) / 2
+      } else {
+        return minR;
+      }
+    } else if (r1 < l2) {
+      l = m1 + 1;
+    } else {
+      // console.log('r = m1 - 1');
+      r = m1 - 1;
+    }
+  }
+}
+
+
+function findMedianSortedArraysFink2(nums1: number[], nums2: number[]): number {
+  const m = nums1.length;
+  const n = nums2.length;
+
+  // 在两个数组中
+  const findK = (k: number) => {
+
+    let i = 0;
+    let j = 0;
+
+    while (true) {
+      console.log("k:", k)
+      console.log("i:", i)
+      console.log("j:", j)
+      if (i === m) {
+        return nums2[j + k - 1];
+      }
+      if (j === n) {
+        return nums1[i + k - 1];
+      }
+
+      if (k === 1) {
+        return Math.min(nums1[i], nums2[j]);
+      }
+
+      const half = Math.round(k / 2);
+      console.log('half:', half);
+
+      let i1 = (i + half < m ? i + half : m) - 1;
+      let j1 = (j + (k - half) < n ? j + (k - half) : n) - 1;
+      console.log('i1:', i1);
+      console.log('j1:', j1);
+
+      const iVal = nums1[i1];
+      const jVal = nums2[j1];
+
+      if (iVal > jVal) {
+        k -= j1 - j + 1;
+        j = j1 + 1;
+      } else {
+        k -= i1 - i + 1;
+        i = i1 + 1;
+      }
+    }
+  }
+  const half = Math.round((m + n) / 2);
+  if ((m + n) % 2 === 0) {
+    return (findK(half) + findK(half + 1)) / 2
+  } else {
+    return findK(half);
+  }
+}
+// console.log(findMedianSortedArraysFink2([0, 1, 3, 7], [4, 5, 6, 7]))
+// console.log(findMedianSortedArraysFink2([0], [6, 7, 8, 9]))
+
+// console.log(findMedianSortedArraysFink2([4, 5, 6, 8, 9], []))
+
+
+// console.log(findMedianSortedArraysFink2([-10, -9, -8], [1, 2]))
+
+
+console.log(findMedianSortedArraysFink2([0, 0, 0, 0, 0], [-1, 0, 0, 0, 0, 0, 1]))
