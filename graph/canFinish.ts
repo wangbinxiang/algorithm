@@ -146,13 +146,60 @@ function canFinish3(numCourses: number, prerequisites: number[][]): boolean {
   return finish === numCourses;
 };
 
-console.log(canFinish3(5, [[1, 4], [2, 4], [3, 1], [3, 2]]))  // true
 
-console.log(canFinish3(2, [[0, 1]])) // true
-console.log(canFinish3(2, [[1, 0]])) // true
-console.log(canFinish3(2, [[1, 0], [0, 1]])) // false
+function canFinish4(numCourses: number, prerequisites: number[][]): boolean {
+  const numDeps: number[] = Array(numCourses).fill(0);
+  const numDepList: number[][] = Array.from({ length: numCourses }, () => [])
 
-console.log(canFinish3(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
+  let zeroCount = 0;
+  for (const [course, pre] of prerequisites) {
+    numDeps[course]++;
+    numDepList[pre].push(course);
+  }
+
+  // console.log(numDeps);
+  // console.log(numDepList);
+
+  let zeroDeps: number[] = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (numDeps[i] === 0) {
+      zeroDeps.push(i)
+      zeroCount++;
+    }
+  }
+
+  while (zeroDeps.length) {
+    let tmp: number[] = [];
+    for (const num of zeroDeps) {
+      const depList = numDepList[num];
+      for (let i = 0; i < depList.length; i++) {
+        const num = depList[i];
+        numDeps[num]--
+        if (numDeps[num] === 0) {
+          tmp.push(num);
+          zeroCount++;
+        }
+      }
+    }
+    if (tmp.length > 0) {
+      zeroDeps = tmp;
+    } else {
+      break;
+    }
+  }
+
+
+
+  return numCourses === zeroCount;
+};
+
+console.log(canFinish4(5, [[1, 4], [2, 4], [3, 1], [3, 2]]))  // true
+
+console.log(canFinish4(2, [[0, 1]])) // true
+console.log(canFinish4(2, [[1, 0]])) // true
+console.log(canFinish4(2, [[1, 0], [0, 1]])) // false
+
+console.log(canFinish4(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
 
 
 

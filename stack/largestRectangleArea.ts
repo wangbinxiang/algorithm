@@ -212,9 +212,167 @@ function largestRectangleArea4(heights: number[]): number {
   return ans
 }
 
-console.log(largestRectangleArea4([2, 1, 5, 6, 2, 3]))
-console.log(largestRectangleArea4([2, 4]))
-console.log(largestRectangleArea4([2, 0, 2]))
-console.log(largestRectangleArea4([2, 1, 2]))
-console.log(largestRectangleArea4([4, 2, 0, 3, 2, 5]))
-console.log(largestRectangleArea4([0, 9]))
+
+function largestRectangleArea7(heights: number[]): number {
+  const stack: number[] = [-1];
+  let ans = -Infinity;
+  for (let i = 0; i < heights.length; i++) {
+    const num = heights[i];
+    while (stack.length > 1) {
+      const top = stack[stack.length - 1];
+      if (heights[top] > num) {
+        // 弹出top
+        stack.pop();
+        const width = i - stack[stack.length - 1] - 1;
+        const height = heights[top];
+        const area = width * height;
+        if (area > ans) {
+          ans = area;
+        }
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+  const latest = stack[stack.length - 1];
+  for (let i = 1; i < stack.length; i++) {
+    const width = latest - stack[i - 1];
+    const height = heights[stack[i]]
+    const area = width * height;
+    if (area > ans) {
+      ans = area;
+    }
+  }
+
+  return ans;
+};
+
+
+function largestRectangleArea8(heights: number[]): number {
+  const stack: number[] = [-1];
+  let ans = -Infinity;
+
+  for (let i = 0; i < heights.length; i++) {
+    // console.log('i:', i);
+    while (stack.length > 1) {
+      const top = stack[stack.length - 1];
+      const num = heights[top];
+      if (num > heights[i]) {
+        stack.pop();
+        const height = num;
+        const width = i - stack[stack.length - 1] - 1;
+        const area = width * height;
+        // console.log('area:', area, width, height, top);
+        if (area > ans) {
+          ans = area;
+        }
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+
+  // console.log(stack);
+  const latest = stack[stack.length - 1];
+  for (let i = stack.length - 1; i > 0; i--) {
+    const height = heights[stack[i]];
+    const width = latest - stack[i - 1];
+    const area = width * height;
+
+    console.log('area:', area, width, height, stack[i], stack[i - 1]);
+    if (area > ans) {
+      ans = area;
+    }
+  }
+
+  return ans;
+};
+
+
+function largestRectangleArea9(heights: number[]): number {
+  // 哨兵
+  let maxArea = 0;
+  const stack: number[] = [-1];
+  const n = heights.length;
+  for (let i = 0; i < n; i++) {
+    const val = heights[i];
+    while (stack.length > 1) {
+      const top = stack[stack.length - 1];
+      const topVal = heights[top];
+      if (topVal > val) {
+        stack.pop();
+        const width = i - stack[stack.length - 1] - 1;
+        const height = topVal;
+        const area = width * height;
+        if (area > maxArea) {
+          maxArea = area;
+        }
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+
+  console.log(stack);
+  const latest = stack[stack.length - 1];
+  while (stack.length > 1) {
+    const top = stack.pop();
+    const height = heights[top];
+    console.log("height:", height);
+    const width = latest - stack[stack.length - 1];
+    console.log("width:", width);
+    const area = width * height;
+    if (area > maxArea) {
+      maxArea = area;
+    }
+  }
+
+
+  return maxArea;
+};
+
+
+function largestRectangleArea10(heights: number[]): number {
+  // 哨兵
+  let maxArea = 0;
+  const stack: number[] = [-1];
+  heights.push(0);
+  const n = heights.length;
+  for (let i = 0; i < n; i++) {
+    const val = heights[i];
+    while (stack.length > 1) {
+      const top = stack[stack.length - 1];
+      const topVal = heights[top];
+      if (topVal > val) {
+        stack.pop();
+        const width = i - stack[stack.length - 1] - 1;
+        const height = topVal;
+        const area = width * height;
+        if (area > maxArea) {
+          maxArea = area;
+        }
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+  return maxArea;
+};
+
+// console.log(largestRectangleArea9([2, 1, 5, 6, 2, 3])) // 10
+// console.log(largestRectangleArea7([2, 4]))
+// console.log(largestRectangleArea7([2, 0, 2]))
+// console.log(largestRectangleArea8([2, 1, 2]))
+// console.log(largestRectangleArea9([4, 2, 0, 3, 2, 5])) // 6
+// console.log(largestRectangleArea7([0, 9]))
+// console.log(largestRectangleArea7([0]))
+// console.log(largestRectangleArea8([999, 999, 999, 999])) // 3996
+// console.log(largestRectangleArea8([1, 2, 3, 4, 5])) // 9
+
+console.log(largestRectangleArea9([5, 4, 1, 2])) // 8
+// console.log(largestRectangleArea8([0])) // 0
+

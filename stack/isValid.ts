@@ -60,3 +60,22 @@ function isValid(s: string): boolean {
 
   return stack.length === 0;
 };
+
+
+
+function isValid1(s: string): boolean {
+  const stack: string[] = [];
+  for (const c of s) {
+    if (mapping[c]) {
+      stack.push(c);
+    } else {
+      const pop = stack.pop();
+      if (mapping[pop] !== c) {
+        return false;
+      }
+    }
+  }
+
+
+  return stack.length === 0;
+};

@@ -266,9 +266,73 @@ function orangesRotting4(grid: number[][]): number {
   return total === 0 ? count : -1;
 };
 
-console.log(orangesRotting4([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
-console.log(orangesRotting4([[2, 1, 1], [1, 1, 1], [0, 1, 2]]))
-console.log(orangesRotting4([[2, 1, 1], [0, 1, 1], [1, 0, 1]]))
+
+function orangesRotting5(grid: number[][]): number {
+  let time = 0;
+  const m = grid.length;
+  const n = grid[0].length;
+
+
+  const check = (i: number, j: number): boolean => {
+    if (i < 0 || i === m || j < 0 || j === n || grid[i][j] !== 1) {
+      return false;
+    }
+    grid[i][j] = 2
+    return true;
+  }
+  let freshCount = 0;
+  const freshOrg: Set<string> = new Set();
+  let rotOrg: Set<string> = new Set();
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === 1) {
+        freshOrg.add(`${i},${j}`);
+        freshCount++;
+      } else if (grid[i][j] === 2) {
+        rotOrg.add(`${i},${j}`);
+      }
+    }
+  }
+  if (freshOrg.size === 0) {
+    return 0;
+  }
+  let rotCount = 0
+  // console.log(rotOrg)
+  while (rotOrg.size && rotCount < freshCount) {
+    time++;
+    // console.log(time)
+    const tmpRotOrg: Set<string> = new Set();
+    for (const rot of rotOrg) {
+      const [i, j] = rot.split(',').map(item => +item);
+      // console.log(i, j)
+      if (check(i + 1, j)) {
+        rotCount++;
+        tmpRotOrg.add(`${i + 1},${j}`);
+      }
+      if (check(i, j + 1)) {
+        rotCount++;
+        tmpRotOrg.add(`${i},${j + 1}`);
+      }
+      if (check(i - 1, j)) {
+        rotCount++;
+        tmpRotOrg.add(`${i - 1},${j}`);
+      }
+      if (check(i, j - 1)) {
+        rotCount++;
+        tmpRotOrg.add(`${i},${j - 1}`);
+      }
+    }
+    rotOrg = tmpRotOrg;
+  }
+
+
+
+  return rotCount === freshCount ? time : -1;
+};
+
+// console.log(orangesRotting4([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
+// console.log(orangesRotting5([[2, 1, 1], [1, 1, 1], [0, 1, 2]]))
+console.log(orangesRotting5([[2, 1, 1], [0, 1, 1], [1, 0, 1]]))
 
 
 

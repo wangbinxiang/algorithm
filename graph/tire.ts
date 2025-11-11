@@ -315,3 +315,59 @@ class Trie3 {
     return true;
   }
 }
+
+
+interface TrieNode4 {
+  end: boolean;
+  children: Record<string, TrieNode4>
+}
+
+class Trie4 {
+  trieNode: TrieNode4
+  constructor() {
+    this.trieNode = {
+      end: false,
+      children: {}
+    }
+  }
+
+  insert(word: string): void {
+    let trieNode = this.trieNode;
+    for (const char of word) {
+      if (trieNode.children[char]) {
+        trieNode = trieNode.children[char];
+      } else {
+        trieNode.children[char] = {
+          end: false,
+          children: {}
+        }
+        trieNode = trieNode.children[char]
+      }
+    }
+    trieNode.end = true;
+  }
+
+  search(word: string): boolean {
+    let trieNode = this.trieNode;
+    for (const char of word) {
+      if (trieNode.children[char]) {
+        trieNode = trieNode.children[char]
+      } else {
+        return false;
+      }
+    }
+    return trieNode.end;
+  }
+
+  startsWith(prefix: string): boolean {
+    let trieNode = this.trieNode;
+    for (const char of prefix) {
+      if (trieNode.children[char]) {
+        trieNode = trieNode.children[char]
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+}

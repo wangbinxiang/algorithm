@@ -353,5 +353,66 @@ function topKFrequent6(nums: number[], k: number): number[] {
   return result.slice(target).map(item => item[0]);
 }
 
-console.log(topKFrequent6([1, 1, 1, 2, 2, 3], 2))
+
+interface Item1 {
+  val: number;
+  total: number;
+}
+
+function topKFrequent7(nums: number[], k: number): number[] {
+
+  const map = new Map<number, number>();
+
+  for (const num of nums) {
+    if (map.has(num)) {
+      map.set(num, map.get(num) + 1);
+    } else {
+      map.set(num, 1);
+    }
+  }
+
+  const arr: Item1[] = []
+
+  map.forEach((val, key) => {
+    arr.push({ val: key, total: val });
+  })
+  const target = arr.length - k;
+  console.log(arr)
+  let left = 0;
+  let right = arr.length - 1;
+  while (true) {
+    console.log('left:', left);
+    const pivot = arr[left].total;
+    let l = left + 1;
+    let r = right;
+    while (l <= r) {
+      while (l <= r && pivot > arr[l].total) {
+        l++;
+      }
+      while (l <= r && pivot < arr[r].total) {
+        r--;
+      }
+      if (l < r) {
+        [arr[l], arr[r]] = [arr[r], arr[l]];
+        l++;
+        r--;
+      } else {
+        break;
+      }
+    }
+    [arr[left], arr[r]] = [arr[r], arr[left]];
+    console.log('r:', r);
+    if (r === target) {
+      break;
+    } else if (r > target) {
+      right = r - 1;
+    } else {
+      left = r + 1;
+    }
+  }
+  console.log(arr)
+  return [];
+};
+
+console.log(topKFrequent7([1, 1, 1, 2, 2, 3], 2))
 // console.log(topKFrequent3([1], 1))

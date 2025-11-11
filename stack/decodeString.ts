@@ -139,6 +139,34 @@ function decodeString3(s: string): string {
   return str;
 };
 
+function decodeString4(s: string): string {
+  let ans = "";
+  const numStack: number[] = [];
+  const strStack: string[] = [];
+  let numStr: string = "";
+  for (const c of s) {
+    if (c === '[') {
+      numStack.push(+numStr);
+      strStack.push(ans);
+      ans = ""
+      numStr = ""
+    } else if (c === ']') {
+      const popNum = numStack.pop();
+      const popStr = strStack.pop();
+      // console.log(']', ans, popNum, popStr, Array(popNum).fill(ans));
+      ans = popStr + Array(popNum).fill(ans).join("");
+      // console.log(Array(popNum).map(() => ans).join(""), ans)
+    } else if (!isNaN(+c)) {
+      numStr += c;
+    } else {
+      ans += c;
+      // console.log(ans, c)
+    }
+  }
+  return ans;
+};
+
+
 // console.log(decodeString('3[a]2[bc]'))
 // console.log(decodeString1('3[a2[c]]'))
 // console.log(decodeString('2[abc]3[cd]ef'))

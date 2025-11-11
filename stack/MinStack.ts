@@ -188,6 +188,56 @@ class MinStack3 {
     return this.min;
   }
 }
+
+
+
+class MinStack4 {
+  stack: number[] = [];
+  min: number;
+  constructor() {
+  }
+
+  push(val: number): void {
+    if (this.stack.length === 0) {
+      this.stack.push(0);
+      this.min = val;
+    } else {
+      const diff = val - this.min;
+      if (diff < 0) {
+        this.min = val;
+      }
+      this.stack.push(diff);
+    }
+  }
+
+  pop(): void {
+    const top = this.stack.pop();
+    if (top < 0) {
+      this.min -= top;
+    }
+  }
+
+  top(): number {
+    const top = this.stack[this.stack.length - 1];
+    if (top < 0) {
+      return this.min;
+    }
+    return top + this.min;
+  }
+
+  getMin(): number {
+    return this.min;
+  }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * var obj = new MinStack()
+ * obj.push(val)
+ * obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.getMin()
+ */
 /**
 * Your MinStack object will be instantiated and called as such:
 * var obj = new MinStack()

@@ -584,6 +584,21 @@ class MedianFinder5 {
     return this.heapMin[0];
   }
 }
+
+
+class MedianFinder6 {
+  constructor() {
+
+  }
+
+  addNum(num: number): void {
+
+  }
+
+  findMedian(): number {
+    return 0;
+  }
+}
 const medianFinder = new MedianFinder5();
 // medianFinder.addNum(0);    // arr = [0]
 // medianFinder.addNum(1);    // arr = [1]

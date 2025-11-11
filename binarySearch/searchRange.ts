@@ -259,6 +259,99 @@ function searchRange4(nums: number[], target: number): number[] {
   return [min, max];
 };
 
-console.log(searchRange3([5, 7, 7, 8, 8, 10], 8)) // [3, 4]
-console.log(searchRange3([5, 7, 7, 8, 8, 10], 5)) // [-1, -1]
-console.log(searchRange3([], 0))
+
+function searchRange5(nums: number[], target: number): number[] {
+  const ans: number[] = [];
+  const n = nums.length;
+
+  let l = 0;
+  let r = n - 1;
+  let left = n;
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num === target) {
+      if (m < left) {
+        left = m;
+      }
+      r = m - 1;
+    }
+    else if (num > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+  if (left === n) {
+    return [-1, -1];
+  }
+  r = n - 1;
+  let right = -1;
+  while (l <= r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const num = nums[m];
+    if (num === target) {
+      if (m > right) {
+        right = m;
+      }
+      l = m + 1;
+    } else if (num > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+
+
+
+  return [left, right];
+};
+
+
+function searchRange6(nums: number[], target: number): number[] {
+  let l = 0;
+  let r = nums.length - 1;
+  let leftPos = nums.length;
+
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const val = nums[m];
+
+    if (val === target) {
+      leftPos = m;
+      r = m - 1;
+    } else if (val > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  };
+
+  if (leftPos === nums.length) {
+    return [-1, -1];
+  }
+
+  r = nums.length - 1;
+
+  let rightPos = -1;
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const val = nums[m];
+
+    if (val === target) {
+      rightPos = m;
+      l = m + 1;
+    } else if (val > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  };
+
+
+  return [leftPos, rightPos];
+};
+
+console.log(searchRange6([5, 7, 7, 8, 8, 10], 8)) // [3, 4]
+console.log(searchRange6([5, 7, 7, 8, 8, 10], 5)) // [-1, -1]
+console.log(searchRange6([], 0))

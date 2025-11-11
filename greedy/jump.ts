@@ -178,11 +178,53 @@ function jump6(nums: number[]): number {
   return step
 }
 
-console.log(jump6([2, 3, 1, 1, 4]))
-console.log(jump6([2, 3, 0, 1, 4]))
-console.log(jump6([1, 3, 2]))
-console.log(jump6([1, 2, 1, 1, 1]))
-console.log(jump6([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 0]))
-console.log(jump6([1, 2]))
-console.log(jump6([3, 2, 1]))
-console.log(jump6([0]))
+
+function jump7(nums: number[]): number {
+  const n = nums.length - 1;
+  if (n === 0) {
+    return 0;
+  }
+  let i = 0;
+  let end = 0;
+  let step = 0;
+  while (true) {
+    console.log('s:', i);
+    console.log('end:', end);
+    console.log('i <= end && nums[i]:', i <= end && nums[i]);
+    let maxPos = end;
+    while (i <= end) {
+      const pos = i + nums[i];
+      console.log('i:', i);
+      console.log('pos:', pos);
+      if (pos > maxPos) {
+        maxPos = pos;
+        if (maxPos >= n) {
+          break;
+        }
+      }
+      i++;
+    }
+    step++;
+    console.log('maxPos:', maxPos);
+    if (maxPos >= n) {
+      break;
+    }
+    if (maxPos > end) {
+      i = end + 1;
+      end = maxPos;
+    }
+  }
+
+  return step;
+};
+
+// console.log(jump7([2, 3, 1, 1, 4]))
+// console.log(jump7([2, 3, 0, 1, 4]))
+// console.log(jump7([1, 3, 2]))
+// console.log(jump6([1, 2, 1, 1, 1]))
+// console.log(jump7([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 0]))
+// console.log(jump7([1, 2]))
+// console.log(jump7([3, 2, 1]))
+// console.log(jump7([0]))
+console.log(jump7([2, 0, 2, 0, 1]))
+

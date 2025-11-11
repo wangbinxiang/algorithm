@@ -78,5 +78,27 @@ function maxProfit4(prices: number[]): number {
   return maxProfit
 }
 
+
+function maxProfit5(prices: number[]): number {
+  let ans = 0;
+  // const copyPrices = [...prices];
+  let start = prices[0];
+  for (let i = 1; i < prices.length; i++) {
+    const price = prices[i];
+    if (start < price) {
+      const profit = price - start;
+      if (ans < profit) {
+        ans = profit;
+      }
+    } else {
+      start = price;
+    }
+  }
+
+
+
+  return ans;
+};
+
 console.log(maxProfit4([7, 1, 5, 3, 6, 4])) // 5
 console.log(maxProfit4([7, 6, 4, 3, 1])) // 0

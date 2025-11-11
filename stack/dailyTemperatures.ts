@@ -15,7 +15,52 @@ function dailyTemperatures(temperatures: number[]): number[] {
   return ans;
 };
 
-console.log(dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]))
-console.log(dailyTemperatures([30, 40, 50, 60]))
-console.log(dailyTemperatures([30, 60, 90]))
+function dailyTemperatures1(temperatures: number[]): number[] {
+  const n = temperatures.length;
+  const ans: number[] = Array(n).fill(0);
+  const stack: number[] = [];
+
+  for (let i = 0; i < temperatures.length; i++) {
+    const tmp = temperatures[i];
+    while (stack.length) {
+      const top = stack[stack.length - 1];
+      if (temperatures[top] < tmp) {
+        stack.pop();
+        ans[top] = (i - top)
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+  return ans;
+};
+
+function dailyTemperatures2(temperatures: number[]): number[] {
+
+  const n = temperatures.length;
+  const ans: number[] = Array(n).fill(0);
+  const stack: number[] = [];
+  for (let i = 0; i < n; i++) {
+    const temp = temperatures[i];
+    while (stack.length) {
+      const top = stack[stack.length - 1];
+      const preTemp = temperatures[top];
+      if (temp > preTemp) {
+        ans[top] = i - top;
+      } else {
+        break;
+      }
+      stack.pop();
+    }
+    stack.push(i);
+  }
+
+
+  return ans;
+};
+
+console.log(dailyTemperatures2([73, 74, 75, 71, 69, 72, 76, 73]))
+console.log(dailyTemperatures2([30, 40, 50, 60]))
+console.log(dailyTemperatures2([30, 60, 90]))
 

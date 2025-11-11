@@ -191,13 +191,82 @@ function search6(nums: number[], target: number): number {
   return -1;
 };
 
-console.log(search6([4, 5, 6, 7, 0, 1, 2], 0)) // 4
-console.log(search5([4, 5, 6, 7, 0, 1, 2], 3)) // -1
-console.log(search5([1], 0)) // -1
-console.log(search5([1, 3], 3)) // 1
-console.log(search5([3, 1], 1)) // 1
-console.log(search5([5, 1, 3], 3)) // 2
-console.log(search5([5, 1, 3], 5)) // 0
+function search7(nums: number[], target: number): number {
+  const n = nums.length;
+  let l = 0;
+  let r = n - 1;
 
-console.log(search5([4, 5, 6, 7, 0, 1, 2], 6)) // 2
-console.log(search5([4, 5, 6, 7, 8, 1, 2, 3], 8)) // 4
+  while (l < r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num > nums[n - 1]) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  // console.log(l);
+  if (target > nums[n - 1]) {
+    l = 0;
+    r = r - 1;
+  } else {
+    r = n - 1;
+  }
+
+  // console.log(l, r);
+
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num === target) {
+      return m;
+    } else if (num > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+  return - 1;
+};
+
+function search8(nums: number[], target: number): number {
+  const right = nums.length - 1;
+  let l = 0;
+  let r = right;
+
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const val = nums[m];
+    if (val === target) {
+      return m;
+    } else if (val > target) {
+      if (target >= nums[l] || val < nums[r]) {
+        r = m - 1;
+      } else {
+        l = m + 1;
+      }
+    } else {
+      if (val > nums[r] || target <= nums[r]) {
+        l = m + 1;
+      } else {
+        r = m - 1;
+      }
+    }
+  }
+
+
+  return -1;
+};
+
+console.log(search8([4, 5, 6, 7, 0, 1, 2], 0)) // 4
+console.log(search8([4, 5, 6, 7, 0, 1, 2], 3)) // -1
+console.log(search8([1], 0)) // -1
+console.log(search8([1, 3], 3)) // 1
+console.log(search8([3, 1], 1)) // 1
+console.log(search8([5, 1, 3], 3)) // 2
+console.log(search8([5, 1, 3], 5)) // 0
+
+console.log(search8([4, 5, 6, 7, 0, 1, 2], 6)) // 2
+console.log(search8([4, 5, 6, 7, 8, 1, 2, 3], 8)) // 4
+
+console.log(search8([5, 1, 2, 3, 4], 1)) // 1

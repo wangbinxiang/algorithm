@@ -177,9 +177,45 @@ function findMin6(nums: number[]): number {
 };
 
 
-console.log(findMin6([3, 4, 5, 1, 2])) // 1
-console.log(findMin6([4, 5, 6, 7, 0, 1, 2])) // 0
-console.log(findMin6([11, 13, 15, 17])) // 11
-console.log(findMin6([5, 1, 2, 3, 4])) // 1
+function findMin7(nums: number[]): number {
+  let l = 0;
+  let r = nums.length - 1;
+  while (l < r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num > nums[r]) {
+      l = m + 1;
 
-console.log(findMin6([3, 1, 2])) // 1
+    } else {
+      r = m;
+    }
+  }
+  return nums[l];
+};
+
+
+function findMin8(nums: number[]): number {
+  const right = nums.length - 1;
+  let l = 0;
+  let r = right;
+
+  while (l < r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const val = nums[m];
+    if (val <= nums[right]) {
+      r = m;
+    } else {
+      l = m + 1
+    }
+  }
+
+  return nums[l];
+};
+
+
+console.log(findMin8([3, 4, 5, 1, 2])) // 1
+console.log(findMin8([4, 5, 6, 7, 0, 1, 2])) // 0
+console.log(findMin8([11, 13, 15, 17])) // 11
+console.log(findMin8([5, 1, 2, 3, 4])) // 1
+
+console.log(findMin8([3, 1, 2])) // 1

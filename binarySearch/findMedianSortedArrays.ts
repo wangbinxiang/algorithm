@@ -1025,8 +1025,105 @@ function findMedianSortedArraysFink2(nums1: number[], nums2: number[]): number {
     return findK(half);
   }
 }
-// console.log(findMedianSortedArraysFink2([0, 1, 3, 7], [4, 5, 6, 7]))
-// console.log(findMedianSortedArraysFink2([0], [6, 7, 8, 9]))
+
+function findMedianSortedArraysFindK(nums1: number[], nums2: number[]): number {
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+
+  const findK = (k: number): number => {
+
+    let l1 = 0;
+    let l2 = 0;
+
+    while (true) {
+      if (l1 === m) {
+        return nums2[l2 + k - 1];
+      }
+
+      if (l2 === n) {
+        return nums1[l1 + k - 1];
+      }
+
+      if (k === 1) {
+        return Math.min(nums1[l1], nums2[l2]);
+      }
+
+      const half = Math.floor(k / 2);
+      const l1n = (l1 + half < m ? l1 + half : m) - 1;
+      const l2n = (l2 + k - half < n ? l2 + k - half : n) - 1;
+
+      const val1 = nums1[l1n];
+      const val2 = nums2[l2n];
+
+      if (val1 < val2) {
+        k -= l1n - l1 + 1;
+        l1 = l1n + 1;
+      } else {
+        k -= l2n - l2 + 1;
+        l2 = l2n + 1;
+      }
+    }
+  }
+  const k = Math.round(total / 2);
+  if (total % 2 === 0) {
+    return (findK(k) + findK(k + 1)) / 2
+  } else {
+    return findK(k);
+  }
+};
+
+function findMedianSortedArraysGroup4(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    [nums1, nums2] = [nums2, nums1];
+  }
+  const m = nums1.length;
+  const n = nums2.length;
+
+  let l = 0;
+  let r = m;
+  const half = Math.round((m + n) / 2);
+  console.log(half)
+
+  while (true) {
+    const mid = Math.floor((r - l) / 2) + l;
+    console.log('mid: ', mid);
+
+    const l1 = mid > 0 ? nums1[mid - 1] : -Infinity;
+    const r1 = mid < m ? nums1[mid] : +Infinity;
+
+    console.log('l1:', l1);
+    console.log('r1:', r1);
+
+
+    const mid2 = half - mid;
+    const l2 = mid2 > 0 ? nums2[mid2 - 1] : -Infinity;
+    const r2 = mid2 < n ? nums2[mid2] : +Infinity;
+
+    console.log('l2:', l2);
+    console.log('r2:', r2);
+
+
+    const lMaxVal = Math.max(l1, l2);
+    const rMinVal = Math.min(r1, r2);
+    if (lMaxVal <= rMinVal) {
+      // 找到中间位置
+      if ((m + n) % 2 === 0) {
+        return (lMaxVal + rMinVal) / 2;
+      } else {
+        return lMaxVal;
+      }
+    } else if (l1 > r2) {
+      r = mid - 1;
+    } else {
+      l = mid + 1;
+    }
+  }
+};
+
+
+console.log(findMedianSortedArraysGroup4([0, 1, 2], [4, 5, 6, 7]))
+// console.log(findMedianSortedArraysGroup4([0], [6, 7, 8, 9]))
 
 // console.log(findMedianSortedArraysFink2([4, 5, 6, 8, 9], []))
 
@@ -1034,4 +1131,4 @@ function findMedianSortedArraysFink2(nums1: number[], nums2: number[]): number {
 // console.log(findMedianSortedArraysFink2([-10, -9, -8], [1, 2]))
 
 
-console.log(findMedianSortedArraysFink2([0, 0, 0, 0, 0], [-1, 0, 0, 0, 0, 0, 1]))
+// console.log(findMedianSortedArraysFink2([0, 0, 0, 0, 0], [-1, 0, 0, 0, 0, 0, 1]))
