@@ -125,6 +125,23 @@ function canJump5(nums: number[]): boolean {
   return maxPox >= n;
 };
 
+
+function canJump6(nums: number[]): boolean {
+  let max = 0;
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    if (i <= max) {
+      const num = i + nums[i];
+      if (num > max) {
+        max = num;
+      }
+    } else {
+      return false;
+    }
+  }
+  return true;
+};
+
 console.log(canJump5([2, 3, 1, 1, 4]))
 console.log(canJump5([3, 2, 1, 0, 4]))
 console.log(canJump5([0]))

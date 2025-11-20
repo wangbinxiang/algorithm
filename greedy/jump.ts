@@ -218,13 +218,44 @@ function jump7(nums: number[]): number {
   return step;
 };
 
+
+function jump8(nums: number[]): number {
+  let step = 0;
+  const n = nums.length;
+  const target = n - 1;
+  let maxPos = 0;
+
+  let i = 0;
+  while (maxPos < target) {
+    let tmpMaxPos = maxPos;
+    step++;
+    while (i <= maxPos) {
+
+      const pos = i + nums[i];
+      console.log(i, pos)
+      if (pos >= target) {
+        break;
+      }
+      if (pos > tmpMaxPos) {
+        tmpMaxPos = pos;
+      }
+      i++;
+
+    }
+
+    // console.log('tmpMaxPos:', tmpMaxPos)
+    maxPos = tmpMaxPos;
+  }
+  return step;
+};
+
 // console.log(jump7([2, 3, 1, 1, 4]))
-// console.log(jump7([2, 3, 0, 1, 4]))
+console.log(jump8([2, 3, 0, 1, 4]))
 // console.log(jump7([1, 3, 2]))
 // console.log(jump6([1, 2, 1, 1, 1]))
 // console.log(jump7([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 0]))
 // console.log(jump7([1, 2]))
 // console.log(jump7([3, 2, 1]))
 // console.log(jump7([0]))
-console.log(jump7([2, 0, 2, 0, 1]))
+// console.log(jump7([2, 0, 2, 0, 1]))
 

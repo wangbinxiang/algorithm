@@ -122,7 +122,7 @@ function majorityElement3(nums: number[]): number {
 
 
 // 摩尔投票法
-function majorityElement4(nums: number[]): number {
+function majorityElement6(nums: number[]): number {
   let ans = NaN;
   let count = 0;
 
@@ -171,7 +171,28 @@ function majorityElement5(nums: number[]): number {
 // console.log(majorityElement3([3, 2, 3, 4, 4, 4, 4]))
 // console.log(majorityElement3([2, 2, 1, 1, 1, 2, 2, 1, 1]))
 
-console.log(majorityElement4([6, 5, 5]))
+
+function majorityElement7(nums: number[]): number {
+  let ans = nums[0];
+  let count = 1;
+  for (let i = 1; i < nums.length; i++) {
+    const num = nums[i];
+    if (num === ans) {
+      count++;
+    } else {
+      count--;
+      if (count === 0) {
+        ans = num;
+        count = 1;
+      }
+    }
+  }
+
+
+  return ans;
+};
+
+console.log(majorityElement7([6, 5, 5]))
 
 
 // 投票抵消

@@ -95,15 +95,17 @@ function nextPermutation2(nums: number[]): void {
       latest = i;
     }
   }
-  // console.log('preMin:', preMin);
-  // console.log('latest:', latest);
+  console.log('preMin:', preMin);
+  console.log('latest:', latest);
   if (preMin !== -1) {
     // preMin和 latest 交互位置
     [nums[preMin], nums[latest]] = [nums[latest], nums[preMin]];
+    console.log(nums);
     let l = preMin + 1;
     let r = nums.length - 1;
     while (l < r) {
       [nums[l], nums[r]] = [nums[r], nums[l]];
+      console.log(nums);
       l++;
       r--;
     }
@@ -119,19 +121,50 @@ function nextPermutation2(nums: number[]): void {
   }
 };
 
+function nextPermutation3(nums: number[]): void {
+  let preMin = -1;
+  const n = nums.length;
+  let latest = n;
+  for (let i = 1; i < n; i++) {
+    if (nums[i] > nums[i - 1]) {
+      preMin = i - 1;
+      latest = i
+    } else if (preMin > -1 && nums[i] > nums[preMin]) {
+      latest = i
+    }
+  }
+  // console.log("preMin:", preMin);
+  // console.log("latest:", latest);
+  let l = 0;
+  let r = n - 1;
+  if (preMin !== - 1) {
+    [nums[preMin], nums[latest]] = [nums[latest], nums[preMin]];
+    l = preMin + 1;
+  }
+  while (l < r) {
+    [nums[l], nums[r]] = [nums[r], nums[l]];
+    l++;
+    r--;
+  }
+};
+
 
 export const arr1 = [1, 2, 3]
-nextPermutation2(arr1)
+nextPermutation3(arr1)
 console.log(arr1) //[1,3,2]
 
 const arr2 = [3, 2, 1]
-nextPermutation2(arr2)
+nextPermutation3(arr2)
 console.log(arr2) // [1, 2, 3]
 
-const arr3 = [1, 1, 5]
-nextPermutation2(arr3)
+const arr3 = [1, 1, 5];
+nextPermutation3(arr3)
 console.log(arr3) // [1, 5, 1]
 
 const arr4 = [2, 3, 1]
-nextPermutation2(arr4)
+nextPermutation3(arr4)
 console.log(arr4) // [3, 1, 2]
+
+const arr5 = [1, 3, 4, 2]
+nextPermutation3(arr5)
+console.log(arr5) // [1, 4, 2, 3]

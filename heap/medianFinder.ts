@@ -586,41 +586,159 @@ class MedianFinder5 {
 }
 
 
-class MedianFinder6 {
-  constructor() {
+// 维护一个大顶堆，一个小顶堆
+// 保证小顶堆数量等于或者大于大顶堆数量
+// 如果两个堆数量一样，并且新数小于大顶堆堆顶，将新数写入大顶堆, 将大顶堆堆顶弹出写入小顶堆，否则直接写入小顶堆
+// 如果小顶堆数量大，将新数写入小顶堆，然后弹出小顶堆堆顶，写入大顶堆
 
+
+class Heap6 {
+  heap: number[] = [];
+
+  constructor(private compare: (a: number, b: number) => boolean) {
+  }
+
+  size(): number {
+    return this.heap.length;
+  }
+
+  top(): number {
+    return this.heap[0];
+  }
+
+  // 将堆顶和堆尾交换，然后弹出堆尾，然后堆顶开始向下比较
+  pop(): number {
+    const top = this.top();
+    const pop = this.heap.pop();
+    if (this.size() > 0 && pop !== top) {
+      this.heap[0] = pop;
+      let i = 0;
+      const n = this.size();
+      while (i < n) {
+        let pos = i;
+        const left = i * 2 + 1;
+        const right = i * 2 + 2;
+        if (left < n && this.compare(this.heap[pos], this.heap[left])) {
+          pos = left;
+        }
+        if (right < n && this.compare(this.heap[pos], this.heap[right])) {
+          pos = right;
+        }
+        if (i !== pos) {
+          [this.heap[i], this.heap[pos]] = [this.heap[pos], this.heap[i]];
+          i = pos;
+        } else {
+          break;
+        }
+      }
+    }
+    return top;
+  }
+
+  // 添加到堆尾，开始向上比较
+  add(num: number) {
+    this.heap.push(num);
+    let i = this.heap.length - 1;
+    while (i > 0) {
+      const parent = Math.round(i / 2) - 1;
+      if (this.compare(this.heap[parent], num)) {
+        [this.heap[parent], this.heap[i]] = [this.heap[i], this.heap[parent]];
+        i = parent;
+      } else {
+        break;
+      }
+    }
+  }
+
+}
+
+class MedianFinder6 {
+  private minHeap: Heap6;
+  private maxHeap: Heap6;
+  constructor() {
+    this.minHeap = new Heap6((a: number, b: number) => a > b);
+    this.maxHeap = new Heap6((a: number, b: number) => a < b);
   }
 
   addNum(num: number): void {
-
+    if (this.minHeap.size() === 0) {
+      this.minHeap.add(num)
+    } else {
+      if (this.minHeap.size() === this.maxHeap.size()) {
+        if (num < this.maxHeap.top()) {
+          this.maxHeap.add(num);
+          // console.log('this.maxHeap.add(num)', this.maxHeap.heap)
+          const pop = this.maxHeap.pop();
+          this.minHeap.add(pop);
+        } else {
+          this.minHeap.add(num);
+        }
+      } else {
+        this.minHeap.add(num);
+        const pop = this.minHeap.pop();
+        this.maxHeap.add(pop);
+      }
+    }
   }
 
   findMedian(): number {
-    return 0;
+    // console.log('min', this.minHeap.heap);
+    // console.log('max', this.maxHeap.heap);
+    if (this.minHeap.size() === this.maxHeap.size()) {
+      return (this.minHeap.top() + this.maxHeap.top()) / 2;
+    } else {
+      return this.minHeap.top();
+    }
   }
 }
-const medianFinder = new MedianFinder5();
+const medianFinder = new MedianFinder6();
+
+
+medianFinder.addNum(6);
+console.log(medianFinder.findMedian()); // 6
+medianFinder.addNum(10);
+console.log(medianFinder.findMedian()); // 8
+medianFinder.addNum(2);
+console.log(medianFinder.findMedian()); // 6
+medianFinder.addNum(6);
+console.log(medianFinder.findMedian()); // 6
+medianFinder.addNum(5);
+console.log(medianFinder.findMedian()); // 6
+medianFinder.addNum(0);
+console.log(medianFinder.findMedian()); // 5.5
+medianFinder.addNum(6);
+console.log(medianFinder.findMedian()); // 6
+medianFinder.addNum(3);
+console.log(medianFinder.findMedian()); // 5.5
+medianFinder.addNum(1);
+console.log(medianFinder.findMedian()); // 5
+medianFinder.addNum(0);
+console.log(medianFinder.findMedian()); // 4
+medianFinder.addNum(0);
+console.log(medianFinder.findMedian()); // 3
+
+
 // medianFinder.addNum(0);    // arr = [0]
 // medianFinder.addNum(1);    // arr = [1]
 // console.log(medianFinder.findMedian()); // return 0.5
 // medianFinder.addNum(2);    // arr = [0, 1, 2]
 // console.log(medianFinder.findMedian()); // return 1 
 // medianFinder.addNum(3);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 1.5
 // medianFinder.addNum(4);    // arr[1, 2, 3]
 // console.log(medianFinder.findMedian()); // return 2.0
 // medianFinder.addNum(5);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 2.5
 // medianFinder.addNum(6);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 3
 // medianFinder.addNum(7);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 3.5
 // medianFinder.addNum(8);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 4
 // medianFinder.addNum(9);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 4.5
 // medianFinder.addNum(10);    // arr[1, 2, 3]
-// console.log(medianFinder.findMedian()); // return 2.0
+// console.log(medianFinder.findMedian()); // return 5
 
 // medianFinder.addNum(-49990);    // arr[1, 2, 3]
 // console.log(medianFinder.findMedian()); // return 2.0
@@ -633,13 +751,13 @@ const medianFinder = new MedianFinder5();
 // medianFinder.addNum(-50000);    // arr[1, 2, 3]
 // console.log(medianFinder.findMedian()); // return 2.0
 
-medianFinder.addNum(-1);    // arr = [0]
-console.log(medianFinder.findMedian()); // -1
-medianFinder.addNum(-2);    // arr = [0]
-console.log(medianFinder.findMedian()); // -1.5
-medianFinder.addNum(-3);    // arr = [0]
-console.log(medianFinder.findMedian()); // -2
-medianFinder.addNum(-4);    // arr = [0]
-console.log(medianFinder.findMedian()); // -2.5
-medianFinder.addNum(-5);    // arr = [0]
-console.log(medianFinder.findMedian()); // -3
+// medianFinder.addNum(-1);    // arr = [0]
+// console.log(medianFinder.findMedian()); // -1
+// medianFinder.addNum(-2);    // arr = [0]
+// console.log(medianFinder.findMedian()); // -1.5
+// medianFinder.addNum(-3);    // arr = [0]
+// console.log(medianFinder.findMedian()); // -2
+// medianFinder.addNum(-4);    // arr = [0]
+// console.log(medianFinder.findMedian()); // -2.5
+// medianFinder.addNum(-5);    // arr = [0]
+// console.log(medianFinder.findMedian()); // -3

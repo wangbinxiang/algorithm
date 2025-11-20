@@ -39,6 +39,15 @@ function singleNumber3(nums: number[]): number {
   return ans;
 };
 
+
+function singleNumber4(nums: number[]): number {
+  let ans = 0;
+  for (const num of nums) {
+    ans ^= num;
+  }
+  return ans;
+};
+
 console.log(singleNumber([2, 2, 1]));
 console.log(singleNumber([4, 1, 2, 1, 2]));
 console.log(singleNumber([1]));

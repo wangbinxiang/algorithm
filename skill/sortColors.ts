@@ -107,10 +107,6 @@ function sortColors3(nums: number[]): void {
   }
 }
 
-
-
-
-
 // 计数解法
 
 function sortColors4(nums: number[]): void {
@@ -210,11 +206,33 @@ function sortColors7(nums: number[]): void {
     }
 };
 
+
+function sortColors8(nums: number[]): void {
+    let l = 0;
+    let r = nums.length - 1;
+    let i = 0;
+    while (i <= r) {
+      const num = nums[i];
+      if (num === 2) {
+        [nums[i], nums[r]] = [nums[r], nums[i]];
+        r--;
+      } else if (num === 0){
+        if (i !== l) {
+          [nums[i], nums[l]] = [nums[l], nums[i]];
+        }
+        i++;
+        l++;
+      } else { // num === 
+        i++
+      }
+    }
+};
+
 export const arr1 = [2, 0, 2, 1, 1, 0]
-sortColors7(arr1) // [0, 0, 1, 1, 2, 2]
+sortColors8(arr1) // [0, 0, 1, 1, 2, 2]
 console.log(arr1)
 const arr2 = [2, 0, 1]
-sortColors7(arr2) // [0, 1, 2]
+sortColors8(arr2) // [0, 1, 2]
 console.log(arr2)
 
 // const arr3 = [1,2,2,2,2,0,0,0,1,1];

@@ -1122,7 +1122,104 @@ function findMedianSortedArraysGroup4(nums1: number[], nums2: number[]): number 
 };
 
 
-console.log(findMedianSortedArraysGroup4([0, 1, 2], [4, 5, 6, 7]))
+
+function findMedianSortedArraysGroup5(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    [nums1, nums2] = [nums2, nums1];
+  }
+
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+  const half = Math.round(total / 2);
+
+  let l = 0;
+  let r = m;
+
+  while (true) {
+    const mid = Math.floor((r - l) / 2) + l;
+
+    const l1 = mid > 0 ? nums1[mid - 1] : -Infinity;
+    const r1 = mid < m ? nums1[mid] : +Infinity;
+
+    const mid2 = half - mid;
+    const l2 = mid2 > 0 ? nums2[mid2 - 1] : -Infinity;
+    const r2 = mid2 < n ? nums2[mid2] : +Infinity;
+
+    const maxL = Math.max(l1, l2);
+    const minR = Math.min(r1, r2);
+
+    if (maxL <= minR) {
+      if (total % 2 === 0) {
+        return (maxL + minR) / 2;
+      } else {
+        return maxL;
+      }
+    } else if (l1 > r2) {
+      r = mid - 1;
+    } else {
+      l = mid + 1;
+    }
+  }
+};
+
+
+
+function findMedianSortedArraysFindK3(nums1: number[], nums2: number[]): number {
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+
+
+  const findK = (k: number): number => {
+
+
+    let l1 = 0;
+    let l2 = 0;
+
+    while (true) {
+
+      if (l1 === m) {
+        return nums2[l2 + k - 1];
+      }
+
+      if (l2 === n) {
+        return nums1[l1 + k - 1];
+      }
+
+      if (k === 1) {
+        return Math.min(nums1[l1], nums2[l2]);
+      }
+
+
+      const half = Math.round(k / 2);
+
+      const l1New = (l1 + half < m ? l1 + half : m) - 1;
+      const l2New = (l2 + k - half < n ? l2 + k - half : n) - 1;
+
+      const l1Val = nums1[l1New];
+      const l2Val = nums2[l2New];
+
+      if (l1Val < l2Val) {
+        k -= l1New - l1 + 1;
+        l1 = l1New + 1;
+      } else {
+        k -= l2New - l2 + 1;
+        l2 = l2New + 1;
+      }
+    }
+  }
+  const half = Math.round(total / 2);
+  if (total % 2 === 0) {
+    const left = findK(half);
+    const right = findK(half + 1);
+    return (left + right) / 2;
+  } else {
+    return findK(half);
+  }
+};
+
+console.log(findMedianSortedArraysFindK3([0, 1, 2, 3], [4, 5, 6, 7]))
 // console.log(findMedianSortedArraysGroup4([0], [6, 7, 8, 9]))
 
 // console.log(findMedianSortedArraysFink2([4, 5, 6, 8, 9], []))
