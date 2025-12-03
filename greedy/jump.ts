@@ -249,6 +249,26 @@ function jump8(nums: number[]): number {
   return step;
 };
 
+function jump9(nums: number[]): number {
+  const n = nums.length;
+  let step = 0;
+  let maxPos = 0;
+  let pos = 0;
+  for (let i = 0; pos < n - 1; i++) {
+    const end = i + nums[i];
+    if (maxPos < end) {
+      maxPos = end;
+    }
+    if (i === pos) {
+      i++;
+      pos = maxPos;
+    }
+  }
+
+
+  return step;
+}
+
 // console.log(jump7([2, 3, 1, 1, 4]))
 console.log(jump8([2, 3, 0, 1, 4]))
 // console.log(jump7([1, 3, 2]))

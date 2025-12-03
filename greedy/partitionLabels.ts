@@ -241,8 +241,34 @@ function partitionLabels6(s: string): number[] {
   return ans;
 };
 
-console.log(partitionLabels6('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
-// console.log(partitionLabels6('eccbbbbdec'))// [10]
-// console.log(partitionLabels6('caedbdedda'))// [1, 9]
-// console.log(partitionLabels6('jybmxfgseq'))// [1,1,1,1,1,1,1,1,1,1]
+
+function partitionLabels7(s: string): number[] {
+  const ans: number[] = [];
+  const map: Record<string, number> = {};
+  const n = s.length;
+
+  for (let i = 0; i < n; i++) {
+    map[s[i]] = i;
+  }
+
+  let start = 0;
+  let end = 0;
+  for (let i = 0; i < n; i++) {
+
+    if (map[s[i]] > end) {
+      end = map[s[i]];
+    }
+
+    if (i === end) {
+      ans.push(end - start + 1);
+      start = end = i + 1;
+    }
+  }
+  return ans;
+};
+
+console.log(partitionLabels7('ababcbacadefegdehijhklij')) // "ababcbaca"、"defegde"、"hijhklij" [9,7,8]
+console.log(partitionLabels7('eccbbbbdec'))// [10]
+console.log(partitionLabels7('caedbdedda'))// [1, 9]
+console.log(partitionLabels7('jybmxfgseq'))// [1,1,1,1,1,1,1,1,1,1]
 
