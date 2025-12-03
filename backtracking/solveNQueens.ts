@@ -412,5 +412,279 @@ function solveNQueensBit3(n: number): string[][] {
   return ans
 }
 
+
+function solveNQueens4(n: number): string[][] {
+  const ans: string[][] = [];
+  const verticalSet: Set<number> = new Set();
+  const leftToRightSet: Set<number> = new Set();
+  const rightToLeftSet: Set<number> = new Set();
+
+  const tmp: number[] = [];
+  const right = -n + 1;
+  const dfs = (k: number) => {
+    if (k === n) {
+
+      const res = tmp.map((value) => {
+        let str = ''
+        for (let i = 0; i < n; i++) {
+          if (i === value) {
+            str += 'Q';
+          } else {
+            str += '.'
+          }
+        }
+        return str;
+      })
+      // console.log([...tmp]);
+      ans.push(res)
+      return;
+    }
+    for (let i = 0; i < n; i++) {
+      // console.log(`${right} + ${i} + ${k}:`, right + i + k)
+      if (!verticalSet.has(i) && !leftToRightSet.has(i - k) && !rightToLeftSet.has(right + i + k)) {
+        verticalSet.add(i);
+        leftToRightSet.add(i - k);
+        rightToLeftSet.add(right + i + k)
+        tmp.push(i);
+        dfs(k + 1)
+        tmp.pop();
+        verticalSet.delete(i);
+        leftToRightSet.delete(i - k);
+        rightToLeftSet.delete(right + i + k)
+      }
+    }
+  }
+
+  dfs(0);
+
+
+  return ans;
+};
+
+
+function solveNQueensBit4(n: number): string[][] {
+  const ans: string[][] = [];
+
+  const mask = Math.pow(2, n) - 1;
+  console.log('mask: ', mask.toString(2));
+
+  const tmp: number[] = [];
+
+  const dfs = (k: number, row: number, left: number, right: number) => {
+    if (k === n) {
+      const str = tmp.map(val => {
+        const pos = Math.log2(val);
+        let str = ''
+        for (let i = 0; i < n; i++) {
+          if (i === pos) {
+            str += 'Q';
+          } else {
+            str += '.';
+          }
+        }
+        return str
+      });
+      ans.push(str);
+      return;
+    }
+
+    // 找到当前可选位置
+    // 找到最后一个有效位
+    // 删除最后一个有效位
+    // row | left | right
+
+    // 使用mask 异或 当前已占位置 的到当前有效位
+    let available = mask ^ (mask & (row | left | right));
+    // console.log(`${row} | ${left} | ${right}:`, mask & (row | left | right))
+    // console.log(available)
+
+    while (available) {
+      const pos = available & -available;
+      tmp.push(pos)
+      dfs(k + 1, row | pos, (left | pos) >> 1, (right | pos) << 1);
+      tmp.pop()
+      // console.log(available.toString(2))
+      available &= available - 1;
+      // console.log(available.toString(2))
+    }
+  }
+
+  dfs(0, 0, 0, 0);
+
+  return ans;
+};
+
+
+function solveNQueens5(n: number): string[][] {
+  const ans: string[][] = [];
+  const rowSet: Set<number> = new Set();
+  const leftSet: Set<number> = new Set();
+  const rightSet: Set<number> = new Set();
+
+  const tmp: number[] = [];
+
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push(tmp.map(val => {
+        let str = '';
+        for (let i = 0; i < n; i++) {
+          if (i === val) {
+            str += 'Q';
+          } else {
+            str += '.';
+          }
+        }
+        return str;
+      }));
+      return;
+    }
+    for (let i = 0; i < n; i++) {
+      if (!rowSet.has(i) && !leftSet.has(i - k) && !rightSet.has(k + i + 1 - n)) {
+        rowSet.add(i);
+        leftSet.add(i - k);
+        rightSet.add(k + i + 1 - n);
+        tmp.push(i);
+        dfs(k + 1);
+        tmp.pop();
+        rowSet.delete(i);
+        leftSet.delete(i - k);
+        rightSet.delete(k + i + 1 - n);
+      }
+    }
+  }
+  dfs(0);
+
+  return ans;
+};
+
+
+function solveNQueensBit5(n: number): string[][] {
+  const ans: string[][] = [];
+
+  // 获取当前有效位置
+  // 获取最后一个有效位置
+  // 移除最后一个有效位置
+  const tmp: number[] = [];
+
+  const dfs = (k: number, row: number, left: number, right: number) => {
+    if (k === n) {
+      console.log(tmp);
+
+      ans.push(tmp.map(val => {
+        let str = '';
+        for (let i = 0; i < n; i++) {
+          if (i === Math.log2(val)) {
+            str += 'Q';
+          } else {
+            str += '.';
+          }
+        }
+        return str;
+      }))
+      return;
+    }
+    let available = (1 << n) - 1 & ~(row | left | right);
+    while (available) {
+      const pos = available & -available;
+      tmp.push(pos);
+      dfs(k + 1, row | pos, (left | pos) >> 1, (right | pos) << 1);
+      tmp.pop();
+      available &= available - 1;
+    }
+  }
+
+  dfs(0, 0, 0, 0);
+
+  return ans;
+};
+
+
+function solveNQueens6(n: number): string[][] {
+  const ans: string[][] = [];
+  const tmp: number[] = [];
+
+
+  const rowSet: Set<number> = new Set();
+  const leftSet: Set<number> = new Set();
+  const rightSet: Set<number> = new Set();
+
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push(tmp.map(val => {
+        let str = '';
+        for (let i = 0; i < n; i++) {
+          if (i === val) {
+            str += 'Q';
+          } else {
+            str += '.';
+          }
+        }
+        return str;
+      }));
+      return;
+    }
+    for (let i = 0; i < n; i++) {
+      if (!rowSet.has(i) && !leftSet.has(i - k) && !rightSet.has(k + i + 1 - n)) {
+        rowSet.add(i);
+        leftSet.add(i - k);
+        rightSet.add(k + i + 1 - n);
+        tmp.push(i);
+        dfs(k + 1);
+        tmp.pop();
+        rowSet.delete(i);
+        leftSet.delete(i - k);
+        rightSet.delete(k + i + 1 - n);
+      }
+    }
+  }
+
+
+  dfs(0);
+
+
+  return ans;
+};
+
+function solveNQueensBit6(n: number): string[][] {
+  const ans: string[][] = [];
+  const tmp: number[] = [];
+
+  const mask = (1 << n) - 1;
+  // 掩码
+
+  const dfs = (k: number, row: number, left: number, right: number) => {
+    if (k === n) {
+      console.log(tmp);
+      ans.push(tmp.map(val => {
+        let str = '';
+        const pos = Math.log2(val);
+        for (let i = 0; i < n; i++) {
+          if (i === pos) {
+            str += 'Q';
+          } else {
+            str += '.';
+          }
+        }
+        return str;
+      }))
+      return;
+    }
+
+    let available = mask & ~(row | left | right);
+    // 当前可用位置
+    while (available) {
+      const pos = available & -available
+      tmp.push(pos);
+      dfs(k + 1, row | pos, (left | pos) >> 1, (right | pos) << 1);
+      tmp.pop();
+      available &= available - 1;
+    }
+  }
+  dfs(0, 0, 0, 0);
+
+  return ans;
+}
+
 // console.log(solveNQueensBit2(4))
-console.log(solveNQueensBit3(4))
+console.log(solveNQueensBit6(9))
+// console.log(solveNQueens5(4))

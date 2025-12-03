@@ -94,8 +94,62 @@ function letterCombinations1(digits: string): string[] {
   return ans
 }
 
+function letterCombinations2(digits: string): string[] {
+  const ans: string[] = [];
+  const n = digits.length;
+  const tmp: string[] = [];
+  const dfs = (i: number) => {
+    if (tmp.length === n) {
+      ans.push(tmp.join(""));
+      return;
+    }
+    const charList = map[digits[i]];
+    for (const c of charList) {
+      tmp.push(c);
+      dfs(i + 1);
+      tmp.pop();
+    }
+  }
+  dfs(0);
+  return ans;
+};
+
+
+function letterCombinations3(digits: string): string[] {
+  const ans: string[] = [];
+  const tmp: string[] = [];
+  const n = digits.length;
+  const map: Record<string, string[]> = {
+    "2": ['a', 'b', 'c'],
+    "3": ['d', 'e', 'f'],
+    "4": ['g', 'h', 'i'],
+    "5": ['j', 'k', 'l'],
+    "6": ['m', 'n', 'o'],
+    "7": ['p', 'q', 'r', 's'],
+    "8": ['t', 'u', 'v'],
+    "9": ['w', 'x', 'y', 'z'],
+  }
+
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push(tmp.join(''));
+      return;
+    }
+    const charList = map[digits[k]];
+    for (const char of charList) {
+      tmp.push(char);
+      dfs(k + 1);
+      tmp.pop();
+    }
+  }
+
+  dfs(0);
+
+  return ans;
+};
+
 // 输入：digits = "23"
 // 输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
 
-// console.log(letterCombinations('23'))
-console.log(letterCombinations1(''))
+console.log(letterCombinations3('23'))
+// console.log(letterCombinations2('234'))

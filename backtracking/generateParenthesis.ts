@@ -183,4 +183,119 @@ function generateParenthesis4(n: number): string[] {
   return ans
 }
 
-console.log(generateParenthesis4(3))
+
+function generateParenthesis5(n: number): string[] {
+  const ans: string[] = [];
+  const count = n * 2;
+  const tmp: string[] = [];
+
+  const dfs = (start: number) => {
+    if (tmp.length === count) {
+      ans.push(tmp.join(""));
+      return;
+    }
+    for (let i = start; i < n; i++) {
+      tmp.push('(');
+    }
+  }
+
+
+  dfs(0);
+
+  return ans;
+};
+
+
+function generateParenthesis6(n: number): string[] {
+  const ans: string[] = [];
+
+  const dfs = (str: string, left: number, right: number) => {
+    if (left === n) {
+      if (right === n) {
+        ans.push(str);
+      }
+      return;
+    }
+    dfs(str += '(', left += 1, right);
+    const k = n - (left - right);
+    for (let i = right; i < left; i++) {
+      dfs(str += ')', left, i + 1);
+    }
+
+  }
+  dfs('', 0, 0);
+
+
+  return ans;
+};
+
+
+function generateParenthesis7(n: number): string[] {
+  const ans: string[] = [];
+
+  const dfs = (str: string, left: number, right: number) => {
+    if (left === n && right === n) {
+      ans.push(str);
+      return;
+    }
+    if (left < n) {
+      dfs(str + '(', left + 1, right);
+    }
+    if (right < n && right < left) {
+      dfs(str + ')', left, right + 1);
+    }
+  }
+  dfs("", 0, 0);
+
+  return ans;
+}
+
+
+function generateParenthesis8(n: number): string[] {
+  const ans: string[] = [];
+
+
+  const dfs = (str: string, left: number, right: number) => {
+    if (left === n && right === n) {
+      ans.push(str);
+      return;
+    }
+    if (left < n) {
+      dfs(str + '(', left + 1, right);
+    }
+    if (right < left) {
+      dfs(str + ')', left, right + 1);
+    }
+  }
+
+  dfs("", 0, 0);
+
+  return ans;
+};
+
+
+function generateParenthesis9(n: number): string[] {
+  const ans: string[] = [];
+
+
+  const dfs = (str: string, left: number, right: number) => {
+    if (left === n && right === n) {
+      ans.push(str);
+      return;
+    }
+    if (left < n) {
+      dfs(str + '(', left + 1, right);
+    }
+
+    if (right < left) {
+      dfs(str + ')', left, right + 1);
+
+    }
+  }
+  dfs("", 0, 0);
+
+  return ans;
+};
+
+console.log(generateParenthesis9(3))
+// console.log(generateParenthesis6(10))

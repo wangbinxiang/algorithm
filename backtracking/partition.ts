@@ -148,8 +148,190 @@ function partition3(s: string): string[][] {
   return ans;
 }
 
-console.log(partition3("aabaa")); // [["a","a","b"],["aa","b"]] 
-// console.log(partition("a")) // [["a"]]
+
+function partition4(s: string): string[][] {
+  const ans: string[][] = [];
+  const n = s.length;
+
+  const tmp: string[] = [];
+
+  const isPartition = (i: number, j: number) => {
+    let l = i;
+    let r = j;
+
+    while (l < r) {
+      if (s[l] !== s[r]) {
+        return false;
+      }
+      l++;
+      r--;
+    }
+
+    return true;
+  }
+
+  const dfs = (start: number) => {
+    if (start === n) {
+      ans.push([...tmp]);
+      return;
+    }
+    for (let i = start; i < n; i++) {
+      if (isPartition(start, i)) {
+        tmp.push(s.slice(start, i + 1));
+        dfs(i + 1);
+        tmp.pop();
+      }
+    }
+  }
+
+  dfs(0);
+
+  return ans;
+};
+
+
+function partition5(s: string): string[][] {
+  const ans: string[][] = [];
+  const n = s.length;
+
+  const dp = Array.from({ length: n }, () => Array(n).fill(false));
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (s[j] === s[j + i] && (i < 2 || dp[j + 1][j + i - 1])) {
+        dp[j][j + i] = true;
+      }
+    }
+  }
+  const tmp: string[] = [];
+  const dfs = (start: number) => {
+    if (start === n) {
+      ans.push([...tmp]);
+      return;
+    }
+    for (let i = start; i < n; i++) {
+      if (dp[start][i]) {
+        tmp.push(s.slice(start, i + 1));
+        dfs(i + 1);
+        tmp.pop();
+      }
+    }
+  }
+
+  // console.log(dp)
+  dfs(0);
+  return ans;
+};
+
+
+
+function partition6(s: string): string[][] {
+  const ans: string[][] = [];
+  const n = s.length;
+  const dp = Array.from({ length: n }, () => Array(n).fill(false));
+  // 使用dp统计每个位置开始向后+1，+2，... +n个字符是否是回文串
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n - i; j++) {
+      if (s[j] === s[j + i] && (i < 2 || dp[j + 1][j + i - 1])) {
+        dp[j][j + i] = true;
+      }
+    }
+  }
+
+  console.log(dp);
+  const tmp: string[] = [];
+  const dfs = (start: number) => {
+    if (start === n) {
+      ans.push([...tmp]);
+      return;
+    }
+    for (let i = start; i < n; i++) {
+      if (dp[start][i]) {
+        tmp.push(s.slice(start, i + 1))
+        dfs(i + 1);
+        tmp.pop();
+      }
+    }
+  }
+
+
+  return ans;
+};
+
+
+function partition7(s: string): string[][] {
+  const ans: string[][] = [];
+  const n = s.length;
+
+  const tmp: string[] = [];
+
+  const isPartition = (left: number, right: number) => {
+    let l = left;
+    let r = right;
+    while (l < r) {
+      if (s[l] === s[r]) {
+        l++;
+        r--;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push([...tmp]);
+      return;
+    }
+    for (let i = k; i < n; i++) {
+      if (isPartition(k, i)) {
+        tmp.push(s.slice(k, i + 1));
+        dfs(i + 1);
+        tmp.pop();
+      }
+    }
+  }
+  dfs(0);
+
+  return ans;
+};
+
+
+function partition8(s: string): string[][] {
+  const ans: string[][] = [];
+  const tmp: string[] = [];
+  const n = s.length;
+  const dp = Array.from({ length: n }, () => Array(n).fill(false));
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n - i; j++) {
+      if (s[j] === s[j + i] && (i < 2 || dp[j + 1][j + i - 1])) {
+        dp[j][j + i] = true;
+      }
+    }
+  }
+
+  const dfs = (k: number) => {
+    if (k === n) {
+      ans.push([...tmp]);
+    }
+    for (let i = k; i < n; i++) {
+      if (dp[k][i]) {
+        tmp.push(s.slice(k, i + 1));
+        dfs(i + 1);
+        tmp.pop()
+      }
+    }
+  }
+  dfs(0);
+  return ans;
+};
+
+console.log(partition8("aab")); // [["a","a","b"],["aa","b"]] 
+// console.log(partition5("a")) // [["a"]]
+// console.log(partition5("aacaa")) // [["a"]]
+// console.log(partition8("abcba")) // [["a"]]
 
 // const dp: string[][][] = Array(4).fill(0).map((_, index) => [[index.toString()]])
 // console.table(dp)

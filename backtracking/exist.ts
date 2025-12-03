@@ -146,6 +146,81 @@ function exist1(board: string[][], word: string): boolean {
 }
 
 
-console.log(exist1([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"))
+function exist2(board: string[][], word: string): boolean {
+  let ans = false;
+  const n = board.length;
+  const m = board[0].length;
+  const len = word.length;
 
-console.log(exist1([["a", "a"]], "aaa"))
+  const dfs = (x: number, y: number, index: number) => {
+    if (index === len) {
+      ans = true;
+      return;
+    }
+    if (x < 0 || x === n || y < 0 || y === m || board[x][y] !== word[index]) {
+      return;
+    }
+    const tmp = board[x][y];
+    board[x][y] = '';
+    dfs(x - 1, y, index + 1)
+    dfs(x + 1, y, index + 1)
+    dfs(x, y - 1, index + 1)
+    dfs(x, y + 1, index + 1)
+    board[x][y] = tmp;
+  }
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (ans) {
+        return ans;
+      }
+      dfs(i, j, 0);
+    }
+  }
+
+  return ans;
+};
+
+
+function exist3(board: string[][], word: string): boolean {
+  let ans = false;
+  const t = word.length;
+
+  const n = board.length;
+  const m = board[0].length;
+
+
+  const dfs = (k: number, x: number, y: number) => {
+    if (k === t) {
+      ans = true;
+      return;
+    }
+    if (x < 0 || x === n || y < 0 || y === m || board[x][y] !== word[k]) {
+      return;
+    }
+    const tmp = board[x][y];
+    board[x][y] = '';
+    dfs(k + 1, x - 1, y);
+    dfs(k + 1, x + 1, y);
+    dfs(k + 1, x, y - 1);
+    dfs(k + 1, x, y + 1);
+    board[x][y] = tmp
+
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (ans === false) {
+        dfs(0, i, j);
+      } else {
+        return ans;
+      }
+    }
+  }
+
+
+  return ans;
+};
+
+console.log(exist3([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"))
+
+console.log(exist3([["a", "a"]], "aaa"))

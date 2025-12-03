@@ -37,9 +37,53 @@ function subsets1(nums: number[]): number[][] {
 
   return ans;
 }
+
+
+function subsets2(nums: number[]): number[][] {
+  const ans: number[][] = [];
+  const n = nums.length;
+  const arr: number[] = [];
+
+  const dfs = (start: number) => {
+    ans.push([...arr])
+    for (let i = start; i < n; i++) {
+      arr.push(nums[i]);
+      dfs(i + 1);
+      arr.pop();
+    }
+  }
+
+  dfs(0);
+  return ans;
+};
+
+
+function subsets3(nums: number[]): number[][] {
+  const ans: number[][] = [];
+  const tmp: number[] = [];
+  const n = nums.length;
+
+
+  const dfs = (start: number) => {
+
+    ans.push([...tmp]);
+    if (start === n) {
+      return;
+    }
+
+    for (let i = start; i < n; i++) {
+      tmp.push(nums[i]);
+      dfs(i + 1)
+      tmp.pop();
+    }
+  }
+
+  dfs(0);
+  return ans;
+};
 // 输入：nums = [1,2,3]
 // 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 
 
-console.log(subsets([1, 2, 3]));
+console.log(subsets2([1, 2, 3]));
 
