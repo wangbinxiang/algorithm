@@ -371,3 +371,56 @@ class Trie4 {
     return true;
   }
 }
+
+class TrieNode5 {
+  children: Map<string, TrieNode5>;
+  end: boolean;
+  constructor() {
+    this.children = new Map<string, TrieNode5>;
+    this.end = false;
+  }
+}
+
+class Trie5 {
+  private root: TrieNode5
+  constructor() {
+    this.root = new TrieNode5();
+  }
+
+  insert(word: string): void {
+    let node = this.root;
+    for (const c of word) {
+      if (!node.children.has(c)) {
+        node.children.set(c, new TrieNode5());
+      }
+      node = node.children.get(c)
+    }
+    node.end = true;
+  }
+
+  search(word: string): boolean {
+    let node = this.root;
+    for (const c of word) {
+      if (node.children.has(c)) {
+        node = node.children.get(c);
+      } else {
+        return false;
+      }
+    }
+
+    return node.end;
+  }
+
+  startsWith(prefix: string): boolean {
+    let node = this.root;
+    for (const c of prefix) {
+      if (node.children.has(c)) {
+        node = node.children.get(c);
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+}

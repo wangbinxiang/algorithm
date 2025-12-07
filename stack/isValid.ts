@@ -79,3 +79,26 @@ function isValid1(s: string): boolean {
 
   return stack.length === 0;
 };
+
+
+function isValid2(s: string): boolean {
+  const stack: string[] = [];
+
+  for (const c of s) {
+    if (c === '(' || c === '{' || c === '[') {
+      stack.push(c);
+    } else {
+      const l = stack.pop();
+      if (c === ')' && l !== '(') {
+        return false;
+      } else if (c === ']' && l !== '[') {
+        return false;
+      } else if (c === '}' && l !== '{') {
+        return false;
+      } else {
+        return false;
+      }
+    }
+  }
+  return true;
+};

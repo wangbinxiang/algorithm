@@ -167,13 +167,47 @@ function decodeString4(s: string): string {
 };
 
 
+function decodeString5(s: string): string {
+  let ans: string = '';
+  const stack: string[] = [];
+  const numStack: number[] = [];
+  let num: string = '';
+
+  for (const c of s) {
+    if (c === '[') {
+      // 数字写入数字栈
+      numStack.push(+num);
+      num = '';
+      // str写入str栈
+      stack.push(ans);
+      ans = '';
+    } else if (c === ']') {
+      // 弹出数字num，将当前字符重复num次
+      const num = numStack.pop();
+      ans = ans.repeat(num);
+      const str = stack.pop();
+      ans = str + ans;
+      // 弹出字符串，加在前面
+    } else if (!isNaN(+c)) {
+      num += c;
+    } else {
+      ans += c;
+    }
+  }
+
+
+
+  return ans;
+};
+
+
 // console.log(decodeString('3[a]2[bc]'))
 // console.log(decodeString1('3[a2[c]]'))
 // console.log(decodeString('2[abc]3[cd]ef'))
 // console.log(decodeString('abc3[cd]xyz'))
 
 // console.log(decodeString1('100[leetcode]'))
-console.log(decodeString3("3[z]2[2[y]pq4[2[jk]e1[f]]]ef"));
+console.log(decodeString5("3[z]2[2[y]pq4[2[jk]e1[f]]]ef"));
 // zzzpqefjkyyjkyyefjkyyjkyyefjkyyjkyyefjkyyjkyypqefjkyyjkyyefjkyyjkyyefjkyyjkyyefjkyyjkyyef
 // zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef
 // zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef

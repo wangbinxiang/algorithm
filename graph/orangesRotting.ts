@@ -330,9 +330,61 @@ function orangesRotting5(grid: number[][]): number {
   return rotCount === freshCount ? time : -1;
 };
 
+
+function orangesRotting6(grid: number[][]): number {
+  let ans = 0;
+  const n = grid.length;
+  const m = grid[0].length;
+  let freshCount = 0;
+  let badList: number[][] = [];
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      const val = grid[i][j];
+      if (val === 1) {
+        freshCount++;
+      } else if (val === 2) {
+        badList.push([i, j]);
+      }
+    }
+  }
+
+  const isBad = (x: number, y: number): boolean => {
+    if (x < 0 || x === n || y < 0 || y === m || grid[x][y] !== 1) {
+      return false;
+    }
+    grid[x][y] = 2;
+    freshCount--;
+
+    return true;
+  }
+
+  const arrList = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+
+  while (badList.length > 0) {
+
+    const tmpList: number[][] = [];
+
+    for (const bad of badList) {
+      for (const arr of arrList) {
+        if (isBad(bad[0] + arr[0], bad[1] + arr[1])) {
+          tmpList.push([bad[0] + arr[0], bad[1] + arr[1]])
+        }
+      }
+    }
+    if (tmpList.length > 0) {
+      ans++;
+    }
+    badList = tmpList;
+  }
+
+
+  return freshCount === 0 ? ans : -1;
+};
+
 // console.log(orangesRotting4([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
-// console.log(orangesRotting5([[2, 1, 1], [1, 1, 1], [0, 1, 2]]))
-console.log(orangesRotting5([[2, 1, 1], [0, 1, 1], [1, 0, 1]]))
+console.log(orangesRotting6([[2, 1, 1], [1, 1, 1], [0, 1, 2]]))
+// console.log(orangesRotting6([[2, 1, 1], [0, 1, 1], [1, 0, 1]]))
 
 
 

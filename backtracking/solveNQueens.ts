@@ -677,6 +677,7 @@ function solveNQueensBit6(n: number): string[][] {
       tmp.push(pos);
       dfs(k + 1, row | pos, (left | pos) >> 1, (right | pos) << 1);
       tmp.pop();
+      // 移除最后一个可用位置
       available &= available - 1;
     }
   }

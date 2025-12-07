@@ -363,16 +363,66 @@ function largestRectangleArea10(heights: number[]): number {
   return maxArea;
 };
 
-// console.log(largestRectangleArea9([2, 1, 5, 6, 2, 3])) // 10
+
+
+
+function largestRectangleArea11(heights: number[]): number {
+  let ans: number = 0;
+  const stack: number[] = [-1];
+
+  const n = heights.length;
+  for (let i = 0; i < n; i++) {
+
+    if (stack.length > 1) {
+      const num = heights[i];
+      while (stack.length > 1) {
+        const top = stack[stack.length - 1];
+        const topVal = heights[top];
+        if (topVal > num) {
+          // 弹出top，并计算面积
+          const width = i - (stack[stack.length - 2] + 1);
+          const height = topVal;
+          const area = width * height;
+          if (area > ans) {
+            ans = area;
+          }
+          stack.pop();
+        } else {
+          break;
+        }
+      }
+    }
+    stack.push(i);
+  }
+  console.log(stack);
+  if (stack.length > 1) {
+    const latest = stack[stack.length - 1];
+    while (stack.length > 1) {
+      const top = stack.pop();
+      const topVal = heights[top];
+      const width = latest - stack[stack.length - 1];
+      const area = width * topVal;
+      console.log('area:', area);
+      if (area > ans) {
+        ans = area;
+      }
+    }
+  }
+
+
+
+  return ans;
+};
+// console.log(largestRectangleArea11([2, 1, 5, 6, 2, 3])) // 10
 // console.log(largestRectangleArea7([2, 4]))
 // console.log(largestRectangleArea7([2, 0, 2]))
 // console.log(largestRectangleArea8([2, 1, 2]))
-// console.log(largestRectangleArea9([4, 2, 0, 3, 2, 5])) // 6
-// console.log(largestRectangleArea7([0, 9]))
+// console.log(largestRectangleArea11([4, 2, 0, 3, 2, 5])) // 6
+// console.log(largestRectangleArea11([0, 9]))
 // console.log(largestRectangleArea7([0]))
-// console.log(largestRectangleArea8([999, 999, 999, 999])) // 3996
-// console.log(largestRectangleArea8([1, 2, 3, 4, 5])) // 9
-
-console.log(largestRectangleArea9([5, 4, 1, 2])) // 8
-// console.log(largestRectangleArea8([0])) // 0
+// console.log(largestRectangleArea11([999, 999, 999, 999])) // 3996
+// console.log(largestRectangleArea11([1, 2, 3, 4, 5])) // 9
+// 
+// console.log(largestRectangleArea11([5, 4, 1, 2])) // 8
+// console.log(largestRectangleArea11([0])) // 0
 

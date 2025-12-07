@@ -230,6 +230,84 @@ class MinStack4 {
   }
 }
 
+
+class MinStack5 {
+  private heap: number[]
+  private min: number
+  constructor() {
+    this.heap = [];
+  }
+
+  push(val: number): void {
+    if (this.heap.length === 0) {
+      this.heap.push(0);
+      this.min = val
+    } else {
+      const curr = val - this.min;
+      if (curr < 0) {
+        this.min = val;
+      }
+      this.heap.push(curr);
+    }
+  }
+
+  pop(): void {
+    const top = this.heap.pop();
+    if (top < 0) {
+      this.min -= top;
+    }
+  }
+
+  top(): number {
+    const top = this.heap[this.heap.length - 1];
+    if (top < 0) {
+      return this.min;
+    } else {
+      return this.min + top;
+    }
+  }
+
+  getMin(): number {
+    return this.min;
+  }
+}
+
+
+class MinStack6 {
+  private stack: number[] = [];
+  private minStack: number[] = [];
+  constructor() {
+
+  }
+
+  push(val: number): void {
+    this.stack.push(val);
+    if (this.minStack.length === 0) {
+      this.minStack.push(val);
+    } else {
+      const topMin = this.minStack[this.minStack.length - 1];
+      if (topMin >= val) {
+        this.minStack.push(val);
+      }
+    }
+  }
+
+  pop(): void {
+    const pop = this.stack.pop();
+    if (pop === this.minStack[this.minStack.length - 1]) {
+      this.minStack.pop();
+    }
+  }
+
+  top(): number {
+    return this.stack[this.stack.length - 1];
+  }
+
+  getMin(): number {
+    return this.minStack[this.minStack.length - 1];
+  }
+}
+
 /**
  * Your MinStack object will be instantiated and called as such:
  * var obj = new MinStack()

@@ -193,13 +193,53 @@ function canFinish4(numCourses: number, prerequisites: number[][]): boolean {
   return numCourses === zeroCount;
 };
 
-console.log(canFinish4(5, [[1, 4], [2, 4], [3, 1], [3, 2]]))  // true
+function canFinish5(numCourses: number, prerequisites: number[][]): boolean {
 
-console.log(canFinish4(2, [[0, 1]])) // true
-console.log(canFinish4(2, [[1, 0]])) // true
-console.log(canFinish4(2, [[1, 0], [0, 1]])) // false
+  const courseDepNum = Array(numCourses).fill(0);
+  const courseDeps = Array.from({ length: numCourses }, () => []);
 
-console.log(canFinish4(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
+  for (const [course, pre] of prerequisites) {
+    courseDepNum[course]++;
+    courseDeps[pre].push(course);
+  }
+  let finishCourse = 0;
+  let tmp: number[] = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (courseDepNum[i] === 0) {
+      tmp.push(i);
+      finishCourse++;
+    }
+  }
+  // console.log('courseDeps:', courseDeps);
+  // console.log('courseDepNum:', courseDepNum);
+  // console.log('finishCourse:', finishCourse);
+  // console.log('tmp:', tmp);
+
+  while (tmp.length > 0) {
+    const t: number[] = [];
+    for (const course of tmp) {
+      for (const dep of courseDeps[course]) {
+        courseDepNum[dep]--;
+        if (courseDepNum[dep] === 0) {
+          finishCourse++;
+          t.push(dep);
+        }
+      }
+    }
+    tmp = t;
+  }
+
+
+  return finishCourse === numCourses;
+};
+
+console.log(canFinish5(5, [[1, 4], [2, 4], [3, 1], [3, 2]]))  // true
+
+console.log(canFinish5(2, [[0, 1]])) // true
+console.log(canFinish5(2, [[1, 0]])) // true
+console.log(canFinish5(2, [[1, 0], [0, 1]])) // false
+
+console.log(canFinish5(20, [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]])) // false
 
 
 

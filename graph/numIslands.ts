@@ -322,6 +322,33 @@ function numIslands7(grid: string[][]): number {
   return count;
 };
 
+function numIslands8(grid: string[][]): number {
+  let ans = 0;
+  const n = grid.length;
+  const m = grid[0].length;
+  const dfs = (x: number, y: number) => {
+    if (x < 0 || x === n || y < 0 || y === m || grid[x][y] !== "1") {
+      return;
+    }
+    grid[x][y] = "0";
+    dfs(x + 1, y);
+    dfs(x - 1, y);
+    dfs(x, y + 1);
+    dfs(x, y - 1);
+  }
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (grid[i][j] === "1") {
+        ans++;
+        dfs(i, j);
+      }
+    }
+  }
+
+  return ans;
+};
+
 console.log(numIslands7([["1", "0", "1", "1", "1"], ["1", "0", "1", "0", "1"], ["1", "1", "1", "0", "1"]]))
 
 console.log(numIslands7([

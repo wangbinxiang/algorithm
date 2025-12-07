@@ -260,7 +260,7 @@ function jump9(nums: number[]): number {
       maxPos = end;
     }
     if (i === pos) {
-      i++;
+      step++;
       pos = maxPos;
     }
   }

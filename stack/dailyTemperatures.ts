@@ -60,6 +60,32 @@ function dailyTemperatures2(temperatures: number[]): number[] {
   return ans;
 };
 
+function dailyTemperatures3(temperatures: number[]): number[] {
+  const n = temperatures.length;
+  const ans: number[] = Array(n).fill(0);
+  const stack: number[] = [0];
+
+  for (let i = 1; i < n; i++) {
+    const temperature = temperatures[i];
+    while (stack.length) {
+      const top = stack[stack.length - 1];
+      const topTemp = temperatures[top];
+      if (topTemp < temperature) {
+        const day = i - top;
+        ans[top] = day;
+        stack.pop()
+      } else {
+        break;
+      }
+    }
+    stack.push(i);
+  }
+  // console.log(stack);
+
+
+  return ans;
+};
+
 console.log(dailyTemperatures2([73, 74, 75, 71, 69, 72, 76, 73]))
 console.log(dailyTemperatures2([30, 40, 50, 60]))
 console.log(dailyTemperatures2([30, 60, 90]))
