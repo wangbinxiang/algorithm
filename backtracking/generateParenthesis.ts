@@ -297,5 +297,40 @@ function generateParenthesis9(n: number): string[] {
   return ans;
 };
 
+
+function generateParenthesis10(n: number): string[] {
+  const ans: string[] = [];
+  let left = 0;
+  let right = 0;
+  const tmp: string[] = [];
+
+  const dfs = () => {
+    if (left === n && right === n) {
+      ans.push(tmp.join(''));
+      return;
+    }
+    if (left < n) {
+      left++;
+      tmp.push('(');
+      dfs();
+      tmp.pop();
+      left--;
+    }
+
+    if (right < left) {
+      right++;
+      tmp.push(')');
+      dfs();
+      tmp.pop();
+      right--;
+    }
+  }
+
+  dfs();
+
+
+  return ans;
+};
+
 console.log(generateParenthesis9(3))
 // console.log(generateParenthesis6(10))

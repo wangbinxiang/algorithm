@@ -160,3 +160,28 @@ function flatten4(root: TreeNode | null): void {
     current = current.right
   }
 }
+
+
+function flatten5(root: TreeNode | null): void {
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return;
+    }
+
+    if (node.left !== null) {
+      const right = node.right;
+      node.right = node.left;
+      node.left = null;
+      let leftRight = node.right;
+      while (leftRight.right !== null) {
+        leftRight = leftRight.right;
+      }
+      leftRight.right = right;
+    }
+    dfs(node.right);
+
+  }
+
+  dfs(root);
+};

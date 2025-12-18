@@ -231,6 +231,50 @@ function isValidBST7(root: TreeNode | null): boolean {
   return ans
 }
 
+
+
+function isValidBST8(root: TreeNode | null): boolean {
+  let ans = true;
+
+  const dfs = (node: TreeNode | null, l: number, r: number) => {
+    if (node === null || !ans) {
+      return;
+    }
+    if (node.val <= l || node.val >= r) {
+      ans = false;
+      return;
+    }
+    dfs(node.left, l, node.val);
+    dfs(node.right, node.val, r);
+  }
+
+  dfs(root.left, -Infinity, root.val);
+  dfs(root.right, root.val, +Infinity);
+
+  return ans;
+};
+
+
+function isValidBST9(root: TreeNode | null): boolean {
+  let ans = true;
+
+  const dfs = (node: TreeNode | null, l: number, r: number) => {
+    if (node === null || !ans) {
+      return;
+    }
+    if (node.val <= l || node.val >= r) {
+      ans = false;
+      return;
+    }
+    dfs(node.left, l, node.val);
+    dfs(node.right, node.val, r);
+  }
+
+  dfs(root, -Infinity, +Infinity);
+
+  return ans;
+};
+
 const root = new TreeNode(2)
 root.left = new TreeNode(1)
 root.right = new TreeNode(3)

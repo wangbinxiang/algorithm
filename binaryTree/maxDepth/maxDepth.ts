@@ -113,3 +113,24 @@ function maxDepth4(root: TreeNode | null): number {
 
   return ans
 }
+
+
+function maxDepth5(root: TreeNode | null): number {
+  let ans = 0;
+
+  const dfs = (node: TreeNode | null, k: number) => {
+    if (node === null) {
+      if (k > ans) {
+        ans = k;
+      }
+      return;
+    }
+    k++;
+    dfs(node.left, k);
+    dfs(node.right, k);
+  }
+
+  dfs(root, 0);
+
+  return ans;
+};

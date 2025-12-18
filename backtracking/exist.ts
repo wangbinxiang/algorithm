@@ -221,6 +221,46 @@ function exist3(board: string[][], word: string): boolean {
   return ans;
 };
 
+
+function exist4(board: string[][], word: string): boolean {
+  let ans = false;
+  const m = board.length;
+  const n = board[0].length;
+  const len = word.length;
+
+  const dfs = (x: number, y: number, k: number) => {
+    if (k === len) {
+      ans = true;
+      return;
+    }
+    if (x < 0 || x === m || y < 0 || y === n || board[x][y] !== word[k] || ans) {
+      return;
+    }
+    k++;
+    const char = board[x][y];
+    board[x][y] = "";
+    dfs(x + 1, y, k);
+    dfs(x - 1, y, k);
+    dfs(x, y + 1, k);
+    dfs(x, y - 1, k);
+    board[x][y] = char
+
+  }
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (!ans) {
+        dfs(i, j, 0);
+      }
+    }
+  }
+
+
+
+
+  return ans;
+};
+
 console.log(exist3([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"))
 
 console.log(exist3([["a", "a"]], "aaa"))

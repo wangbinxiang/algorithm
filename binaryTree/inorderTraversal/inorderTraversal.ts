@@ -96,3 +96,51 @@ function inorderTraversal3(root: TreeNode | null): number[] {
 
   return ans
 }
+
+// 前序遍历
+// 根左右
+// 中序遍历
+// 左根右
+// 后序遍历
+// 左右根
+
+function inorderTraversal4(root: TreeNode | null): number[] {
+  const ans: number[] = [];
+
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return;
+    }
+    dfs(node.left);
+    ans.push(node.val);
+    dfs(node.right);
+  }
+  dfs(root);
+
+  return ans;
+};
+
+
+function inorderTraversal5(root: TreeNode | null): number[] {
+  const ans: number[] = [];
+
+  const stack: TreeNode[] = [];
+
+  let node = root;
+  while (stack.length || node) {
+    while (node) {
+      stack.push(node);
+      node = node.left;
+    }
+    node = stack.pop();
+    ans.push(node.val);
+    node = node.right;
+  }
+
+
+
+
+
+  return ans;
+};

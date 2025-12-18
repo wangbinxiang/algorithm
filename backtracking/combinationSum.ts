@@ -132,6 +132,32 @@ function combinationSum3(candidates: number[], target: number): number[][] {
   return ans;
 };
 
+
+
+function combinationSum4(candidates: number[], target: number): number[][] {
+  const ans: number[][] = [];
+  const n = candidates.length;
+
+  const tmp: number[] = [];
+  const dfs = (start: number, count: number) => {
+    if (count >= target) {
+      if (count === target) {
+        ans.push([...tmp]);
+      }
+      return;
+    }
+    for (let i = start; i < n; i++) {
+      const num = candidates[i];
+      tmp.push(num);
+      dfs(i, count + num);
+      tmp.pop();
+    }
+  }
+  dfs(0, 0);
+
+  return ans;
+};
+
 console.log(combinationSum3([2, 3, 6, 7], 7))
 console.log(combinationSum3([2, 3, 5], 8))
 console.log(combinationSum3([2], 1))

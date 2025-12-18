@@ -123,4 +123,24 @@ function sortedArrayToBST3(nums: number[]): TreeNode | null {
 }
 
 
+function sortedArrayToBST4(nums: number[]): TreeNode | null {
+  const n = nums.length;
+
+
+  const dfs = (left: number, right: number): TreeNode | null => {
+    if (left > right) {
+      return null;
+    }
+    const nodeIndex = Math.floor((right - left) / 2 + left);
+    const node = new TreeNode(nums[nodeIndex]);
+    node.left = dfs(left, nodeIndex - 1);
+    node.right = dfs(nodeIndex + 1, right);
+    return node;
+  }
+
+
+  return dfs(0, n - 1);
+};
+
+
 console.log(sortedArrayToBST2([-10, -3, 0, 5, 9]))

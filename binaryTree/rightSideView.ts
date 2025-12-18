@@ -153,3 +153,42 @@ function rightSideView14(root: TreeNode | null): number[] {
   dfs(root, 0)
   return ans
 }
+
+
+
+
+function rightSideView15(root: TreeNode | null): number[] {
+  const ans: number[] = [];
+
+
+  const dfs = (node: TreeNode | null, level: number) => {
+    if (node === null) {
+      return;
+    }
+    if (ans[level] === void 0) {
+      ans.push(node.val);
+    }
+    dfs(node.right, level + 1);
+    dfs(node.left, level + 1);
+  }
+  dfs(root, 0);
+
+
+  return ans;
+};
+
+
+function rightSideView16(root: TreeNode | null): number[] {
+  const ans: number[] = [];
+  const queue: number[] = [];
+  let node = root;
+
+  while (queue.length || node) {
+
+  }
+
+
+
+
+  return ans;
+};

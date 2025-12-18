@@ -68,7 +68,7 @@ function kthSmallest1(root: TreeNode | null, k: number): number {
 function kthSmallest2(root: TreeNode | null, k: number): number {
   let ans = 0
   let i = 0
-  const dfs = (node: TreeNode | null) {
+  const dfs = (node: TreeNode | null) => {
     if (node === null) {
       return
     }
@@ -107,4 +107,52 @@ function kthSmallest3(root: TreeNode | null, k: number): number {
   }
 
   return 0
+}
+
+
+// 中序遍历第k个值
+function kthSmallest4(root: TreeNode | null, k: number): number {
+  let ans = -Infinity;
+  let i = 0;
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return;
+    }
+    dfs(node.left);
+    if (ans !== -Infinity) {
+      return;
+    }
+    i++;
+    if (i === k) {
+      ans = node.val;
+    }
+    dfs(node.right);
+  }
+
+
+  dfs(root);
+
+  return ans;
+};
+
+
+function kthSmallest5(root: TreeNode | null, k: number): number {
+  let node = root;
+  const queue: TreeNode[] = [];
+  let i = 0;
+
+  while (queue.length > 0 || node) {
+    while (node) {
+      queue.push(node)
+      node = node.left;
+    }
+
+    node = queue.pop();
+    i++;
+    if (i === k) {
+      return node.val;
+    }
+    node = node.right;
+  }
 }

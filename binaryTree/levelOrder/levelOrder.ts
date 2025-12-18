@@ -92,3 +92,25 @@ function levelOrder2(root: TreeNode | null): number[][] {
 
   return ans;
 }
+
+
+function levelOrder3(root: TreeNode | null): number[][] {
+  const ans: number[][] = [];
+
+  const dfs = (node: TreeNode | null, level: number) => {
+    if (node === null) {
+      return;
+    }
+    if (ans[level]) {
+      ans[level].push(node.val);
+    } else {
+      ans[level] = [node.val];
+    }
+    dfs(node.left, level + 1);
+    dfs(node.right, level + 1);
+  }
+
+  dfs(root, 0);
+
+  return ans;
+};

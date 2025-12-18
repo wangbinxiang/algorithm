@@ -140,3 +140,34 @@ function maxPathSum3(root: TreeNode | null): number {
   dfs(root)
   return ans;
 }
+
+
+
+function maxPathSum4(root: TreeNode | null): number {
+  let ans = -Infinity;
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return 0;
+    }
+    const val = node.val;
+    const left = dfs(node.left);
+    const right = dfs(node.right);
+    const count = val + left + right;
+    if (count > ans) {
+      ans = count;
+    }
+
+    const current = left > right ? left : right;
+    if (current + val > val) {
+      return current + val;
+    } else {
+      return val;
+    }
+  }
+
+  dfs(root);
+
+
+  return ans;
+};

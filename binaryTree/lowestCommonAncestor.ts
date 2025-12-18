@@ -97,3 +97,51 @@ function lowestCommonAncestor2(root: TreeNode | null, p: TreeNode | null, q: Tre
 
   return dfs(root)
 }
+
+
+
+function lowestCommonAncestor3(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+  let ans: TreeNode | null = null;
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return 0;
+    }
+    let findCount = 0;
+    if (node.val === p.val) {
+      findCount++;
+    } else if (node.val === q.val) {
+      findCount++;
+    }
+    findCount += dfs(node.left);
+    findCount += dfs(node.right);
+    console.log('node:', node.val);
+    console.log('findCount:', findCount);
+    if (findCount === 2 && ans === null) {
+      ans = node;
+    }
+    return findCount;
+  }
+
+  dfs(root);
+
+
+  return ans;
+};
+
+
+function lowestCommonAncestor4(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+  const dfs = (node: TreeNode | null) => {
+    if (node === null || node === p || node === q) {
+      return node;
+    }
+
+    const left = dfs(node.left);
+    const right = dfs(node.right);
+    if (left && right) {
+      return node;
+    }
+    return left || right;
+  }
+  return dfs(root);
+};

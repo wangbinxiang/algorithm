@@ -239,6 +239,37 @@ function permute8(nums: number[]): number[][] {
   return ans;
 };
 
+
+function permute9(nums: number[]): number[][] {
+  const ans: number[][] = [];
+  const set = new Set<number>();
+  const tmp: number[] = [];
+  const n = nums.length;
+
+  const dfs = () => {
+    if (n === tmp.length) {
+      ans.push([...tmp]);
+    }
+
+    for (const num of nums) {
+      if (set.has(num)) {
+        continue;
+      }
+      tmp.push(num);
+      set.add(num);
+      dfs();
+      set.delete(num);
+      tmp.pop();
+    }
+  }
+
+
+  dfs();
+
+
+  return ans;
+};
+
 // const arr111 = [0, 1, 2];
 // [arr111[0], arr111[1]] = [arr111[1], arr111[0]]
 

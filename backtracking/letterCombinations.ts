@@ -148,6 +148,39 @@ function letterCombinations3(digits: string): string[] {
   return ans;
 };
 
+
+function letterCombinations4(digits: string): string[] {
+  const ans: string[] = [];
+  const n = digits.length;
+  const tmp: string[] = [];
+  const map: Record<string, string[]> = {
+    "2": ['a', 'b', 'c'],
+    "3": ['d', 'e', 'f'],
+    "4": ['g', 'h', 'i'],
+    "5": ['j', 'k', 'l'],
+    "6": ['m', 'n', 'o'],
+    "7": ['p', 'q', 'r', 's'],
+    "8": ['t', 'u', 'v'],
+    "9": ['w', 'x', 'y', 'z'],
+  }
+  const dfs = (i: number) => {
+    if (tmp.length === n) {
+      ans.push(tmp.join(""));
+      return;
+    }
+    const charList = map[digits[i]];
+    for (const char of charList) {
+      tmp.push(char);
+      dfs(i + 1);
+      tmp.pop();
+    }
+  }
+
+  dfs(0);
+
+  return ans;
+};
+
 // 输入：digits = "23"
 // 输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
 

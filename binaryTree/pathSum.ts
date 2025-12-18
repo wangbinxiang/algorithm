@@ -125,3 +125,65 @@ function pathSum2(root: TreeNode | null, targetSum: number): number {
 
   return ans
 }
+
+
+function pathSum3(root: TreeNode | null, targetSum: number): number {
+  let ans = 0;
+  const map = new Map<number, number>();
+  map.set(0, 1);
+
+
+  const dfs = (node: TreeNode | null, preSum: number) => {
+    if (node === null) {
+      return;
+    }
+
+    const currentSum = preSum + node.val;
+    const target = currentSum - targetSum;
+
+    const count = map.get(target);
+
+    if (count) {
+      ans += count;
+    }
+
+    const currentCount = map.get(currentSum) ?? 0;
+    map.set(currentSum, currentCount + 1);
+    dfs(node.left, currentSum);
+    dfs(node.right, currentSum);
+    map.set(currentSum, currentCount);
+  }
+  dfs(root, 0);
+
+  return ans;
+};
+
+
+function pathSum4(root: TreeNode | null, targetSum: number): number {
+  let ans = 0;
+  const map = new Map<number, number>();
+  map.set(0, 1);
+
+  const dfs = (node: TreeNode | null, preSum) => {
+    if (node === null) {
+      return;
+    }
+
+    const currentSum = preSum + node.val;
+    const target = currentSum - targetSum;
+    if (map.get(target)) {
+      ans += map.get(target);
+    }
+
+    const currentCount = map.get(currentSum) ?? 0;
+    map.set(currentSum, currentCount + 1);
+    dfs(node.left, currentSum);
+    dfs(node.right, currentSum);
+    map.set(currentSum, currentCount);
+  }
+
+  dfs(root, 0);
+
+
+  return ans;
+};

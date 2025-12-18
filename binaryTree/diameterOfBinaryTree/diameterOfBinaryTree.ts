@@ -138,3 +138,26 @@ function diameterOfBinaryTree5(root: TreeNode | null): number {
   dfs(root)
   return ans;
 }
+
+
+function diameterOfBinaryTree6(root: TreeNode | null): number {
+  let ans = 0;
+
+  const dfs = (node: TreeNode | null): number => {
+    if (node === null) {
+      return 0;
+    }
+    const left = dfs(node.left);
+    const right = dfs(node.right);
+    const count = left + right;
+    if (count > ans) {
+      ans = count;
+    }
+    return Math.max(left, right) + 1;
+  }
+
+
+  dfs(root);
+
+  return ans;
+};

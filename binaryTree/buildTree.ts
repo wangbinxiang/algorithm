@@ -96,3 +96,52 @@ function buildTree2(preorder: number[], inorder: number[]): TreeNode | null {
 }
 
 
+
+function buildTree3(preorder: number[], inorder: number[]): TreeNode | null {
+
+  const map: Map<number, number> = new Map();
+  const n = inorder.length;
+
+  for (let i = 0; i < n; i++) {
+    map.set(inorder[i], i);
+  }
+
+  const dfs = (l: number, r: number, inorderStart: number): TreeNode | null => {
+    if (l > r) {
+      return null
+    }
+    const node = new TreeNode(preorder[l]);
+    const inorderIndex = map.get(node.val);
+    const leftLen = inorderIndex - inorderStart;
+    node.left = dfs(l + 1, l + leftLen, inorderStart);
+    node.right = dfs(l + leftLen + 1, r, inorderIndex + 1);
+    return node;
+  }
+
+  return dfs(0, n - 1, 0);
+};
+
+function buildTree4(preorder: number[], inorder: number[]): TreeNode | null {
+  const n = preorder.length;
+  const map = new Map<number, number>();
+  inorder.forEach((val, index) => map.set(val, index));
+
+
+  const dfs = (l: number, r: number, inorderStart: number) => {
+    if (l > r) {
+      return null
+    }
+    const node = new TreeNode(preorder[l]);
+    const inorderIndex = map.get(preorder[l]);
+    const leftLen = inorderIndex - inorderStart;
+    node.left = dfs(l + 1, l + leftLen, inorderStart);
+    node.right = dfs(l + leftLen + 1, r, inorderIndex + 1);
+    return node;
+  }
+
+
+  return null;
+};
+
+// 输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+// 输出: [3,9,20,null,null,15,7]

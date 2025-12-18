@@ -88,3 +88,22 @@ function invertTree2(root: TreeNode | null): TreeNode | null {
 
   return root
 }
+
+
+function invertTree3(root: TreeNode | null): TreeNode | null {
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return;
+    }
+
+    const tmp = node.left;
+    node.left = node.right;
+    node.right = tmp;
+    dfs(node.left);
+    dfs(node.right);
+  }
+
+  dfs(root)
+
+  return root;
+};
