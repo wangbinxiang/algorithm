@@ -185,3 +185,25 @@ function flatten5(root: TreeNode | null): void {
 
   dfs(root);
 };
+
+
+function flatten6(root: TreeNode | null): void {
+  let node = root;
+
+  while (node) {
+    if (node.left) {
+      let left = node.left;
+      const right = node.right;
+      let current = left;
+      while (current.right) {
+        current = current.right;
+      }
+      current.right = right;
+      node.right = left;
+      node.left = null;
+      node = left;
+    } else {
+      node = node.right;
+    }
+  }
+};

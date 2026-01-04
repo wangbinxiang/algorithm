@@ -275,6 +275,25 @@ function isValidBST9(root: TreeNode | null): boolean {
   return ans;
 };
 
+
+function isValidBST10(root: TreeNode | null): boolean {
+
+  const dfs = (node: TreeNode | null, l: number, r: number): boolean => {
+    if (node === null) {
+      return true;
+    }
+    const val = node.val;
+    if (val <= l || val >= r) {
+      return false;
+    }
+    return dfs(node.left, l, val) && dfs(node.right, val, r)
+  }
+
+
+
+  return dfs(root, -Infinity, +Infinity);
+};
+
 const root = new TreeNode(2)
 root.left = new TreeNode(1)
 root.right = new TreeNode(3)

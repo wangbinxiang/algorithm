@@ -187,3 +187,32 @@ function pathSum4(root: TreeNode | null, targetSum: number): number {
 
   return ans;
 };
+
+
+function pathSum5(root: TreeNode | null, targetSum: number): number {
+  let ans = 0;
+  const map = new Map<number, number>();
+  map.set(0, 1);
+
+  const dfs = (node: TreeNode | null, count: number) => {
+    if (node === null) {
+      return 0;
+    }
+    count += node.val;
+    const k = count - targetSum;
+
+    if (map.has(k)) {
+      ans += map.get(k);
+    }
+    const tmp = map.get(count) ?? 0;
+    map.set(count, tmp + 1);
+    dfs(node.left, count);
+    dfs(node.right, count);
+    map.set(count, tmp);
+  }
+
+  dfs(root, 0);
+
+
+  return ans;
+};

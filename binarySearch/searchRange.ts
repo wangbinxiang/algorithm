@@ -352,6 +352,48 @@ function searchRange6(nums: number[], target: number): number[] {
   return [leftPos, rightPos];
 };
 
+
+function searchRange7(nums: number[], target: number): number[] {
+
+  let l = 0;
+  let r = nums.length - 1;
+  let left = -1;
+  while (l <= r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const val = nums[m];
+    if (val === target) {
+      r = m - 1;
+      left = m;
+    } else if (val > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+
+  if (left === -1) {
+    return [-1, -1];
+  }
+  r = nums.length - 1;
+  let right = -1;
+  while (l <= r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const val = nums[m];
+    if (val === target) {
+      l = m + 1;
+      right = m;
+    } else if (val > target) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+
+
+
+  return [left, right];
+};
+
 console.log(searchRange6([5, 7, 7, 8, 8, 10], 8)) // [3, 4]
 console.log(searchRange6([5, 7, 7, 8, 8, 10], 5)) // [-1, -1]
 console.log(searchRange6([], 0))

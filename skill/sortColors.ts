@@ -228,6 +228,29 @@ function sortColors8(nums: number[]): void {
     }
 };
 
+
+function sortColors9(nums: number[]): void {
+  let l = 0;
+  let r = nums.length - 1;
+
+  let i = 0;
+  while (i <= r) {
+    const num = nums[i];
+    if (num === 2) {
+      [nums[r], nums[i]] = [nums[i], nums[r]];
+      r--;
+    } else {
+      if (i !== l) {
+        [nums[i], nums[l]] = [ nums[l], nums[i]];
+      }
+      i++;
+      if (num === 0) {
+        l++;
+      }
+    }
+  }
+}
+
 export const arr1 = [2, 0, 2, 1, 1, 0]
 sortColors8(arr1) // [0, 0, 1, 1, 2, 2]
 console.log(arr1)

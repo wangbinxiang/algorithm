@@ -134,3 +134,19 @@ function maxDepth5(root: TreeNode | null): number {
 
   return ans;
 };
+
+
+function maxDepth6(root: TreeNode | null): number {
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return 0;
+    }
+
+    return Math.max(dfs(node.left), dfs(node.right)) + 1;
+  }
+
+  dfs(root);
+
+
+  return dfs(root);
+};

@@ -1219,8 +1219,228 @@ function findMedianSortedArraysFindK3(nums1: number[], nums2: number[]): number 
   }
 };
 
-console.log(findMedianSortedArraysFindK3([0, 1, 2, 3], [4, 5, 6, 7]))
+
+
+function findMedianSortedArrays13(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArrays13(nums2, nums1);
+  }
+
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+  const half = Math.round(total / 2);
+
+  let l = 0;
+  let r = m - 1;
+
+  while (true) {
+    const mid1 = Math.round((r - l) / 2) + l
+    const mid2 = half - mid1;
+    console.log('mid1:', mid1);
+    console.log('mid2:', mid2);
+
+    const l1Val = mid1 === 0 ? -Infinity : nums1[mid1 - 1];
+    const r1Val = mid1 === m ? +Infinity : nums1[mid1];
+
+    const l2Val = mid2 === 0 ? -Infinity : nums2[mid2 - 1];
+    const r2Val = mid2 === n ? +Infinity : nums2[mid2];
+
+    const lMax = Math.max(l1Val, l2Val);
+    const rMin = Math.min(r1Val, r2Val);
+
+    console.log('lMax:', lMax);
+    console.log('rMin:', rMin);
+
+    if (lMax <= rMin) {
+      if (total % 2 === 0) {
+        return (lMax + rMin) / 2
+      } else {
+        return lMax;
+      }
+    } else if (l1Val > rMin) {
+      r = mid1 - 1;
+    } else {
+      l = mid1 + 1;
+    }
+    // return;
+  }
+};
+
+
+function findMedianSortedArrays14(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArrays14(nums2, nums1);
+  }
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+
+  const half = Math.round(total / 2);
+  console.log('half:', half);
+  let l = 0;
+  let r = m;
+
+  while (true) {
+    const i = Math.floor((r - l) / 2) + l;
+    const j = half - i;
+    console.log('i:', i);
+    console.log('j:', j);
+
+    const l1 = i === 0 ? -Infinity : nums1[i - 1];
+    const r1 = i === m ? +Infinity : nums1[i];
+
+    const l2 = j === 0 ? -Infinity : nums2[j - 1];
+    const r2 = j === n ? +Infinity : nums2[j];
+
+    const lMax = Math.max(l1, l2);
+    const rMin = Math.min(r1, r2);
+
+    if (lMax <= rMin) {
+      if (total % 2 === 0) {
+        return (lMax + rMin) / 2;
+      } else {
+        return lMax;
+      }
+    } else if (l1 > r2) {
+      r = i - 1;
+    } else {
+      l = i + 1;
+    }
+  }
+
+};
+
+
+
+function findMedianSortedArrays15(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArrays15(nums2, nums1);
+  }
+
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+
+  const half = Math.round(total / 2);
+  let l = 0;
+  let r = m;
+
+
+  while (true) {
+    const i = Math.round((r - l) / 2) + l;
+    const j = half - i;
+
+    const l1 = i === 0 ? -Infinity : nums1[i - 1];
+    const r1 = i === m ? +Infinity : nums1[i];
+
+    const l2 = j === 0 ? -Infinity : nums2[j - 1];
+    const r2 = j === n ? +Infinity : nums2[j];
+
+    const lMax = Math.max(l1, l2);
+    const rMin = Math.min(r1, r2);
+
+    if (lMax < rMin) {
+      if (total / 2 === 0) {
+        return (lMax + rMin) / 2;
+      } else {
+        return lMax;
+      }
+    } else if (l1 > r2) {
+      r = i - 1;
+    } else {
+      l = i + 1;
+    }
+  }
+};
+
+
+function findMedianSortedArrays16(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArrays16(nums2, nums1);
+  }
+  const m = nums1.length;
+  const n = nums2.length;
+  const half = Math.floor((m + n) / 2);
+  let l = 0;
+  let r = m;
+  while (true) {
+    const i = Math.floor((r - l) / 2) + l;
+    const j = half - i;
+
+
+    const l1 = i === 0 ? -Infinity : nums1[i - 1];
+    const r1 = i === m ? +Infinity : nums1[i];
+
+    const l2 = j === 0 ? -Infinity : nums2[j - 1];
+    const r2 = j === n ? +Infinity : nums2[j];
+
+    const lMax = Math.max(l1, l2);
+    const rMin = Math.min(r1, r2);
+
+    if (lMax <= rMin) {
+      if ((m + n) % 2 === 0) {
+        return (lMax + rMin) / 2;
+      } else {
+        return rMin;
+      }
+    } else if (l1 > r2) {
+      r = i - 1;
+    } else {
+      l = i + 1;
+    }
+  }
+};
+
+
+
+function findMedianSortedArrays17(nums1: number[], nums2: number[]): number {
+  if (nums1.length > nums2.length) {
+    return findMedianSortedArrays17(nums2, nums1);
+  }
+  const m = nums1.length;
+  const n = nums2.length;
+  const total = m + n;
+  const half = Math.floor(total / 2);
+  let l = 0;
+  let r = m;
+  while (true) {
+    const i = Math.floor((r - l) / 2) + l;
+    const j = half - i;
+    console.log('i:', i);
+    console.log('j:', j);
+
+    const l1 = i === 0 ? -Infinity : nums1[i - 1];
+    const r1 = i === m ? +Infinity : nums1[i];
+
+    const l2 = j === 0 ? -Infinity : nums2[j - 1];
+    const r2 = j === n ? +Infinity : nums2[j];
+
+    const lMax = Math.max(l1, l2);
+    const rMin = Math.min(r1, r2);
+
+    if (lMax <= rMin) {
+      if (total % 2 === 0) {
+        return (lMax + rMin) / 2;
+      } else {
+        return rMin;
+      }
+    } else if (l1 > r2) {
+      r = i - 1;
+    } else {
+      l = i + 1;
+    }
+  }
+};
+
+// console.log(findMedianSortedArrays17([1, 2, 4], [3, 5, 6, 7]))
+console.log(findMedianSortedArrays17([1, 2], [3]))
+// console.log(findMedianSortedArrays14([0, 1, 2, 3], [4, 5, 6, 7, 9]))
+// console.log(findMedianSortedArrays13([2, 2, 4, 4], [2, 2, 2, 4, 4]))
 // console.log(findMedianSortedArraysGroup4([0], [6, 7, 8, 9]))
+// console.log(findMedianSortedArrays14([1, 3], [2, 7]))
+// console.log(findMedianSortedArrays14([-10, -9, -8], [1, 2]))
+
 
 // console.log(findMedianSortedArraysFink2([4, 5, 6, 8, 9], []))
 

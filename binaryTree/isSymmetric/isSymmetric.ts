@@ -166,3 +166,22 @@ function isSymmetric5(root: TreeNode | null): boolean {
 
   return ans;
 };
+
+
+function isSymmetric6
+  (root: TreeNode | null): boolean {
+  const queue: (TreeNode | null)[][] = [[root.left, root.right]];
+  while (queue.length) {
+    const [left, right] = queue.shift();
+    if (left !== right && left.val !== right.val) {
+      return false;
+    }
+    if (left && right) {
+      queue.push([left.left, right.right], [left.right, right.left])
+    }
+  }
+
+
+
+  return true;
+};

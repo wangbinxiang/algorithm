@@ -180,12 +180,25 @@ function rightSideView15(root: TreeNode | null): number[] {
 
 function rightSideView16(root: TreeNode | null): number[] {
   const ans: number[] = [];
-  const queue: number[] = [];
+  const queue: TreeNode[] = [root];
   let node = root;
 
-  while (queue.length || node) {
-
+  while (queue.length) {
+    const len = queue.length;
+    for (let i = 0; i < len; i++) {
+      const node = queue.shift();
+      if (i === len - 1) {
+        ans.push(node.val);
+      }
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right)
+      }
+    }
   }
+
 
 
 

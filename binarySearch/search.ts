@@ -258,6 +258,54 @@ function search8(nums: number[], target: number): number {
   return -1;
 };
 
+
+function search9(nums: number[], target: number): number {
+
+  // 先找到旋转点，再找目标
+
+  let l = 0;
+  let r = nums.length - 1;
+  const right = nums[r];
+
+
+  while (l < r) {
+    // 找到逆序点
+    // 左边大于右边的位置
+    const m = Math.floor((r - l) >> 1) + l;
+    const val = nums[m];
+    if (val > right) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+  if (target > right) {
+    l = 0;
+    r = r - 1;
+  } else if (target < right) {
+    r = nums.length - 1;
+  } else {
+    return nums.length - 1;
+  }
+
+
+  while (l <= r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const val = nums[m];
+    if (val === target) {
+      return m;
+    } else if (val < target) {
+      l = m + 1;
+    } else {
+      r = m - 1;
+    }
+  }
+
+
+
+  return -1;
+};
+
 console.log(search8([4, 5, 6, 7, 0, 1, 2], 0)) // 4
 console.log(search8([4, 5, 6, 7, 0, 1, 2], 3)) // -1
 console.log(search8([1], 0)) // -1

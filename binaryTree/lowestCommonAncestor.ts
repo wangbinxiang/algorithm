@@ -145,3 +145,23 @@ function lowestCommonAncestor4(root: TreeNode | null, p: TreeNode | null, q: Tre
   }
   return dfs(root);
 };
+
+
+function lowestCommonAncestor5(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === q || node === p || node === null) {
+      return node;
+    }
+    const left = dfs(node.left);
+    const right = dfs(node.right);
+
+    if (left && right) {
+      return node;
+    }
+
+    return left || right;
+  }
+
+  return dfs(root);
+};

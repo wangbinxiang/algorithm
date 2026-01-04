@@ -98,3 +98,42 @@ function isPalindrome1(head: ListNode | null): boolean {
 
   return true
 }
+
+
+
+function isPalindrome2(head: ListNode | null): boolean {
+  let slow = head;
+  let fast = head;
+  let prev: ListNode | null = null;
+  while (fast && fast.next) {
+    fast = fast.next.next;
+
+    const tmp = prev;
+    const current = slow;
+    slow = slow.next;
+    prev = current;
+    prev.next = tmp;
+
+
+  }
+
+  // console.log('prev:', prev);
+  // console.log('slow:', slow);
+
+  if (fast) {
+    slow = slow.next;
+  }
+
+  while (slow) {
+    if (prev.val !== slow.val) {
+      return false;
+    }
+    prev = prev.next;
+    slow = slow.next;
+  }
+
+
+
+
+  return true;
+};

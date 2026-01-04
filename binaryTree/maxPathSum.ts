@@ -153,7 +153,7 @@ function maxPathSum4(root: TreeNode | null): number {
     const val = node.val;
     const left = dfs(node.left);
     const right = dfs(node.right);
-    const count = val + left + right;
+    const count = val + (left > 0 ? left : 0) + (right > 0 ? right : 0);
     if (count > ans) {
       ans = count;
     }
@@ -164,6 +164,29 @@ function maxPathSum4(root: TreeNode | null): number {
     } else {
       return val;
     }
+  }
+
+  dfs(root);
+
+
+  return ans;
+};
+
+
+function maxPathSum5(root: TreeNode | null): number {
+  let ans = -Infinity;
+
+  const dfs = (node: TreeNode | null) => {
+    if (node === null) {
+      return 0;
+    }
+    const left = Math.max(dfs(node.left), 0);
+    const right = Math.max(dfs(node.right), 0);
+    const count = node.val + left + right;
+    if (count > ans) {
+      ans = count;
+    }
+    return node.val + Math.max(left, right);
   }
 
   dfs(root);

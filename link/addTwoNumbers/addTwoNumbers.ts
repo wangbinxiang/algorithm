@@ -65,3 +65,48 @@ function addTwoNumbers1(l1: ListNode | null, l2: ListNode | null): ListNode | nu
 
   return head.next
 }
+
+
+
+function addTwoNumbers2(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+  let head = new ListNode();
+  let prev = head;
+  let increase = false;
+  while (l1 && l2) {
+    let val = l1.val + l2.val + (increase ? 1 : 0);
+    if (val > 9) {
+      increase = true;
+      val -= 10;
+    } else {
+      increase = false;
+    }
+    prev.next = new ListNode(val);
+    prev = prev.next
+  }
+
+  let current: ListNode | null = null;
+  if (l1) {
+    current = l1;
+  } else if (l2) {
+    current = l2;
+  }
+  while (current) {
+    let val = current.val + (increase ? 1 : 0);
+    if (val > 9) {
+      increase = true;
+      val -= 10;
+    } else {
+      increase = false;
+    }
+    prev.next = new ListNode(val);
+    prev = prev.next;
+    current = current.next;
+  }
+  if (increase) {
+    prev.next = new ListNode(1);
+  }
+
+
+
+  return head.next;
+};

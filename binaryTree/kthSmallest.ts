@@ -156,3 +156,22 @@ function kthSmallest5(root: TreeNode | null, k: number): number {
     node = node.right;
   }
 }
+
+// 中序遍历获取第k个值
+function kthSmallest6(root: TreeNode | null, k: number): number {
+  const stack: TreeNode[] = [];
+  let node = root;
+
+  while (node || stack.length) {
+    while (node) {
+      stack.push(node);
+      node = node.left;
+    }
+    node = stack.pop();
+    k--;
+    if (k === 0) {
+      return node.val;
+    }
+    node = node.right;
+  }
+};

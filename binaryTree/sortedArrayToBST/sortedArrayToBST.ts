@@ -143,4 +143,26 @@ function sortedArrayToBST4(nums: number[]): TreeNode | null {
 };
 
 
-console.log(sortedArrayToBST2([-10, -3, 0, 5, 9]))
+
+function sortedArrayToBST5(nums: number[]): TreeNode | null {
+  const n = nums.length;
+
+
+  const dfs = (left: number, right: number): TreeNode | null => {
+    if (left > right) {
+      return null;
+    }
+    const mid = Math.floor((right - left) / 2) + left;
+    const val = nums[mid];
+    const node = new TreeNode(val);
+    node.left = dfs(left, mid - 1);
+    node.right = dfs(mid + 1, right);
+
+    return node;
+  }
+
+  return dfs(0, n - 1);
+};
+
+
+console.log(sortedArrayToBST5([-10, -3, 0, 5, 9]))

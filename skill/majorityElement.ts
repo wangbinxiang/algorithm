@@ -194,6 +194,26 @@ function majorityElement7(nums: number[]): number {
 
 console.log(majorityElement7([6, 5, 5]))
 
+// 摩尔投票法
+
+function majorityElement8(nums: number[]): number {
+  let ans = Infinity;
+  let count = 0;
+  for (const num of nums) {
+    if (num === ans) {
+      count++;
+    } else {
+      if (count === 0) {
+        ans = num;
+        count = 1;
+      } else {
+        count--;
+      }
+    }
+  }
+  return ans;
+};
+
 
 // 投票抵消
 

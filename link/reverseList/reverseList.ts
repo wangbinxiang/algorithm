@@ -65,3 +65,50 @@ function reverseList2(head: ListNode | null): ListNode | null {
 
   return prev
 }
+
+
+function reverseList3(head: ListNode | null): ListNode | null {
+  const headTmp = new ListNode();
+  let prev = headTmp;
+  let current = head;
+  while (current) {
+    const next = prev.next;
+    prev.next = current;
+    current = current.next
+    prev.next.next = next;
+  }
+
+
+
+  return headTmp.next;
+};
+
+
+function reverseList4(head: ListNode | null): ListNode | null {
+  let prev: ListNode | null = null;
+  let current = head;
+
+  while (current) {
+    const next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev;
+};
+
+
+function reverseList5(head: ListNode | null): ListNode | null {
+  let current = head;
+  let prev: ListNode | null = null;
+
+  while (current) {
+    const next = current.next;
+    const tmp = prev;
+    prev = current;
+    prev.next = tmp;
+    current = next;
+  }
+  return prev;
+};

@@ -55,3 +55,32 @@ function removeNthFromEnd1(head: ListNode | null, n: number): ListNode | null {
 
   return hair.next
 }
+
+
+
+function removeNthFromEnd2(head: ListNode | null, n: number): ListNode | null {
+  const hair = new ListNode();
+  hair.next = head;
+  let current = hair;
+
+  let fast = head;
+  let slow = head;
+  for (let i = 1; i < n; i++) {
+    fast = fast.next;
+  }
+  while (fast.next) {
+    fast = fast.next;
+    slow = slow.next;
+    current = current.next;
+  }
+  console.log('current:', current);
+  console.log('slow:', slow);
+  current.next = slow.next;
+
+
+  return hair.next;
+};
+
+//head = [1,2,3,4,5] 2
+// [1,2,4,5]
+// [1,2,3,5]

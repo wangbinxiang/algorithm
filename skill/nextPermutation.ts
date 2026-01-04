@@ -149,22 +149,80 @@ function nextPermutation3(nums: number[]): void {
 };
 
 
-export const arr1 = [1, 2, 3]
-nextPermutation3(arr1)
-console.log(arr1) //[1,3,2]
+function nextPermutation4(nums: number[]): void {
+  // 找到最后一个小于前面数字的数
+  const n = nums.length;
+  let l = -1;
+  let r = -1;
+  for (let i = 1; i < n; i++) {
+    if (nums[i] > nums[i - 1]) {
+      l = i - 1;
+      r = i;
+    } else if (l > -1 && nums[i] > nums[l]) {
+      r = i;
+    }
+  }
+  console.log('l:', l);
+  console.log('r:', r);
 
-const arr2 = [3, 2, 1]
-nextPermutation3(arr2)
-console.log(arr2) // [1, 2, 3]
+  if (l !== -1) {
+    [nums[l], nums[r]] = [nums[r], nums[l]];
+    l++;
+  } else {
+    l = 0;
+  }
+  r = n - 1;
 
-const arr3 = [1, 1, 5];
-nextPermutation3(arr3)
-console.log(arr3) // [1, 5, 1]
+  while (l < r) {
+    [nums[l], nums[r]] = [nums[r], nums[l]];
+    l++;
+    r--;
+  }
+};
 
-const arr4 = [2, 3, 1]
-nextPermutation3(arr4)
-console.log(arr4) // [3, 1, 2]
+function nextPermutation5(nums: number[]): void {
+  let preMin = -1;
+  let r = -1;
+  const n = nums.length;
 
-const arr5 = [1, 3, 4, 2]
-nextPermutation3(arr5)
-console.log(arr5) // [1, 4, 2, 3]
+  for (let i = 1; i < n; i++) {
+    if (nums[i - 1] < nums[i]) {
+      preMin = i - 1;
+      r = i;
+    } else if (preMin !== -1 && nums[preMin] < nums[i]) {
+      r = i;
+    }
+  }
+  let l = 0;
+  if (preMin !== -1) {
+    [nums[preMin], nums[r]] = [nums[r], nums[preMin]];
+    l = preMin + 1;
+  }
+  r = n - 1;
+  while (l < r) {
+    [nums[l], nums[r]] = [nums[r], nums[l]];
+    l++;
+    r--;
+  }
+};
+
+
+// export const arr1 = [1, 2, 3]
+// nextPermutation4(arr1)
+// console.log(arr1) //[1,3,2]
+
+// const arr2 = [3, 2, 1]
+// nextPermutation4(arr2)
+// console.log(arr2) // [1, 2, 3]
+
+// const arr3 = [1, 1, 5];
+// nextPermutation4(arr3)
+// console.log(arr3) // [1, 5, 1]
+
+// const arr4 = [2, 3, 1]
+// nextPermutation4(arr4)
+// console.log(arr4) // [3, 1, 2]
+
+// const arr5 = [1, 3, 4, 2]
+// nextPermutation4(arr5)
+// console.log(arr5) // [1, 4, 2, 3]

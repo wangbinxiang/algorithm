@@ -107,3 +107,21 @@ function invertTree3(root: TreeNode | null): TreeNode | null {
 
   return root;
 };
+
+
+
+function invertTree4(root: TreeNode | null): TreeNode | null {
+
+  const help = (node: TreeNode | null) => {
+    if (node === null) {
+      return;
+    }
+    [node.left, node.right] = [node.right, node.left];
+    help(node.left);
+    help(node.right);
+  }
+
+  help(root);
+
+  return root;
+};

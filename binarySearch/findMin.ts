@@ -213,6 +213,25 @@ function findMin8(nums: number[]): number {
 };
 
 
+function findMin9(nums: number[]): number {
+  let l = 0;
+  let r = nums.length - 1;
+  const right = nums[r];
+
+  while (l < r) {
+    const m = Math.floor((r - l) >> 1) + l;
+    const val = nums[m];
+    if (m > right) {
+      l = m + 1;
+    } else {
+      r = m;
+    }
+  }
+
+  return l;
+};
+
+
 console.log(findMin8([3, 4, 5, 1, 2])) // 1
 console.log(findMin8([4, 5, 6, 7, 0, 1, 2])) // 0
 console.log(findMin8([11, 13, 15, 17])) // 11

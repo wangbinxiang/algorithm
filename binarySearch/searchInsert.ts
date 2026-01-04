@@ -261,6 +261,30 @@ function searchInsert8(nums: number[], target: number): number {
   return l
 };
 
+
+
+function searchInsert9(nums: number[], target: number): number {
+  let ans = 0;
+  let l = 0;
+  let r = nums.length - 1;
+
+  while (l <= r) {
+    const m = Math.floor((r - l) / 2) + l;
+    const num = nums[m];
+    if (num === target) {
+      return m;
+    } else if (num < target) {
+      l = m + 1
+    } else {
+      ans = m;
+      r = m - 1;
+    }
+  }
+
+
+  return ans;
+};
+
 console.log(searchInsert8([1, 3, 5, 6], 5)) // 2
 console.log(searchInsert8([1, 3, 5, 6], 2)) // 1
 console.log(searchInsert8([1, 3, 5, 6], 7)) // 4

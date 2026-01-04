@@ -114,3 +114,25 @@ function levelOrder3(root: TreeNode | null): number[][] {
 
   return ans;
 };
+
+
+function levelOrder4(root: TreeNode | null): number[][] {
+  const ans: number[][] = [];
+
+  const queue: [TreeNode, number][] = [[root, 0]];
+  while (queue.length) {
+    const [node, level] = queue.shift();
+    console.log(node?.val, level);
+    if (node) {
+      if (!ans[level]) {
+        ans[level] = [];
+      }
+      ans[level].push(node.val);
+      const next = level + 1;;
+      queue.push([node.left, next], [node.right, next])
+    }
+  }
+
+
+  return ans;
+};

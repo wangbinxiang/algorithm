@@ -167,6 +167,28 @@ function findDuplicate6(nums: number[]): number {
 };
 
 
-console.log(findDuplicate6([1, 3, 4, 2, 2]))
-console.log(findDuplicate6([3, 1, 3, 4, 2]))
-console.log(findDuplicate6([3, 3, 3, 3, 3]))  
+function findDuplicate7(nums: number[]): number {
+  let slow = 0;
+  let fast = 0;
+
+  do {
+    slow = nums[slow];
+    fast = nums[nums[fast]]
+  } while (slow !== fast);
+  // console.log('slow:', slow);
+  // console.log('fast:', fast);
+
+  slow = 0;
+
+  while (slow !== fast) {
+    slow = nums[slow];
+    fast = nums[fast];
+  }
+
+  return slow;
+};
+
+
+console.log(findDuplicate7([1, 3, 4, 2, 2]))
+console.log(findDuplicate7([3, 1, 3, 4, 2]))
+console.log(findDuplicate7([3, 3, 3, 3, 3]))  
