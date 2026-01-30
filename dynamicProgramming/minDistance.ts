@@ -64,7 +64,74 @@ function minDistance2(word1: string, word2: string): number {
   return 0
 }
 
-console.log(minDistance1('horse', 'ros'))
-console.log(minDistance1('intention', 'execution'))
 
-console.log(minDistance1('dinitrophenylhydrazine', 'dimethylhydrazine'))
+function minDistance3(word1: string, word2: string): number {
+  const m = word1.length;
+  const n = word2.length;
+  // console.log(m, n)
+
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+  for (let i = 1; i <= n; i++) {
+    dp[0][i] = i;
+  }
+  for (let i = 1; i <= m; i++) {
+    dp[i][0] = i;
+  }
+  // console.log(dp);
+  for (let i = 1; i <= m; i++) {
+    const s = word1[i - 1];
+    // console.log(dp[i], i)
+    for (let j = 1; j <= n; j++) {
+      if (s === word2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1]) + 1
+      }
+    }
+  }
+
+
+
+  return dp[m][n];
+};
+
+function minDistance4(word1: string, word2: string): number {
+  const m = word1.length;
+  const n = word2.length;
+  // console.log(m, n)
+
+  const dp = Array(n + 1).fill(0);
+
+  for (let i = 1; i <= n; i++) {
+    dp[i] = i;
+  }
+
+  // console.log(dp);
+  for (let i = 1; i <= m; i++) {
+    const s = word1[i - 1];
+    let lt = dp[0];
+    dp[0]++;
+    // console.log(dp[i], i)
+    for (let j = 1; j <= n; j++) {
+      const tmp = dp[j];
+      if (s === word2[j - 1]) {
+        dp[j] = lt;
+        // dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[j] = Math.min(dp[j - 1], lt, dp[j]) + 1;
+        // dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1]) + 1
+      }
+      lt = tmp;
+    }
+  }
+  // console.log(dp);
+
+
+  return dp[n];
+};
+
+console.log(minDistance4('horse', 'ros'))
+console.log(minDistance4('intention', 'execution'))
+
+console.log(minDistance4('dinitrophenylhydrazine', 'dimethylhydrazine'))

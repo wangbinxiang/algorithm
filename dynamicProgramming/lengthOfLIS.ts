@@ -186,9 +186,123 @@ function lengthOfLISBinary1(nums: number[]): number {
   return ans.length
 }
 
-console.log(lengthOfLISBinary1([4, 10, 4, 3, 8, 9])) // 3
-// console.log(lengthOfLISBinary1([10, 9, 2, 5, 3, 7, 101, 18])) // 4
-// console.log(lengthOfLISBinary1([0, 1, 0, 3, 2, 3])) // 4
-// console.log(lengthOfLISBinary1([7, 7, 7, 7, 7, 7, 7])) // 1
 
-// console.log(lengthOfLISBinary([1, 3, 6, 7, 9, 4, 10, 5, 6])) // 6
+function lengthOfLIS4(nums: number[]): number {
+  const n = nums.length;
+
+  const dp = Array(n).fill(1);
+  let ans = 1;
+  for (let i = 1; i < n; i++) {
+    for (let j = i - 1; j >= 0; j--) {
+      if (nums[i] > nums[j]) {
+        if (dp[j] + 1 > dp[i]) {
+          dp[i] = dp[j] + 1;
+        }
+      } else if (nums[i] === nums[j]) {
+        if (dp[j] > dp[i]) {
+          dp[i] = dp[j]
+        }
+      }
+      if (dp[i] > ans) {
+        ans = dp[i];
+      }
+    }
+  }
+
+
+
+  return ans;
+};
+
+
+function lengthOfLISBinary2(nums: number[]): number {
+  const ans: number[] = [nums[0]];
+
+  const n = nums.length;
+  for (let i = 1; i < n; i++) {
+    const num = nums[i];
+    if (num > ans[ans.length - 1]) {
+      ans.push(num)
+    } else if (num < ans[ans.length - 1]) {
+      let l = 0;
+      let r = ans.length - 1;
+      while (l < r) {
+        const m = Math.floor((r - l) / 2) + l;
+        if (ans[m] < num) {
+          l = m + 1;
+        } else {
+          r = m
+        }
+      }
+      ans[l] = num;
+    }
+  }
+
+
+  return ans.length;
+}
+
+
+
+function lengthOfLIS5(nums: number[]): number {
+  let ans = 0;
+  const n = nums.length;
+  const dp = Array(n).fill(1);
+
+
+  for (let i = 1; i < n; i++) {
+    const num = nums[i];
+    for (let j = i - 1; j >= 0; j--) {
+      console.log(num, nums[j])
+      if (num > nums[j] && dp[j] + 1 > dp[i]) {
+        dp[i] = dp[j] + 1;
+      }
+    }
+
+    if (dp[i] > ans) {
+      ans = dp[i]
+    }
+  }
+
+  console.log(dp)
+
+  return ans;
+};
+
+
+function lengthOfLISBinary3(nums: number[]): number {
+  const n = nums.length;
+  const stack: number[] = [nums[0]];
+
+  for (let i = 1; i < n; i++) {
+    const num = nums[i];
+    const top = stack[stack.length - 1];
+    if (num > top) {
+      stack.push(num)
+    } else if (num < top) {
+      let l = 0;
+      let r = stack.length - 1;
+      while (l < r) {
+        const m = Math.floor((r - l) / 2) + l;
+        if (stack[m] < num) {
+          l = m + 1;
+        } else {
+          r = m;
+        }
+      }
+      stack[l] = num;
+    }
+  }
+
+
+
+
+  return stack.length;
+}
+
+console.log(lengthOfLISBinary3([4, 10, 4, 3, 8, 9])) // 3
+console.log(lengthOfLISBinary3([10, 9, 2, 5, 3, 7, 101, 18])) // 4
+console.log(lengthOfLISBinary3([0, 1, 0, 3, 2, 3])) // 4
+console.log(lengthOfLISBinary3([7, 7, 7, 7, 7, 7, 7])) // 1
+
+console.log(lengthOfLISBinary3([1, 3, 6, 7, 9, 4, 10, 5, 6])) // 6

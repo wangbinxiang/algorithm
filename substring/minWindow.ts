@@ -231,6 +231,56 @@ function minWindow3(s: string, t: string): string {
   return minStr
 }
 
-// console.log(minWindow3('ADOBECODEBANC', 'ABC')); // BANC
+function minWindow4(s: string, t: string): string {
+  let ans = "";
+  let minLen = +Infinity;
+
+  const map = new Map<string, number>();
+
+  for (const c of t) {
+    if (map.has(c)) {
+      map.set(c, map.get(c) + 1);
+    } else {
+      map.set(c, 1);
+    }
+  }
+  let count = map.size;
+  let l = 0;
+  let r = 0;
+  const n = s.length;
+
+  for (let i = 0; i < n; i++) {
+    const c = s[i];
+    if (map.has(c)) {
+      const t = map.get(c) - 1;
+      if (t === 0) {
+        count--;
+      }
+      map.set(c, t);
+    }
+    while (count === 0) {
+      const len = i - l + 1;
+      if (len < minLen) {
+        minLen = len;
+        ans = s.slice(l, i + 1);
+      }
+      const c = s[l];
+      if (map.has(c)) {
+        const t = map.get(c) + 1;
+        if (t > 0) {
+          count++;
+        }
+        map.set(c, t);
+      }
+      l++;
+    }
+  }
+
+
+  return ans;
+};
+
+console.log(minWindow4('ADOBECODEBANC', 'ABC')); // BANC
 // console.log(minWindow3('a', 'aa')); // a
-console.log(minWindow3('ab', 'b')); // a
+// console.log(minWindow3('ab', 'b')); // a
+console.log(minWindow4('aa', 'aa')); // a

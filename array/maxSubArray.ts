@@ -121,9 +121,32 @@ function maxSubArray5(nums: number[]): number {
   return ans
 }
 
-console.log(maxSubArray4([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
-console.log(maxSubArray4([1]));
-console.log(maxSubArray4([5, 4, -1, 7, 8]))
-console.log(maxSubArray4([0]))
-console.log(maxSubArray4([-2, -1]))
+
+
+function maxSubArray6(nums: number[]): number {
+  let ans = nums[0];
+  let prevCount = nums[0];
+  let l = 0;
+  const n = nums.length;
+  for (let i = 1; i < n; i++) {
+    const num = nums[i]
+    if (prevCount <= 0) {
+      prevCount = num;
+      l = i;
+    } else {
+      prevCount += num
+    }
+    if (prevCount > ans) {
+      ans = prevCount;
+    }
+  }
+  // return ans === -Infinity ? prevCount : ans;
+  return ans;
+};
+
+console.log(maxSubArray6([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
+console.log(maxSubArray6([1]));
+console.log(maxSubArray6([5, 4, -1, 7, 8]))
+console.log(maxSubArray6([0]))
+console.log(maxSubArray6([-2, -1]))
 

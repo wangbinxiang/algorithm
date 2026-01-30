@@ -2,8 +2,6 @@
 
 // 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
 
-
-
 // 示例 1：
 
 // 输入: s = "leetcode", wordDict = ["leet", "code"]
@@ -20,7 +18,6 @@
 // 输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 // 输出: false
 
-
 // 提示：
 
 // 1 <= s.length <= 300
@@ -36,10 +33,10 @@ function wordBreak(s: string, wordDict: string[]): boolean {
   while (start < n) {
     let flag = false;
     for (let word of wordDict) {
-      const res = s.startsWith(word, start)
+      const res = s.startsWith(word, start);
       if (res) {
         start += word.length;
-        flag = true
+        flag = true;
         break;
       }
     }
@@ -48,66 +45,61 @@ function wordBreak(s: string, wordDict: string[]): boolean {
     }
   }
 
-
-
   return true;
-};
+}
 
 function wordBreak1(s: string, wordDict: string[]): boolean {
   const n = s.length;
-  const dp = Array(n + 1).fill(false)
-  dp[0] = true
+  const dp = Array(n + 1).fill(false);
+  dp[0] = true;
   for (let i = 0; i < n; i++) {
     if (dp[i]) {
       for (let word of wordDict) {
         if (s.startsWith(word, i)) {
-          dp[i + word.length] = true
+          dp[i + word.length] = true;
         }
       }
     }
   }
-  console.log(dp)
-
+  console.log(dp);
 
   return dp[n];
-};
+}
 
 function wordBreak2(s: string, wordDict: string[]): boolean {
-  const dp = Array<boolean>(s.length + 1).fill(false)
-  dp[0] = true
+  const dp = Array<boolean>(s.length + 1).fill(false);
+  dp[0] = true;
 
-  let minWordLen = +Infinity
+  let minWordLen = +Infinity;
   for (const word of wordDict) {
-    minWordLen = Math.min(minWordLen, word.length)
+    minWordLen = Math.min(minWordLen, word.length);
   }
-
 
   for (let i = minWordLen; i <= s.length; i++) {
     for (const word of wordDict) {
-      const len = word.length
+      const len = word.length;
       if (i - len >= 0 && dp[i - len] && s.startsWith(word, i - len)) {
-        dp[i] = true
-        break
+        dp[i] = true;
+        break;
       }
     }
   }
 
   // console.log(dp)
 
-  return dp[s.length]
+  return dp[s.length];
 }
-
 
 function wordBreak3(s: string, wordDict: string[]): boolean {
   const n = s.length;
-  const dp = Array(n + 1).fill(false)
-  dp[0] = true
+  const dp = Array(n + 1).fill(false);
+  dp[0] = true;
   for (let i = 1; i <= n; i++) {
     for (let word of wordDict) {
-      const l = word.length
+      const l = word.length;
       if (i >= l && dp[i - l] && s.substring(i - l, i) === word) {
-        dp[i] = true
-        break
+        dp[i] = true;
+        break;
       }
     }
   }
@@ -115,7 +107,26 @@ function wordBreak3(s: string, wordDict: string[]): boolean {
   return dp[n];
 }
 
-// console.log(wordBreak3('cars', ["car", "ca", "rs"]))
-// console.log(wordBreak3('leetcode', ["leet", "code"]))
-// console.log(wordBreak3('applepenapple', ["apple", "pen"]))
-console.log(wordBreak2('catsandog', ["cats", "dog", "sand", "and", "cat"]))
+function wordBreak4(s: string, wordDict: string[]): boolean {
+  const n = s.length;
+  const dp = Array(n + 1).fill(false);
+  dp[0] = true;
+
+  for (let i = 1; i <= n; i++) {
+    for (const word of wordDict) {
+      const len = word.length;
+      // console.log(s.slice(i - len, i), i, len, word, dp[i - len]);
+      if (dp[i - len] && s.slice(i - len, i) === word) {
+        // console.log("dp[i] = true:", i);
+        dp[i] = true;
+      }
+    }
+  }
+  // console.log(dp);
+  return dp[n];
+}
+
+console.log(wordBreak4("cars", ["car", "ca", "rs"]));
+console.log(wordBreak4("leetcode", ["leet", "code"]));
+console.log(wordBreak4("applepenapple", ["apple", "pen"]));
+console.log(wordBreak4("catsandog", ["cats", "dog", "sand", "and", "cat"]));

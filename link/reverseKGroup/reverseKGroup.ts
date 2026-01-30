@@ -120,6 +120,52 @@ function reverseKGroup1(head: ListNode | null, k: number): ListNode | null {
 }
 
 
+
+function reverseKGroup2(head: ListNode | null, k: number): ListNode | null {
+  const hair = new ListNode();
+  let prev = hair;
+  let current = head;
+
+  while (current) {
+    let i = 0;
+    const latest = current;
+    for (; i < k; i++) {
+      if (current) {
+        const prevNext = prev.next;
+        prev.next = current;
+        current = current.next;
+        prev.next.next = prevNext;
+      } else {
+        break;
+      }
+    }
+
+    if (i !== k) {
+      const tmpHair = new ListNode();
+      let tmpPrev = tmpHair;
+      let current = prev.next;
+      //   console.log('prev:', prev);
+
+      for (; i > 0; i--) {
+        // console.log('i:', i);
+        const next = tmpPrev.next;
+        // console.log('current:', current);
+        tmpPrev.next = current;
+        current = current.next;
+        tmpPrev.next.next = next;
+      }
+      prev.next = tmpHair.next;
+    } else {
+      prev = latest;
+    }
+  }
+
+
+
+  return hair.next;
+};
+
+
 function buildLink(nums: number[]) {
   const head = new ListNode();
   let current = head

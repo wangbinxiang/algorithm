@@ -162,8 +162,57 @@ function threeSum4(nums: number[]): number[][] {
   return ans;
 }
 
-console.log(threeSum4([-1, 0, 1, 2, -1, -4])); //[[-1, -1, 2], [-1, 0, 1]]
-console.log(threeSum4([0, 1, 1]));
-console.log(threeSum4([0, 0, 0, 0]));
-console.log(threeSum4([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]));
+
+
+
+function threeSum5(nums: number[]): number[][] {
+  const ans: number[][] = [];
+
+  const n = nums.length;
+
+  nums.sort((a, b) => a - b);
+  console.log(nums);
+
+  for (let i = 0; i < n - 2; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
+    const target = nums[i];
+    if (target > 0) {
+      break;
+    }
+    let l = i + 1;
+    let r = n - 1;
+    while (l < r) {
+      const res = target + nums[l] + nums[r];
+      if (res === 0) {
+        ans.push([target, nums[l], nums[r]])
+        do {
+          l++;
+        }
+        while (l < r && nums[l] === nums[l - 1]);
+        do {
+          r--;
+        }
+        while (l < r && nums[r] === nums[r + 1])
+      } else if (res > 0) {
+        r--;
+      } else {
+        l++;
+      }
+    }
+  }
+
+  return ans;
+};
+
+console.log(threeSum5([-1, 0, 1, 2, -1, -4])); //[[-1, -1, 2], [-1, 0, 1]]
+// console.log(threeSum5([0, 1, 1]));
+// console.log(threeSum5([0, 0, 0, 0]));
+// console.log(threeSum5([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]));
+// console.log(threeSum5([2, -3, 0, -2, -5, -5, -4, 1, 2, -2, 2, 0, 2, -4, 5, 5, -10]));
+
+
+
+
 

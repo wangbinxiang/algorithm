@@ -125,9 +125,74 @@ function canPartition1(nums: number[]): boolean {
   return dp[half];
 }
 
-console.log(canPartition1([1, 5, 11, 5])) // true
-console.log(canPartition1([1, 2, 3, 5])) // false
-console.log(canPartition1([3, 3, 3, 4, 5])) // true
-console.log(canPartition1([2, 2, 3, 5])) // false
-console.log(canPartition1([3, 3, 6, 8, 16, 16, 16, 18, 20])) // true
+
+function canPartition2(nums: number[]): boolean {
+  let count = 0;
+  for (const num of nums) {
+    count += num;
+  }
+
+  if (count % 2 !== 0) {
+    return false;
+  }
+  const half = count / 2;
+
+  const dp = Array(half + 1).fill(false);
+  dp[0] = true;
+  for (const num of nums) {
+    for (let i = half; i >= num; i--) {
+      if (dp[i]) {
+        continue;
+      }
+      if (dp[i - num]) {
+        dp[i] = true
+      }
+    }
+  }
+  // console.log(dp);
+  return dp[half];
+};
+
+
+
+function canPartition3(nums: number[]): boolean {
+  const n = nums.length;
+  const count = nums.reduce((prev, current) => prev + current)
+
+  if (count % 2 !== 0) {
+    return false
+  }
+
+  const half = count / 2;
+  // console.log(half)
+  const dp = Array(half + 1).fill(false);
+  dp[0] = true;
+
+  for (const num of nums) {
+    for (let i = half; i > num; i--) {
+      if (dp[i]) {
+        continue;
+      }
+      if (dp[i - num]) {
+        dp[i] = true;
+        if (i === half) {
+          return true;
+        }
+      }
+    }
+    // console.log(dp)
+  }
+  // console.log(dp)
+
+
+
+  // return dp[half];
+};
+
+console.log(canPartition3([1, 2, 5])) // false
+console.log(canPartition3([1, 5, 11, 5])) // true
+console.log(canPartition3([1, 2, 3, 5])) // false
+console.log(canPartition3([3, 3, 3, 4, 5])) // true
+console.log(canPartition3([2, 2, 3, 5])) // false
+console.log(canPartition3([3, 3, 6, 8, 16, 16, 16, 18, 20])) // true
 

@@ -178,9 +178,9 @@ function findAnagrams5(s: string, p: string): number[] {
 
   return ans;
 }
-console.log(findAnagrams5("cbaebabacd", "abc")); // [0,6]
-console.log(findAnagrams5("abab", "ab")); // [0,1,2]
-console.log(findAnagrams5("baa", "aa"));
+console.log(findAnagrams7("cbaebabacd", "abc")); // [0,6]
+console.log(findAnagrams7("abab", "ab")); // [0,1,2]
+console.log(findAnagrams7("baa", "aa"));
 
 
 function findAnagrams6(s: string, p: string): number[] {
@@ -200,6 +200,73 @@ function findAnagrams6(s: string, p: string): number[] {
   }
   return ans;
 }
+
+
+
+function findAnagrams7(s: string, p: string): number[] {
+  const ans: number[] = [];
+  const count = p.length;
+  const n = s.length;
+
+  const map = new Map<string, number>();
+  for (const c of p) {
+    let val = 1;
+    if (map.has(c)) {
+      val += map.get(c)
+    }
+    map.set(c, val);
+  }
+
+  let diff = map.size;
+
+  for (let i = 0; i < count; i++) {
+    const c = s[i];
+    if (map.has(c)) {
+      const val = map.get(c) - 1;
+      map.set(c, val);
+      if (val === 0) {
+        diff--;
+      }
+    }
+  }
+  // console.log(map);
+
+
+  for (let i = count; i < n; i++) {
+    if (diff === 0) {
+      ans.push(i - count);
+    }
+
+    const prevC = s[i - count];
+    // console.log('prevC:', prevC);
+    if (map.has(prevC)) {
+      const val = map.get(prevC);
+      map.set(prevC, val + 1);
+      if (val === 0) {
+        diff++;
+      }
+    }
+
+    const c = s[i];
+    // console.log('c:', c);
+    if (map.has(c)) {
+      const val = map.get(c) - 1;
+      map.set(c, val);
+      if (val === 0) {
+        diff--;
+      }
+    }
+  }
+  // console.log(map);
+  // console.log(diff);
+  if (diff === 0) {
+    ans.push(n - count);
+  }
+
+  return ans;
+};
+
+
 
 // 提示:
 

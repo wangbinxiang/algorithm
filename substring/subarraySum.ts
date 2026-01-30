@@ -182,3 +182,28 @@ function subarrayNext3(nums: number[], k: number): number {
 
   return ans;
 }
+
+
+
+
+function subarraySum5(nums: number[], k: number): number {
+  let ans = 0;
+
+  const map = new Map<number, number>();
+  map.set(0, 1);
+
+  let prevCount = 0;
+  for (const num of nums) {
+    prevCount += num;
+    if (map.has(prevCount - k)) {
+      ans += map.get(prevCount - k)
+    }
+    let count = 1;
+    if (map.has(prevCount)) {
+      count += map.get(prevCount)
+    }
+    map.set(prevCount, count);
+  }
+
+  return ans;
+};

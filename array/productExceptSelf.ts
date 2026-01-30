@@ -37,7 +37,25 @@ function productExceptSelf2(nums: number[]): number[] {
 // 单数组+tmp
 
 
-console.log(productExceptSelf2([1, 2, 3, 4]));
-console.log(productExceptSelf2([-1, 1, 0, -3, 3]));
+function productExceptSelf3(nums: number[]): number[] {
+  const n = nums.length;
+  const ans: number[] = Array(n).fill(1);
+  let count = 1;
+  for (let i = 1; i < n; i++) {
+    count *= nums[i - 1];
+    ans[i] = count;
+  }
+  count = 1;
+  for (let i = n - 2; i >= 0; i--) {
+    count *= nums[i + 1];
+    ans[i] *= count;
+  }
+
+
+  return ans;
+};
+
+console.log(productExceptSelf3([1, 2, 3, 4]));
+console.log(productExceptSelf3([-1, 1, 0, -3, 3]));
 
 

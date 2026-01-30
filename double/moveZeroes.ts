@@ -176,11 +176,34 @@ function moveZeroes7(nums: number[]): void {
     }
   }
 }
-moveZeroes7(arrDouble)
-console.log(arrDouble);
-moveZeroes7(arrDoubleTest)
-console.log(arrDoubleTest);
-const arrZero = [0, 1]
 
-moveZeroes7(arrZero)
+
+function moveZeroes8(nums: number[]): void {
+  let l = 0;
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    while (nums[l] !== 0 && l < n - 1) {
+      l++;
+    }
+    // console.log('l:', l);
+    // console.log('i:', i, nums[i]);
+    // console.log(nums)
+    if (nums[i] !== 0 && i > l) {
+      [nums[i], nums[l]] = [nums[l], nums[i]]
+    }
+  }
+};
+// }
+moveZeroes8(arrDouble)
+console.log(arrDouble);
+moveZeroes8(arrDoubleTest)
+console.log(arrDoubleTest);
+const arrZero = [1, 0]
+
+moveZeroes8(arrZero)
 console.log(arrZero);
+
+const arrOne = [1];
+
+moveZeroes8(arrOne)
+console.log(arrOne);

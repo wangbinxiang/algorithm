@@ -28,5 +28,20 @@ function twoSum1(nums: number[], target: number): number[] {
 }
 
 
+function twoSum2(nums: number[], target: number): number[] {
+  const ans: number[] = [];
+
+  const map: Map<number, number> = new Map();
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    const num = nums[i];
+    const t = target - num;
+    if (map.has(t)) {
+      return [i, map.get(t)]
+    }
+    map.set(num, i);
+  }
+};
+
 
 console.log(twoSum1([2, 7, 11, 15], 9));

@@ -112,11 +112,37 @@ function lengthOfLongestSubstring5(s: string): number {
   return ans;
 }
 
+
+function lengthOfLongestSubstring6(s: string): number {
+  let ans = 0;
+  const set = new Set<string>()
+  let l = 0;
+  const n = s.length;
+
+  for (let i = 0; i < n; i++) {
+    const c = s[i];
+    while (set.has(c)) {
+      set.delete(s[l])
+      l++;
+    }
+    set.add(c)
+    const len = i - l + 1;
+    if (len > ans) {
+      ans = len;
+    }
+  }
+
+
+
+
+  return ans;
+};
+
 // 0 <= s.length <= 5 * 104
 // s 由英文字母、数字、符号和空格组成
 
-console.log(lengthOfLongestSubstring5('abcabcbb'));
-console.log(lengthOfLongestSubstring5('bbbbb'));
-console.log(lengthOfLongestSubstring5('pwwkew'));
-console.log(lengthOfLongestSubstring5(' '));
-console.log(lengthOfLongestSubstring5('dvdf'));
+console.log(lengthOfLongestSubstring6('abcabcbb'));
+console.log(lengthOfLongestSubstring6('bbbbb'));
+console.log(lengthOfLongestSubstring6('pwwkew'));
+console.log(lengthOfLongestSubstring6(' '));
+console.log(lengthOfLongestSubstring6('dvdf'));

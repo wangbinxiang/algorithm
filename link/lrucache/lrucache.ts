@@ -323,6 +323,114 @@ class LRUCacheExpire {
 * obj.put(key,value)
 */
 
+interface LRUCacheNode5 {
+  prev: LRUCacheNode5 | null;
+  next: LRUCacheNode5 | null;
+  key: number;
+  val: number;
+}
+
+class LRUCache5 {
+  private capacity: number;
+  size: number;
+  head: LRUCacheNode5;
+  tail: LRUCacheNode5;
+  map: Map<number, LRUCacheNode5>
+
+  constructor(capacity: number) {
+    this.capacity = capacity;
+    this.map = new Map();
+    this.size = 0;
+    this.head = {
+      prev: null,
+      next: null,
+      key: 0,
+      val: 0,
+    }
+    this.tail = {
+      prev: this.head,
+      next: null,
+      key: 0,
+      val: 0,
+    }
+    this.head.next = this.tail;
+  }
+
+  nodeToHead(node: LRUCacheNode5) {
+    const prev = node.prev;
+    const next = node.next;
+    prev.next = next;
+    next.prev = prev;
+
+    node.next = this.head.next;
+    this.head.next.prev = node;
+
+    this.head.next = node;
+    node.prev = this.head;
+  }
+
+  get(key: number): number {
+    if (this.map.has(key)) {
+      const node = this.map.get(key);
+
+      if (node.prev !== this.head) {
+        this.nodeToHead(node);
+        // const prev = node.prev;
+        // const next = node.next;
+        // prev.next = next;
+        // next.prev = prev;
+
+        // node.next = this.head.next;
+        // this.head.next.prev = node;
+
+        // this.head.next = node;
+        // node.prev = this.head;
+
+      }
+
+      return node.val
+    }
+    return -1;
+  }
+
+  put(key: number, value: number): void {
+
+    if (this.map.has(key)) {
+      const node = this.map.get(key);
+      node.val = value;
+
+      if (node.prev !== this.head) {
+        this.nodeToHead(node);
+      }
+
+      return;
+    }
+
+
+
+    if (this.size === this.capacity) {
+      const node = this.tail.prev;
+      const prev = this.tail.prev.prev
+      prev.next = this.tail;
+      this.tail.prev = prev;
+      this.map.delete(node.key);
+    } else {
+      this.size++;
+    }
+    const node: LRUCacheNode5 = {
+      prev: this.head,
+      next: null,
+      key,
+      val: value,
+    }
+    const next = this.head.next;
+    this.head.next = node;
+    node.next = next;
+    next.prev = node;
+    this.map.set(key, node);
+  }
+}
+
 
 var obj = new LRUCache4(2)
 console.log(obj.put(1, 1));

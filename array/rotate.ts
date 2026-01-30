@@ -69,68 +69,68 @@ function rotateNext(nums: number[], k: number): void {
 /**
  Do not return anything, modify nums in-place instead.
  */
-function rotate(nums: number[], k: number): void {
-  const n = nums.length;
-  if (k === 0 || k === n || n === 1) {
-    return;
-  }
-  let kt = k
-  if (kt > n) {
-    kt = kt % n;
-  }
+// function rotate(nums: number[], k: number): void {
+//   const n = nums.length;
+//   if (k === 0 || k === n || n === 1) {
+//     return;
+//   }
+//   let kt = k
+//   if (kt > n) {
+//     kt = kt % n;
+//   }
 
-  let i = 0;
-  let count = 0;
-  let readTmp = nums[0];
-  let saveTmp = 0;
-  let start = 0;
-  while (count < n) {
-    // 求当前临时数据索引位
-    let p = i + kt;
-    if (p >= n) {
-      p = p % n;
-    }
-    // console.log(`i:${i}, p:${p}`);
-    saveTmp = nums[p];
-    nums[p] = readTmp;
-    readTmp = saveTmp;
-    count++;
-    if (p !== start) {
-      i = p;
-    } else {
-      ++i;
-      start = i;
-      readTmp = nums[i];
-    }
-  }
-};
+//   let i = 0;
+//   let count = 0;
+//   let readTmp = nums[0];
+//   let saveTmp = 0;
+//   let start = 0;
+//   while (count < n) {
+//     // 求当前临时数据索引位
+//     let p = i + kt;
+//     if (p >= n) {
+//       p = p % n;
+//     }
+//     // console.log(`i:${i}, p:${p}`);
+//     saveTmp = nums[p];
+//     nums[p] = readTmp;
+//     readTmp = saveTmp;
+//     count++;
+//     if (p !== start) {
+//       i = p;
+//     } else {
+//       ++i;
+//       start = i;
+//       readTmp = nums[i];
+//     }
+//   }
+// };
 
-function rotate2(nums: number[], k: number): void {
-  // 利用队列 先进后出
+// function rotate2(nums: number[], k: number): void {
+//   // 利用队列 先进后出
 
-  const n = nums.length;
-  if (k === 0 || k === n || n === 1) {
-    return;
-  }
-  const queue: number[] = [];
-  let kt = k
-  if (kt > n) {
-    kt = kt % n;
-  }
-  // console.log("kt:", kt)
-  for (let i = 0; i < n; i++) {
-    let index = i - kt;
-    if (index < 0) {
-      index += n;
-    }
-    // console.log(index);
-    const val = nums[index];
-    queue.push(val);
-  }
-  // console.log(queue);
-  queue.forEach((val, index,) => nums[index] = val);
+//   const n = nums.length;
+//   if (k === 0 || k === n || n === 1) {
+//     return;
+//   }
+//   const queue: number[] = [];
+//   let kt = k
+//   if (kt > n) {
+//     kt = kt % n;
+//   }
+//   // console.log("kt:", kt)
+//   for (let i = 0; i < n; i++) {
+//     let index = i - kt;
+//     if (index < 0) {
+//       index += n;
+//     }
+//     // console.log(index);
+//     const val = nums[index];
+//     queue.push(val);
+//   }
+//   // console.log(queue);
+//   queue.forEach((val, index,) => nums[index] = val);
 
-}
+// }
 
 const rotate3 = (nums: number[], k: number): void => {
   const n = nums.length;
@@ -178,6 +178,54 @@ const rotate5 = (nums: number[], k: number): void => {
   reverse(0, n - 1);
   reverse(0, nk - 1);
   reverse(nk, n - 1);
+}
+
+
+function rotate6(nums: number[], k: number): void {
+  const n = nums.length;
+
+  if (k === n) {
+    return;
+  } else if (n > k) {
+    k %= n;
+  }
+
+  let i = 0;
+  let start = 0;
+  let current = 0;
+  let prev = nums[0]
+  while (i < n) {
+    const next = (current + k) % n;
+    const tmp = nums[next];
+    nums[next] = prev;
+    current = next;
+    prev = tmp;
+    i++;
+    if (current === start) {
+      current++;
+      start = current;
+      prev = nums[current];
+    }
+  }
+};
+
+
+function rotate7(nums: number[], k: number): void {
+  const n = nums.length;
+  k %= n;
+
+  const reverse = (l: number, r: number) => {
+    while (l < r) {
+      [nums[l], nums[r]] = [nums[r], nums[l]];
+      l++;
+      r--;
+    }
+  }
+
+  reverse(0, n - 1);
+  reverse(0, k - 1);
+  reverse(k, n - 1);
+
 }
 
 // let a = [1, 2, 3, 4, 5, 6, 7];

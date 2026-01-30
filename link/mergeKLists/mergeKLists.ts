@@ -571,6 +571,99 @@ function mergeKList4(lists: Array<ListNode | null>): ListNode | null {
   console.log(heap)
   return hair.next
 }
+
+// 还有一个归并排序的方案
+function mergeKLists5(lists: Array<ListNode | null>): ListNode | null {
+
+  class MinHeap {
+    private heap: Array<ListNode | null> = []
+
+    add(item: ListNode | null) {
+      this.heap.push(item)
+      if (this.heap.length > 1) {
+        // 从底向上对比，将小的移动至上部
+        let i = this.heap.length - 1;
+        while (i >= 1) {
+          const parent = Math.round(i / 2) - 1;
+          if (this.heap[i].val < this.heap[parent].val) {
+            [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
+            i = parent;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    pop(): ListNode {
+      let head = this.heap[0];
+      const node = head;
+      head = head.next;
+      if (head) {
+        this.heap[0] = head;
+      } else {
+        const pop = this.heap.pop();
+        if (this.heap.length > 0) {
+          this.heap[0] = pop;
+        }
+      }
+
+      if (this.heap.length > 0) {
+        let i = 0;
+        const n = this.heap.length - 1;
+
+        while (i < n) {
+          let pos = i;
+          const left = i * 2 + 1;
+          const right = i * 2 + 2;
+          if (left <= n && this.heap[pos].val > this.heap[left].val) {
+            pos = left;
+          }
+
+          if (right <= n && this.heap[pos].val > this.heap[right].val) {
+            pos = right;
+          }
+          if (pos !== i) {
+            [this.heap[i], this.heap[pos]] = [this.heap[pos], this.heap[i]]
+            i = pos;
+          } else {
+            break;
+          }
+        }
+      }
+
+
+      return node;
+    }
+    size(): number {
+      return this.heap.length;
+    }
+  }
+
+  const heap = new MinHeap();
+
+  for (const item of lists) {
+    if (item) {
+      heap.add(item);
+    }
+  }
+
+  const head = new ListNode();
+  let prev = head;
+
+  while (heap.size()) {
+    const node = heap.pop();
+    prev.next = node;
+    prev = prev.next;
+  }
+
+
+
+  return head.next;
+};
+
+
+
 // const link = nodeList[5]
 // let prev = link
 // while (prev) {

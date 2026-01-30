@@ -134,3 +134,39 @@ function copyRandomList2(head: Node | null): Node | null {
 
   return hair.next
 }
+
+
+function copyRandomList3(head: Node | null): Node | null {
+  const copyHead = new Node();
+  let copyPrev = copyHead;
+  let current = head;
+
+  while (current) {
+    const tmp = current;
+    const copyCurrent = new Node(current.val, current.next, current.random);
+    current = current.next;
+    tmp.next = copyCurrent;
+  }
+
+  current = head;
+  while (current) {
+    if (current.next.random) {
+      current.next.random = current.next.random.next;
+    }
+    current = current.next.next;
+  }
+  current = head;
+  while (current) {
+    copyPrev.next = current.next;
+    copyPrev = copyPrev.next;
+    current.next = current.next.next;
+    current = current.next;
+  }
+  copyPrev.next = null;
+
+
+
+
+
+  return copyPrev.next;
+};

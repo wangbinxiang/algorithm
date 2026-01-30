@@ -41,6 +41,27 @@ function rotate(matrix: number[][]): void {
 
 
 
+function rotate2(matrix: number[][]): void {
+  const n = matrix.length;
+  let l = 0;
+  let r = n - 1;
+
+  while (l < r) {
+    for (let i = 0; i < r - l; i++) {
+      let tmp = matrix[l + i][r];
+      matrix[l + i][r] = matrix[l][l + i];
+      let tmp2 = matrix[r][r - i];
+      matrix[r][r - i] = tmp;
+      let tmp3 = matrix[r - i][l];
+      matrix[r - i][l] = tmp2;
+      matrix[l][l + i] = tmp3;
+    }
+    l++;
+    r--;
+  }
+};
+
+
 // const arr11 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 // console.table(arr11)
 // rotate(arr11)
@@ -50,5 +71,5 @@ function rotate(matrix: number[][]): void {
 
 const arr22 = [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]
 console.table(arr22)
-rotate(arr22)
+rotate2(arr22)
 console.table(arr22)

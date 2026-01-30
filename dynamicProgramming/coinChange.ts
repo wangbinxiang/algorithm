@@ -9,8 +9,10 @@ export function coinChange(coins: number[], amount: number): number {
   //   return 0
   // }
   const m = coins.length + 1;
-  const n = amount + 1
-  const arr: number[][] = Array.from({ length: m }, () => Array.from({ length: n }, () => Number.MAX_VALUE))
+  const n = amount + 1;
+  const arr: number[][] = Array.from({ length: m }, () =>
+    Array.from({ length: n }, () => Number.MAX_VALUE),
+  );
 
   for (let i = 0; i < m; i++) {
     arr[i][0] = 0;
@@ -23,21 +25,20 @@ export function coinChange(coins: number[], amount: number): number {
       // console.log('j:', j);
       // arr[i][j] = Math.min(arr[])
       if (j < coin) {
-        arr[i][j] = arr[i - 1][j]
+        arr[i][j] = arr[i - 1][j];
       } else {
-        arr[i][j] = Math.min(arr[i - 1][j], arr[i][j - coin] + 1)
+        arr[i][j] = Math.min(arr[i - 1][j], arr[i][j - coin] + 1);
       }
     }
   }
   // console.log(arr)
-  return arr[m - 1][n - 1] === Number.MAX_VALUE ? -1 : arr[m - 1][n - 1]
-};
-
+  return arr[m - 1][n - 1] === Number.MAX_VALUE ? -1 : arr[m - 1][n - 1];
+}
 
 function coinChange1(coins: number[], amount: number): number {
   const m = coins.length + 1;
-  const n = amount + 1
-  const arr: number[] = Array.from({ length: n }, () => amount + 1)
+  const n = amount + 1;
+  const arr: number[] = Array.from({ length: n }, () => amount + 1);
   // const arr: number[] = Array(n).fill(amount + 1)
 
   arr[0] = 0;
@@ -46,48 +47,64 @@ function coinChange1(coins: number[], amount: number): number {
     const coin = coins[i - 1];
     for (let j = 1; j < n; j++) {
       if (j >= coin) {
-        arr[j] = Math.min(arr[j], arr[j - coin] + 1)
+        arr[j] = Math.min(arr[j], arr[j - coin] + 1);
       }
     }
   }
   return arr[n - 1] === amount + 1 ? -1 : arr[n - 1];
-};
-
-function coinChange2(coins: number[], amount: number): number {
-  const n = coins.length
-  const dp: number[] = Array(amount + 1)
-  dp[0] = 0
-  for (let i = 1; i <= amount; i++) {
-    let min = +Infinity
-    for (let coin of coins) {
-      if (i - coin >= 0) {
-        min = Math.min(min, dp[i - coin] + 1)
-      }
-    }
-    dp[i] = min
-  }
-  // console.log(dp)
-  return dp[amount] === +Infinity ? -1 : dp[amount]
 }
 
-
+function coinChange2(coins: number[], amount: number): number {
+  const n = coins.length;
+  const dp: number[] = Array(amount + 1);
+  dp[0] = 0;
+  for (let i = 1; i <= amount; i++) {
+    let min = +Infinity;
+    for (let coin of coins) {
+      if (i - coin >= 0) {
+        min = Math.min(min, dp[i - coin] + 1);
+      }
+    }
+    dp[i] = min;
+  }
+  // console.log(dp)
+  return dp[amount] === +Infinity ? -1 : dp[amount];
+}
 
 function coinChange3(coins: number[], amount: number): number {
   // const n = coins.length
-  const dp = Array(amount + 1).fill(+Infinity)
-  dp[0] = 0
+  const dp = Array(amount + 1).fill(+Infinity);
+  dp[0] = 0;
   for (let i = 1; i <= amount; i++) {
     for (let coin of coins) {
-      const j = i - coin
+      const j = i - coin;
       if (j === 0 || dp[j] > 0) {
-        dp[i] = Math.min(dp[i], dp[j] + 1)
+        dp[i] = Math.min(dp[i], dp[j] + 1);
       }
     }
   }
-  console.log(dp)
-  return dp[amount] !== Infinity ? dp[amount] : -1
+  console.log(dp);
+  return dp[amount] !== Infinity ? dp[amount] : -1;
 }
 
-console.log(coinChange3([5, 1, 2,], 11))
-console.log(coinChange3([2], 3))
-console.log(coinChange3([1], 0))
+function coinChange4(coins: number[], amount: number): number {
+  const dp = Array(amount + 1).fill(+Infinity);
+  dp[0] = 0;
+
+  for (let i = 1; i <= amount; i++) {
+    for (const coin of coins) {
+      if (i - coin >= 0) {
+        const count = dp[i - coin] + 1;
+        if (dp[i] > count) {
+          dp[i] = count;
+        }
+      }
+    }
+  }
+
+  return dp[amount] !== Infinity ? dp[amount] : -1;
+}
+
+console.log(coinChange4([5, 1, 2], 11));
+console.log(coinChange4([2], 3));
+console.log(coinChange4([1], 0));

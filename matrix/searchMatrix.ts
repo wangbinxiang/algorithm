@@ -13,17 +13,14 @@
 // 每列的所有元素从上到下升序排列
 // -109 <= target <= 109
 
-
 function searchMatrix(matrix: number[][], target: number): boolean {
-
-
   let top = 0;
   let bottom = matrix.length - 1;
 
   while (top <= bottom) {
     // console.log('top:', top);
     // console.log('bottom:', bottom);
-    const mid = ((bottom - top) >>> 1) + top
+    const mid = ((bottom - top) >>> 1) + top;
     // console.log('mid:', mid);
     const midVal = matrix[mid][0];
     if (target === midVal) {
@@ -37,7 +34,7 @@ function searchMatrix(matrix: number[][], target: number): boolean {
 
   console.log(top);
   if (top === 0) {
-    return false
+    return false;
   }
   let left = 0;
   let right = matrix[0].length - 1;
@@ -47,23 +44,20 @@ function searchMatrix(matrix: number[][], target: number): boolean {
     if (midVal === target) {
       return true;
     } else if (midVal < target) {
-      left = mid + 1
+      left = mid + 1;
     } else {
-      right = mid - 1
+      right = mid - 1;
     }
   }
 
-
-
   return false;
-};
-
+}
 
 function searchMatrix1(matrix: number[][], target: number): boolean {
   let m = matrix.length;
   let n = matrix[0].length;
   let left = 0;
-  let right = m * n - 1
+  let right = m * n - 1;
   while (left <= right) {
     const mid = ((right - left) >> 1) + left;
     const midVal = matrix[Math.floor(mid / n)][mid % n];
@@ -76,13 +70,12 @@ function searchMatrix1(matrix: number[][], target: number): boolean {
     }
   }
 
-
   return false;
 }
 
 function searchMatrix2(matrix: number[][], target: number): boolean {
   const m = matrix.length;
-  const n = matrix[0].length
+  const n = matrix[0].length;
   let x = 0;
   let y = n - 1;
   while (x < m && y >= 0) {
@@ -100,10 +93,9 @@ function searchMatrix2(matrix: number[][], target: number): boolean {
   return false;
 }
 
-
 function searchMatrix3(matrix: number[][], target: number): boolean {
   const m = matrix.length;
-  const n = matrix[0].length
+  const n = matrix[0].length;
   let x = 0;
   let y = n - 1;
   //
@@ -178,8 +170,59 @@ function searchMatrix3(matrix: number[][], target: number): boolean {
   return false;
 }
 
-console.log(searchMatrix3([[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 5))
+function searchMatrix4(matrix: number[][], target: number): boolean {
+  const m = matrix.length;
+  const n = matrix[0].length;
 
-console.log(searchMatrix3([[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 20))
+  let i = 0;
+  let j = n - 1;
 
-console.log(searchMatrix3([[1, 4], [2, 5]], 2));
+  while (i < m && j >= 0) {
+    const val = matrix[i][j];
+    if (val === target) {
+      return true;
+    } else if (val > target) {
+      j--;
+    } else {
+      i++;
+    }
+  }
+
+  return false;
+}
+
+console.log(
+  searchMatrix3(
+    [
+      [1, 4, 7, 11, 15],
+      [2, 5, 8, 12, 19],
+      [3, 6, 9, 16, 22],
+      [10, 13, 14, 17, 24],
+      [18, 21, 23, 26, 30],
+    ],
+    5,
+  ),
+);
+
+console.log(
+  searchMatrix3(
+    [
+      [1, 4, 7, 11, 15],
+      [2, 5, 8, 12, 19],
+      [3, 6, 9, 16, 22],
+      [10, 13, 14, 17, 24],
+      [18, 21, 23, 26, 30],
+    ],
+    20,
+  ),
+);
+
+console.log(
+  searchMatrix3(
+    [
+      [1, 4],
+      [2, 5],
+    ],
+    2,
+  ),
+);

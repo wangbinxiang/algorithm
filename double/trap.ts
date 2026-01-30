@@ -573,6 +573,34 @@ function trapStack3(height: number[]): number {
   return ans
 }
 
-console.log(trapStack3([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
-console.log(trapStack3([4, 2, 0, 3, 2, 5]));
-console.log(trapStack3([4, 2, 3]));
+
+
+function trap10(height: number[]): number {
+  let ans = 0;
+  let l = 0;
+  let r = height.length;
+
+  while (l < r) {
+    if (height[l] < height[r]) {
+      let i = l + 1;
+      while (i < r && height[i] < height[l]) {
+        ans += height[l] - height[i];
+        i++;
+      }
+      l = i
+    } else {
+      let i = r - 1;
+      while (i > l && height[i] < height[r]) {
+        ans += height[r] - height[i];
+        i--;
+      }
+      r = i;
+    }
+  }
+
+  return ans;
+};
+
+console.log(trap10([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
+console.log(trap10([4, 2, 0, 3, 2, 5]));
+console.log(trap10([4, 2, 3]));

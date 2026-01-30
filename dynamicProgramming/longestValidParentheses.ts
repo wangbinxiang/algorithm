@@ -298,6 +298,74 @@ function longestValidParenthesesPointer(s: string): number {
   return ans
 }
 
+
+function longestValidParentheses7(s: string): number {
+  let ans = 0;
+  const n = s.length;
+  // const dp = Array(n + 1).fill(0);
+  let right = 0;
+  let left = 0;
+  for (let i = 0; i < n; i++) {
+    if (s[i] === '(') {
+      left++;
+    } else {
+      right++;
+
+      if (right === left) {
+        if (ans < right) {
+          ans = right;
+        }
+      } else if (right > left) {
+        right = 0;
+        left = 0;
+      }
+    }
+    // console.log('left:', left, ' right:', right, s[i - 1]);
+  }
+  right = left = 0;
+  for (let i = n - 1; i >= 0; i--) {
+    if (s[i] === ')') {
+      right++;
+    } else {
+      left++;
+      if (left === right) {
+        if (ans < left) {
+          ans = left;
+        }
+      } else if (left > right) {
+        left = 0;
+        right = 0;
+      }
+    }
+  }
+
+
+  return ans * 2;
+};
+
+
+function longestValidParentheses8(s: string): number {
+  let ans = 0;
+  const n = s.length;
+  const dp = Array(n).fill(0);
+  for (let i = 0; i < n; i++) {
+    if (s[i] === ')') {
+      if (s[i - 1] === '(') {
+        dp[i] = 2 + dp[i - 2];
+      } else if (dp[i - 1] > 0 && s[i - dp[i - 1] - 1] === '(') {
+        dp[i] = 2 + dp[i - 1] + dp[i - dp[i - 1] - 2];
+      }
+      if (ans < dp[i]) {
+        ans = dp[i];
+      }
+    }
+  }
+
+
+
+  return ans;
+};
+
 // 动态规划
 // 如果是 )
 // 判断前一个
@@ -424,11 +492,59 @@ function longestValidParenthesesPointer1(s: string): number {
   return ans
 }
 
-console.log(longestValidParenthesesPointer1('(()(((()')) // 2
 
-console.log(longestValidParenthesesPointer1('(()')) // "()" 2
-console.log(longestValidParenthesesPointer1(')()())')) // "()()" 4
-console.log(longestValidParenthesesPointer1('')) // 0
-console.log(longestValidParenthesesPointer1('()(()')) // 2
-console.log(longestValidParenthesesPointer1('()(())')) // 6
-console.log(longestValidParenthesesPointer1('(()())')) // 6
+function longestValidParenthesesStack3(s: string): number {
+  const stack: number[] = [-1];
+  let ans = 0;
+
+  const n = s.length;
+  for (let i = 0; i < n; i++) {
+    if (s[i] === '(') {
+      stack.push(i);
+    } else {
+      console.log(stack);
+      stack.pop();
+      if (stack.length > 0) {
+        const count = i - stack[stack.length - 1];
+        if (count > ans) {
+          ans = count;
+        }
+      } else {
+        stack.push(i);
+      }
+    }
+  }
+  console.log(stack);
+
+  return ans;
+};
+
+
+function longestValidParentheses9(s: string): number {
+  let ans = 0;
+  const n = s.length;
+  const dp = Array(n).fill(0);
+  for (let i = 0; i < n; i++) {
+    if (s[i] === ')') {
+      if (s[i - 1] === '(') {
+        dp[i] = 2 + (dp[i - 2] ?? 0);
+      } else if (dp[i - 1] > 0 && s[i - dp[i - 1] - 1] === '(') {
+        dp[i] = 2 + dp[i - 1] + (dp[i - dp[i - 1] - 2] ?? 0)
+      }
+      if (dp[i] > ans) {
+        ans = dp[i];
+      }
+    }
+  }
+
+  return ans;
+};
+
+console.log(longestValidParentheses9('(()(((()')) // 2
+
+console.log(longestValidParentheses9('(()')) // "()" 2
+console.log(longestValidParentheses9(')()())')) // "()()" 4
+console.log(longestValidParentheses9('')) // 0
+console.log(longestValidParentheses9('()(()')) // 2
+console.log(longestValidParentheses9('()(())')) // 6
+console.log(longestValidParentheses9('(()())')) // 6

@@ -129,3 +129,47 @@ function maxSlidingWindow2(nums: number[], k: number): number[] {
 
   return ans
 }
+
+
+
+function maxSlidingWindow3(nums: number[], k: number): number[] {
+  const ans: number[] = [];
+
+  const queue: number[] = [];
+  const n = nums.length;
+
+  for (let i = 0; i < k; i++) {
+    const num = nums[i];
+    while (queue.length) {
+      if (nums[queue[queue.length - 1]] < num) {
+        queue.pop();
+      } else {
+        break;
+      }
+    }
+    queue.push(i)
+  }
+
+
+  for (let i = k; i < n; i++) {
+    ans.push(nums[queue[0]]);
+    if (i - queue[0] === k) {
+      queue.shift();
+    }
+    const num = nums[i];
+
+    while (queue.length) {
+      if (nums[queue[queue.length - 1]] < num) {
+        queue.pop();
+      } else {
+        break;
+      }
+    }
+    queue.push(i)
+  }
+
+  ans.push(nums[queue[0]]);
+
+
+  return ans;
+};

@@ -105,13 +105,69 @@ function maxProduct3(nums: number[]): number {
 }
 
 
+function maxProduct4(nums: number[]): number {
+  let ans = nums[0];
+  const n = nums.length;
 
-console.log(maxProduct3([2, 3, -2, 4])) // 6
-console.log(maxProduct3([-2, 0, -1])) // 0
-console.log(maxProduct3([0, 2]))
-console.log(maxProduct3([-2, 3, -4]))
-console.log(maxProduct3([2, -1, 1, 1]))
+  const dp = Array(n).fill(1);
+  const dpMin = Array(n).fill(1);
+  dp[0] = nums[0];
+  dpMin[0] = nums[0];
 
-// console.log(maxProduct3([3, -1, 4]))
-// console.log(maxProduct3([2, -5, -2, -4, 3]))
+  for (let i = 1; i < n; i++) {
+    const num = nums[i];
+    const res = num * dp[i - 1];
+    const resMin = num * dpMin[i - 1];
+
+    const max = Math.max(num, res, resMin);
+    const min = Math.min(num, res, resMin);
+
+    dp[i] = max;
+    dpMin[i] = min;
+    if (max > ans) {
+      ans = max;
+    }
+  }
+
+  // console.log(ans);
+  return ans;
+};
+
+
+function maxProduct5(nums: number[]): number {
+  let ans = nums[0];
+  let prevMax = nums[0];
+  let prevMin = nums[0]
+  const n = nums.length;
+
+  for (let i = 1; i < n; i++) {
+    const num = nums[i];
+    const maxProduct = prevMax * num;
+    const minProduct = prevMin * num;
+
+    const max = Math.max(maxProduct, minProduct, num);
+    const min = Math.min(maxProduct, minProduct, num);
+    if (max > ans) {
+      ans = max;
+    }
+    prevMax = max;
+    prevMin = min;
+  }
+
+
+
+  return ans;
+};
+
+
+console.log(maxProduct5([2, 3, -2, 4])) // 6
+console.log(maxProduct5([-2, 0, -1])) // 0
+console.log(maxProduct5([0, 2]))
+console.log(maxProduct5([-2, 3, -4]))
+console.log(maxProduct5([2, -1, 1, 1]))
+
+console.log(maxProduct5([-2]))
+
+console.log(maxProduct5([3, -1, 4]))
+console.log(maxProduct5([2, -5, -2, -4, 3]))
 

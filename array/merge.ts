@@ -80,6 +80,29 @@ function merge1(intervals: number[][]): number[][] {
 }
 
 
+function merge2(intervals: number[][]): number[][] {
+  const ans: number[][] = [];
+
+  intervals.sort((a, b) => a[0] - b[0]);
+
+
+  const n = intervals.length;
+  let i = 0;
+  while (i < n) {
+    const current = intervals[i];
+    let next = i + 1;
+    let end = current[1];
+    while (next < n && end >= intervals[next][0]) {
+      end = Math.max(end, intervals[next][1])
+      next++;
+    }
+    ans.push([current[0], end]);
+    i = next;
+  }
+  return ans;
+};
+
+
 console.log(merge1([[1, 3], [2, 6], [8, 10], [15, 18]]))
 
 console.log(merge1([[1, 4], [4, 5]]))

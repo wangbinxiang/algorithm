@@ -113,8 +113,57 @@ function firstMissingPositive3(nums: number[]): number {
 }
 
 
-console.log(firstMissingPositive3([1, 2, 0]));
-console.log(firstMissingPositive3([3, 4, -1, 1]));
-console.log(firstMissingPositive3([7, 8, 9, 11, 12]));
-console.log(firstMissingPositive3([2, 1]));
-console.log(firstMissingPositive3([2, 1]));
+function firstMissingPositive4(nums: number[]): number {
+  const set = new Set();
+  for (const num of nums) {
+    set.add(num);
+  }
+
+  let current = 1;
+  while (set.has(current)) {
+    current++;
+  }
+
+
+
+  return current;
+};
+
+
+function firstMissingPositive5(nums: number[]): number {
+  const n = nums.length;
+
+  for (let i = 0; i < n; i++) {
+    while (true) {
+      const num = nums[i];
+      console.log('i:', i);
+      console.log('num:', num);
+      console.log('nums[num - 1]:', nums[num - 1])
+      if (num > 0 && num < n && i + 1 !== num && num !== nums[num - 1]) {
+        [nums[num - 1], nums[i]] = [nums[i], nums[num - 1]];
+      } else {
+        break;
+      }
+    }
+  }
+
+  for (let i = 0; i < n; i++) {
+    const num = nums[i];
+    if (num !== i + 1) {
+      return i + 1;
+    }
+  }
+
+
+
+  return n + 1;
+};
+
+
+// console.log(firstMissingPositive3([1, 2, 0]));
+// console.log(firstMissingPositive3([3, 4, -1, 1]));
+// console.log(firstMissingPositive3([7, 8, 9, 11, 12]));
+// console.log(firstMissingPositive3([2, 1]));
+// console.log(firstMissingPositive3([2, 1]));
+console.log(firstMissingPositive4([-1, 4, 2, 1, 9, 10]));
+

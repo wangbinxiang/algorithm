@@ -143,12 +143,32 @@ function longestCommonSubsequence4(text1: string, text2: string): number {
   return dp[m][n]
 }
 
-console.table(longestCommonSubsequence4("abcde", "ace"))
 
-console.table(longestCommonSubsequence4("abc", "abc"))
 
-console.table(longestCommonSubsequence4("abc", "def"))
+function longestCommonSubsequence5(text1: string, text2: string): number {
+  const m = text1.length;
+  const n = text2.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
 
-console.table(longestCommonSubsequence4("bsbininm", "jmjkbkjkv"))
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (text1[i - 1] === text2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+      }
+    }
+  }
+  // console.log(dp)
+  return dp[m][n];
+};
 
-console.table(longestCommonSubsequence4("psnw", "vozsh"))
+console.table(longestCommonSubsequence5("abcde", "ace"))
+
+console.table(longestCommonSubsequence5("abc", "abc"))
+
+console.table(longestCommonSubsequence5("abc", "def"))
+
+console.table(longestCommonSubsequence5("bsbininm", "jmjkbkjkv"))
+
+console.table(longestCommonSubsequence5("psnw", "vozsh"))

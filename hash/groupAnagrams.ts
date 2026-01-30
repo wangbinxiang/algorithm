@@ -105,13 +105,13 @@ function groupAnagrams4(strs: string[]): string[][] {
 
   return Object.values(ans);
 }
-console.log(groupAnagrams5(["eat", "tea", "tan", "ate", "nat", "bat"])); // [["bat"],["nat","tan"],["ate","eat","tea"]]
+console.log(groupAnagrams6(["eat", "tea", "tan", "ate", "nat", "bat"])); // [["bat"],["nat","tan"],["ate","eat","tea"]]
 
-console.log(groupAnagrams5([""])); // [[""]]
+console.log(groupAnagrams6([""])); // [[""]]
 
-console.log(groupAnagrams5(["a"])); // [["a"]]
+console.log(groupAnagrams6(["a"])); // [["a"]]
 
-console.log(groupAnagrams5(["ddddddddddg", "dgggggggggg"]))
+console.log(groupAnagrams6(["ddddddddddg", "dgggggggggg"]))
 
 function groupAnagrams5(strs: string[]): string[][] {
   const ans: Record<string, string[]> = {};
@@ -133,6 +133,31 @@ function groupAnagrams5(strs: string[]): string[][] {
   }
   return Object.values(ans);
 }
+
+
+function groupAnagrams6(strs: string[]): string[][] {
+  const map = new Map<string, string[]>();
+
+  for (const str of strs) {
+    const key = str.split('').sort().join('');
+    if (map.has(key)) {
+      const val = map.get(key)
+      val.push(str)
+      map.set(key, val);
+    } else {
+      map.set(key, [str]);
+    }
+  }
+
+
+  const ans: string[][] = [];
+  for (const val of map.values()) {
+    ans.push(val);
+  }
+
+
+  return ans;
+};
 
 
 // console.log(replaceStringAt('000', 0))

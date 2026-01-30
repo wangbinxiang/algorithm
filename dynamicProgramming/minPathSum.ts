@@ -87,7 +87,55 @@ function minPathSum2(grid: number[][]): number {
   return dp[n]
 }
 
-console.log(minPathSum2([[1, 3, 1], [1, 5, 1], [4, 2, 1]])) // 7
-console.log(minPathSum2([[1, 2, 3], [4, 5, 6]])) // 12
+function minPathSum3(grid: number[][]): number {
+  const m = grid.length;
+  const n = grid[0].length;
 
-console.log(minPathSum2([[7, 4, 8, 7, 9, 3, 7, 5, 0], [1, 8, 2, 2, 7, 1, 4, 5, 7], [4, 6, 4, 7, 7, 4, 8, 2, 1], [1, 9, 6, 9, 8, 2, 9, 7, 2], [5, 5, 7, 5, 8, 7, 9, 1, 4], [0, 7, 9, 9, 1, 5, 3, 9, 4]])) // 50
+  const dp = Array.from({ length: m }, () => Array(n).fill(0));
+
+  dp[0][0] = grid[0][0];
+  for (let i = 1; i < n; i++) {
+    dp[0][i] = grid[0][i] + dp[0][i - 1];
+  }
+
+  for (let i = 1; i < m; i++) {
+    dp[i][0] = grid[i][0] + dp[i - 1][0];
+  }
+
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][j] = Math.min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j];
+    }
+  }
+
+  return dp[m - 1][n - 1];
+};
+
+function minPathSum4(grid: number[][]): number {
+  const m = grid.length;
+  const n = grid[0].length;
+
+  const dp = Array(n).fill(0);
+  dp[0] = grid[0][0];
+  for (let i = 1; i < n; i++) {
+    dp[i] = dp[i - 1] + grid[0][i];
+  }
+  // for (let i = 1; i < m; i++) {
+  //   dp[0] += grid[i][0];
+  // }
+
+  for (let i = 1; i < m; i++) {
+    dp[0] += grid[i][0];
+    for (let j = 1; j < n; j++) {
+      dp[j] = Math.min(dp[j - 1], dp[j]) + grid[i][j];
+    }
+  }
+
+
+  return dp[n - 1];
+};
+
+console.log(minPathSum4([[1, 3, 1], [1, 5, 1], [4, 2, 1]])) // 7
+console.log(minPathSum4([[1, 2, 3], [4, 5, 6]])) // 12
+
+console.log(minPathSum4([[7, 4, 8, 7, 9, 3, 7, 5, 0], [1, 8, 2, 2, 7, 1, 4, 5, 7], [4, 6, 4, 7, 7, 4, 8, 2, 1], [1, 9, 6, 9, 8, 2, 9, 7, 2], [5, 5, 7, 5, 8, 7, 9, 1, 4], [0, 7, 9, 9, 1, 5, 3, 9, 4]])) // 50

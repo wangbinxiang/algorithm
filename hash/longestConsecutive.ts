@@ -115,6 +115,57 @@ function longestConsecutive3(nums: number[]): number {
   return ans;
 }
 
+
+function longestConsecutive4(nums: number[]): number {
+  let ans = 0;
+  const map = new Map<number, number>();
+
+  for (const num of nums) {
+    map.set(num, 1);
+  }
+
+
+  for (const num of map.keys()) {
+    if (map.get(num) === 0) {
+      continue;
+    }
+    let current = num;
+
+    let count = 1;
+    while (map.get(current - 1)) {
+      const prev = map.get(current - 1);
+      if (prev > 1) {
+        count += prev;
+        break;
+      } else {
+        count++;
+        current--;
+        map.set(current, 0);
+      }
+    }
+    if (count > ans) {
+      ans = count;
+    }
+    map.set(num, count);
+  }
+
+
+
+
+  return ans;
+};
+
+
+
+function longestConsecutive5(nums: number[]): number {
+  let ans = 1;
+
+
+
+
+  return ans;
+};
+
 // 提示：
 
 // 0 <= nums.length <= 105
